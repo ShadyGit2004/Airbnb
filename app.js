@@ -74,10 +74,10 @@ const sessionOption = {
     store, 
     secret : process.env.SESSION_SECRET,
     resave : false,
-    saveUninitialized : false,    
+    saveUninitialized : true,    
     cookie : {
         expires : Date.now() + 7 * 24 * 60 * 60 * 1000,
-        secure: process.env.NODE_ENV === "production",
+        // secure: process.env.NODE_ENV === "production",
         // sameSite: "lax",
         maxAge : 7 * 24 * 60 * 60 * 1000,
         httpOnly : true,
