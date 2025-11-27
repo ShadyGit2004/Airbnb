@@ -1,0 +1,340 @@
+<%- layout("/layouts/boilerplate.ejs")  %>
+
+<link rel="stylesheet" href="/css/editprofile.css">
+
+<body>
+    <div class="personal-info-pannel">
+        <h6><a href="/account">Account</a>  &nbsp; &nbsp; <i class="fa-solid fa-angle-right"></i>  &nbsp;&nbsp; <b>Personal info</b></h6>
+        <h2>Personal info</h2>
+        <div class="info-detail-pannel">
+            <div class="details-and-form">
+                <div class="info">
+                    <div>
+                    <h6 class="h6-lable">Legal name</h6>
+                    <h6 class="h6-data"><%= currUser.username %></h6>                    
+                    </div>
+                    <div class="edit-btns">
+                        <span class="edit">Edit</span>
+                        <span class="cancel hide">Cancel</span>
+                    </div>                                
+                </div>
+                <div class="edit-form hide">
+                    <form action="/account/username/<%= currUser._id %>?_method=patch" method="post" class="needs-validation animation-submit" novalidate>                      
+                        <div class="input-box">
+                            <label for="username" class="form-label mb-3">Make sure this matches the name on your government ID.</label>
+                            <input class="form-control" placeholder="Username" type="text" id="username" value="<%= currUser.username ? currUser.username : 'username' %>" name="username" required minlength="2">   
+                            <div class="invalid-feedback">Please enter username</div>                    
+                        </div>
+                        <button class="btn btn-dark mt-3 submitBtn">
+                            <span class="submitBtn-text">Save</span>
+                            <div class="spinner" style="display: none;">
+                                <span class="dot dot-1"></span>
+                                <span class="dot dot-2"></span>
+                                <span class="dot dot-3"></span>
+                            </div>
+                        </button>
+                    </form>
+                </div> 
+            </div> 
+           <div class="details-and-form">
+            <div class="info">
+                <div>
+                <h6 class="h6-lable">Email address</h6>
+                <h6 class="h6-data"><%= currUser.email %></h6>
+                </div>
+                <div class="edit-btns">
+                    <span class="edit">Edit</span>
+                    <span class="cancel hide">Cancel</span>
+                </div>
+                
+            </div>
+            <div class="edit-form hide">
+                <form action="/account/email/<%= currUser._id %>?_method=patch" method="post" class="needs-validation animation-submit" novalidate>                        
+                    <div class="input-box">
+                        <label for="email" class="form-label mb-3">Use an address you’ll always have access to.</label>
+                        <input class="form-control" type="email" id="email" placeholder="Email address" name="email" required>  
+                        <div class="invalid-feedback">Please enter a valid email</div>                      
+                    </div>
+                    <button class="btn btn-dark mt-3 submitBtn">
+                        <span class="submitBtn-text">Save</span>
+                        <div class="spinner" style="display: none;">
+                            <span class="dot dot-1"></span>
+                            <span class="dot dot-2"></span>
+                            <span class="dot dot-3"></span>
+                        </div>
+                    </button>
+                </form>
+            </div> 
+           </div>
+          <div class="details-and-form">
+            <div class="info">
+                <div>
+                 <h6 class="h6-lable">Address</h6>
+                 <h6 class="h6-data">
+                    <%= currUser?.countryInfo ? `${currUser?.countryInfo?.country}, ${currUser?.countryInfo?.city} (${currUser?.countryInfo?.region})` : "Not provided" %>
+                 </h6>
+                </div>
+                <div class="edit-btns">
+                 <span class="edit">Edit</span>
+                 <span class="cancel hide">Cancel</span>
+                </div>          
+             </div>  
+             <div class="edit-form hide">
+                <div class="h6-data mb-3">Use a permanent address</div>        
+                <form action="/account/personal-info/<%= currUser._id %>?_method=patch" method="post" novalidate class="needs-validation animation-submit">                        
+                     <div class="input-box">   
+                        <div class="lable-and-input">
+                            <label for="country" class="form-label">Country/Region</label>                      
+                            <select name="countryInfo[country]" id="country" class="form-select" required> 
+                            </select>  
+                            <div class="invalid-feedback">Please selecet a valid country</div>  
+                        </div>                    
+                        <div class="lable-and-input">
+                            <label for="city" class="form-label">City</label>
+                            <input class="form-control address" id="city" type="text" name="countryInfo[city]" minlength="3" maxlength="20" placeholder="<%=currUser?.countryInfo?.city%>" required> 
+                            <div class="invalid-feedback">Please enter a valid city</div> 
+                        </div>
+                        <div class="lable-and-input">
+                            <label for="state" class="form-label">State</label>
+                            <input class="form-control address" id="state" type="text" name="countryInfo[region]" minlength="3" maxlength="30" placeholder="<%=currUser?.countryInfo?.region%>" required> 
+                            <div class="invalid-feedback">Please enter a valid state</div>   
+                        </div>                   
+                     </div>
+                     <button class="btn btn-dark mt-3 submitBtn">
+                        <span class="submitBtn-text">Save</span>
+                        <div class="spinner" style="display: none;">
+                            <span class="dot dot-1"></span>
+                            <span class="dot dot-2"></span>
+                            <span class="dot dot-3"></span>
+                        </div>
+                    </button>
+                 </form>
+             </div>  
+          </div>        
+        </div>
+    </div>
+
+    <script>
+
+// this is already implemented in script.js
+// document.querySelectorAll('.needs-validation').forEach((form)=>{
+//     if(form){
+//         form.addEventListener('submit', function () {
+//             const button = form.querySelector('.submitBtn');
+//             const spinner = button.querySelector('.spinner');
+
+//             // Disable button and show spinner immediately on submit
+//             if(button) button.disabled = true;
+//             if(spinner) spinner.style.display = 'inline-block';
+//             // No preventDefault — normal form submission will proceed
+//         });
+//     }
+// })
+
+
+// document.getElementById('myForm').addEventListener('submit', async function(e) {
+//   e.preventDefault(); // Prevent default form submission
+
+//   const button = document.getElementById('submitBtn');
+//   const spinner = button.querySelector('.spinner');
+//   const btnText = button.querySelector('.btn-text');
+
+//   // Show loader
+//   button.disabled = true;
+//   spinner.style.display = 'inline-block';
+//   btnText.textContent = 'Loading...';
+
+//   const formData = new FormData(this);
+//   const data = Object.fromEntries(formData.entries());
+
+//   try {
+//     const response = await fetch('/account/username/<%= currUser._id %>?_method=patch', {
+//       method: 'post',
+//       headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify(data)
+//     });
+
+//     const result = await response.json();
+//     if (result.message) {
+//      document.getElementById('username').textContent = result.message;
+//     }
+//     console.log('✅ Response:', result);
+//     // alert('Success: ' + result.message);
+//   } catch (err) {
+//     console.error('❌ Error:', err);
+//     // alert('Something went wrong!');
+//   } finally {
+//     // Reset button
+//     button.disabled = false;
+//     spinner.style.display = 'none';
+//     btnText.textContent = 'Submit';
+//   }
+// });
+
+
+
+
+        const countryList = [
+            "United States", "Canada", "United Kingdom", "Germany", "France", "Italy", "Spain", "Australia", "New Zealand", "India",
+            "China", "Japan", "South Korea", "Brazil", "Mexico", "Argentina", "Russia", "South Africa", "Egypt", "Nigeria",
+            "Sweden", "Norway", "Denmark", "Netherlands", "Belgium", "Switzerland", "Austria", "Poland", "Turkey", "Saudi Arabia",
+            "United Arab Emirates", "Thailand", "Vietnam", "Philippines", "Malaysia", "Indonesia", "Singapore", "Pakistan", "Bangladesh", "Sri Lanka",
+            "Ireland", "Portugal", "Greece", "Czech Republic", "Hungary", "Ukraine", "Romania", "Colombia", "Chile", "Peru"
+            ];
+
+        function populateCountrySelect(selectElementId, countries) {
+            const select = document.getElementById(selectElementId);
+
+            if (!select) {
+                console.error(`Select element with ID "${selectElementId}" not found.`);
+                return;
+            }
+
+            // Clear existing options
+            select.innerHTML = '';
+
+            // Add a default option
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.setAttribute("selected", true);
+            defaultOption.setAttribute("disabled", true);
+            defaultOption.textContent = `-- Select Country (${'<%=currUser?.countryInfo?.country%>'})--`;
+            select.appendChild(defaultOption);
+
+            // Create and append option for each country
+            countries.forEach(country => {
+                const option = document.createElement('option');
+                option.value = country;
+                option.textContent = country;
+                select.appendChild(option);
+            });
+        }
+        
+        populateCountrySelect("country", countryList);
+
+
+//         let editBtns = document.querySelectorAll(".edit-btns");
+
+// for (let editBtn of editBtns) {
+//   editBtn.addEventListener("click", (e) => {
+//     const clickedSpan = e.target;
+
+//     if (clickedSpan.classList.contains("edit")) {
+//       // Handle Edit click
+//       const cancel = editBtn.querySelector(".cancel");
+//       clickedSpan.classList.add("hide");
+//       cancel.classList.remove("hide");
+
+//       const editForm = editBtn.parentElement.nextElementSibling;
+//       const h6Data = editBtn.parentElement.previousElementSibling?.children[1];
+//       const h6Label = editBtn.parentElement.previousElementSibling?.children[0];
+
+//       if (editForm) editForm.classList.remove("hide");
+//       if (h6Data) h6Data.classList.add("hide");
+//       if (h6Label) h6Label.classList.remove("pointer-none");
+
+//       // Disable other edits
+//       document.querySelectorAll(".edit").forEach(btn => btn.classList.add("pointer-none"));
+//       document.querySelectorAll(".info .h6-lable").forEach(label => label.classList.add("pointer-none"));
+
+//     } else if (clickedSpan.classList.contains("cancel")) {
+//       // Handle Cancel click
+//       const edit = editBtn.querySelector(".edit");
+//       clickedSpan.classList.add("hide");
+//       edit.classList.remove("hide");
+
+//       const editForm = editBtn.parentElement.nextElementSibling;
+//       const h6Data = editBtn.parentElement.previousElementSibling?.children[1];
+//       if (editForm) {
+//         // Clear form inputs
+//         editForm.querySelectorAll("input").forEach(input => input.value = "");
+//         const select = editForm.querySelector("select");
+//         if (select) {
+//           select.value = "";
+//         }
+//         editForm.classList.add("hide");
+//       }
+
+//       if (h6Data) h6Data.classList.remove("hide");
+
+//       // Re-enable all other edits
+//       document.querySelectorAll(".edit").forEach(btn => btn.classList.remove("pointer-none"));
+//       document.querySelectorAll(".info .h6-lable").forEach(label => label.classList.remove("pointer-none"));
+//     }
+//   });
+// }
+
+
+
+
+        // let editBtns = document.querySelectorAll(".edit-btns");     
+
+        // for (let editBtn of editBtns) {
+        //     editBtn.addEventListener("click", (e)=>{                        
+        //     if (e.target.innerText === "Edit") {                           
+        //         let edit = editBtn.querySelector(".edit");  
+        //         let cancel = editBtn.querySelector(".cancel"); 
+        //         edit.classList.add("hide");     
+        //         cancel.classList.remove("hide");  
+        //         // console.dir(e.target.parentElement.previousElementSibling.children[1].innerText); 
+        //         // console.dir(e.target.parentElement.parentElement.nextElementSibling);                
+        //         let editForm = e.target.parentElement.parentElement.nextElementSibling;
+        //         let h6Data = e.target.parentElement.previousElementSibling.children[1];
+        //         let h6Lable = e.target.parentElement.previousElementSibling.children[0];
+        //         editForm.classList.remove("hide");
+        //         let disabledEdits = document.querySelectorAll(".edit");
+        //         for (let disabledEdit of disabledEdits) {
+        //             disabledEdit.classList.add("pointer-none");
+        //         }       
+        //         let labels= document.querySelectorAll(".info .h6-lable");
+        //         for (let label of labels) {
+        //             label.classList.add("pointer-none");
+        //         }            
+        //         if(h6Data) h6Data.classList.add("hide");    
+        //         if(h6Lable) h6Lable.classList.remove("pointer-none");
+        //     }            
+        //     });           
+        // }
+       
+        // for (let editBtn of editBtns) { 
+        //     editBtn.addEventListener("click", (e)=>{            
+        //     if (e.target.innerText === "Cancel"){                
+        //         let edit = editBtn.querySelector(".edit"); 
+        //         let cancel = editBtn.querySelector(".cancel");           
+        //         cancel.classList.add("hide");
+        //         edit.classList.remove("hide");
+        //         let editForm = e.target.parentElement.parentElement.nextElementSibling;
+        //         let h6Data = e.target.parentElement.previousElementSibling.children[1];   
+        //         let inputs = editForm.querySelectorAll("input.address");
+        //         let select = editForm.querySelector("select");
+        //         for (let input of inputs) {                                  
+        //             input.value = "";                 
+        //         }                
+        //         if(select){                    
+        //             select.value = "";           
+        //             select.addEventListener("change",()=>{
+        //                 if (!select.value) {                  
+        //                     select.value = select[0].innerText;
+        //                     select[0].selected = true;
+        //                 }
+        //             })
+        //         }
+        //         editForm.classList.add("hide");
+        //         if(h6Data) h6Data.classList.remove("hide");              
+        //         let disabledEdits = document.querySelectorAll(".edit");
+        //         for (let disabledEdit of disabledEdits) {
+        //             disabledEdit.classList.remove("pointer-none");
+        //         }               
+        //         let labels= document.querySelectorAll(".info .h6-lable");
+        //         for (let label of labels) {
+        //             label.classList.remove("pointer-none");
+        //         }    
+        //     }         
+        // });
+        // }
+
+    </script>
+   <script src="/js/editprofile.js"></script>
+</body>

@@ -1,0 +1,284 @@
+<%- layout("/layouts/boilerplate.ejs")  %>
+
+<script>
+    let name = '<%= currUser.username %>';
+    let url = '<%= currUser.profileImg %>';
+    let currentUser = '<%- JSON.stringify(currUser)%>';
+    currentUser = JSON.parse(currentUser);
+    let aboutObj = currentUser.about;
+</script>
+
+<style>
+
+#nav-search-box{
+    display: none;
+  }
+
+    .my-profile-page{
+        padding: 5vh 16vw;
+        /* width: 100%; */
+        height: 100%;
+        display: flex;        
+        gap: 22%;
+        align-items: center;
+        justify-content: start;      
+    }
+    .my-profile{
+        width: 340px; 
+        /* width: fit-content;       */
+        flex-shrink: 0;
+    }
+    .profile-info{        
+        /* width: fit-content; */
+        margin: 0 0 2rem;
+        padding: 25px 50px;
+        /* padding: 25px 20px; */
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        /* justify-content: center; */
+        /* gap: 50px; */
+        border-radius: 22px;
+        box-shadow: 0 3px 15px #b9b9b9f1;   
+    }
+    .profile-img-name{       
+        min-width: fit-content;        
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+    .profile-img-name .profile-pic{
+        height: 100px;
+        width: 100px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: #fff;       
+        overflow: hidden;
+        background-color: #232323;
+    }
+    .profile-img-name .profile-pic img{
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        object-position: 50% 30%;
+        background-color: #fff;
+    }
+    .profile-name{        
+        margin-top: .5rem;
+        text-align: center;
+    }
+    .profile-name h2{
+        font-weight: 700;
+    }
+    .profile-name h6{
+        margin-top: -.3rem;
+        font-size: .87rem;
+        font-weight: 700;
+        color: #2b2b2b;
+    }
+    .profile-about{
+        min-width: fit-content;
+    }
+    .profile-about h4{
+        font-weight: 700;
+        font-size: 1.35rem;
+    }
+    .profile-about p{
+        margin-top: -.5rem;
+        font-weight: 500;
+        font-size: .65rem;
+    }
+
+    .profile-confirm-verify{    
+        /* width: 350px;    */
+        padding: 30px 25px;      
+        border-radius: 22px; 
+        border: .1px solid #d6d6d6;        
+    }
+    /* .profile-confirm{    
+      
+    } */
+    .profile-confirm h3{         
+        font-size: 1.4rem;
+        font-weight: 600;
+        line-height: 1.1;
+        margin-bottom: 1.65rem;       
+    }
+    .profile-confirm h4 i{
+        font-size: 1.25rem;
+        margin-right: .5rem;
+    }
+    .profile-confirm h4{        
+        font-size: 1rem;
+        margin-bottom: 2.65rem;
+        color: #1d1d1d;      
+    }
+    /* .profile-verify{
+       
+    } */
+    .profile-verify p{
+        color: #1d1d1d;
+        margin: 2rem 0 0;
+        font-size: .9rem;
+        line-height: 1.4;   
+           
+    }
+    .profile-verify button{
+        margin-top: 1.35rem;
+        padding: 10px 20px;
+        font-weight: 600;
+    }
+    .h3-border{       
+        font-weight: 600;
+        font-size: 1.35rem;
+        padding-top: 2.25rem;
+        border-top: .1px solid #dbdbdb;
+    }
+    
+    .create-profile{
+        width: 350px;
+        margin-top: 5rem;
+        flex-shrink: 0;      
+    }
+    .create-profile p{
+        margin: 1rem 0 2.25rem;
+        font-size: .9rem;
+        line-height: 1.4;       
+    }
+    .create-profile a{
+        text-decoration: none;
+        padding: 12px 22px;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: -.1px;
+        border: none;
+        color: white;
+        border-radius: 8px;
+        background: linear-gradient( to right, rgb(228, 16, 62), rgb(207, 29, 98));
+    }
+    @media (max-width: 1100px) {
+        
+        .my-profile-page{    
+            padding: 5vh 8vw;          
+            gap: 12%;
+        }
+    }
+
+    @media (max-width: 850px) {
+        
+        .my-profile-page{    
+            padding: 5vh 3vw;          
+            gap: 8%;
+        }
+        
+        .my-profile, .create-profile{
+            width: 320px; 
+        }
+    }
+    @media (max-width: 750px) {
+        
+        .my-profile-page{           
+            gap: 5rem;    
+            flex-wrap: wrap;        
+        }
+        
+        .my-profile, .create-profile{
+            width: 60%;
+            margin: 0 auto; 
+        }
+    }
+
+
+    @media (max-width: 570px) {        
+        
+        .my-profile, .create-profile{
+            width: 75%;
+        }
+    }
+    @media (max-width: 450px) {        
+        
+        .my-profile, .create-profile{
+            width: 88%;
+        }
+    }
+</style>
+
+<body>  
+    <div class="my-profile-page">
+        <div class="my-profile">
+            <div class="profile-info">
+               <div class="profile-img-name">
+                <div class="profile-pic">             
+                </div>
+                <div class="profile-name">
+                    <h2><%= currUser.username %></h2>                   
+                    <!-- <h6><%= currUser.statusType %></h6> -->
+                    <h6><%= currUser.userStatus == "travelling" ? "Guest" : "Host" %></h6>
+                </div>
+               </div>
+                <div class="profile-about">              
+                    <h4 class="year-of-hosting-data"></h4>
+                    <p class="hosting-year"></p>
+                </div>
+            </div>
+            <div class="profile-confirm-verify">
+                <div class="profile-confirm">
+                    <h3><%= currUser.username%>'s confirmed information</h3>  
+                    <h4><span><i class="fa-solid fa-check"></i></span>Email address</h4>   
+                </div>         
+                <div class="profile-verify">
+                    <h4 class="h3-border">Verify your identity</h4>
+                    <p>Before you book or host on Airbnb, you’ll need to complete this step.</p>
+                    <button class="btn btn-outline-dark">Get verified</button>
+                </div>                  
+            </div>
+        </div>
+        <div class="create-profile">
+           <h4 class="h3-border">It's time to create your profile</h4>
+           <p>Your Airbnb profile is an important part of every reservation. Create yours to help other hosts and guests get to know you.</p>        
+           <a href="/account/profile/<%= currUser._id %>/edit">Create profile</a>
+        </div>
+    </div>
+  
+    <script>
+        // aboutObj = JSON.parse(aboutObj);
+      
+        function setProfile(){       
+            let profilePic = document.querySelector(".my-profile .profile-pic")             
+            profilePic.innerHTML =  url ? `<img src="${url}" alt="profileImage">` : name.trim().slice(0,1); 
+        }
+        setProfile();  
+
+
+        let yearData = document.querySelector(".my-profile .profile-about .year-of-hosting-data");
+        let yearMonthPara = document.querySelector(".my-profile .profile-about .hosting-year");
+
+        let currentDate = new Date;
+        let monthOfHosting = currentDate.getMonth()+1 - parseInt(currentUser.joinAt.toString().trim().slice(5,7));
+        let yearOfHosting = currentDate.getFullYear() - parseInt(currentUser.joinAt.toString().trim().slice(0,4));
+        
+        if (yearOfHosting == 0) {
+            if (monthOfHosting > 1) {
+                yearData.innerHTML = monthOfHosting;
+                yearMonthPara.innerHTML = `Months on Airbnb`        
+            } else {
+                yearData.innerHTML = 1;
+                yearMonthPara.innerHTML = "Month on Airbnb";
+            }
+        } else {
+            if (yearOfHosting == 1) {
+               yearData.innerHTML = yearOfHosting;
+               yearMonthPara.innerHTML = `Year on Airbnb`;   
+            } else {                 
+              yearData.innerHTML = yearOfHosting;
+              yearMonthPara.innerHTML = `Years on Airbnb`;   
+            }
+        }    
+
+    </script>
+</body>

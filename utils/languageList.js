@@ -1,0 +1,23 @@
+module.exports = [
+    "English(Australia)",
+    "English(Canada)",
+    "Espanol(Mexico)",
+    "English(UK)",
+    "Espanol(Argentina)",    
+    "English",
+    "Spanish",
+    "French",
+    "German",
+    "Hindi",
+    "Arabic",
+    "Chinese",
+    "Japanese",
+    "Russian",
+    "Portuguese",
+    "Italian",
+    "Korean",
+    "Dutch",
+    "Turkish",
+    "Bengali",                            
+];
+

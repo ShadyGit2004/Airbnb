@@ -1,0 +1,258 @@
+<%- layout("/layouts/boilerplate.ejs")  %>
+
+<style>
+  #nav-search-box{
+    display: none;
+  }
+   .wishlist-page{
+        width: 100%;    
+        padding-inline: 15vw;
+        padding-block: 5vh;
+    }
+    h4{
+        letter-spacing: -.3px;
+        font-weight: 700;
+    } 
+    .get-started a{
+        text-decoration: none;
+        padding: 12px 22px;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: -.1px;
+        border: none;
+        color: white;
+        border-radius: 8px;
+        background: linear-gradient( to right, rgb(228, 16, 62), rgb(207, 29, 98));
+    }
+    .reservations-page{
+        width: 100%;    
+        padding-inline: 15vw;
+        padding-block: 5vh;
+    }
+    h2{
+        letter-spacing: -.3px;
+        font-weight: 700;
+        margin-bottom: 2rem;
+    } 
+   
+
+.custom-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  /* justify-content: space-between; */
+}
+
+.custom-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  min-width: 30%;
+  width: 31%;
+  /* flex-grow: 1; */
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.custom-card:hover {
+    box-shadow: 0 4px 12px rgba(29, 29, 29, 0.180);;
+}
+
+.custom-card img {
+  width: 100%;
+  height: 225px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.custom-card-body {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.card-bottom{
+  display: flex;
+  align-items: center;
+  gap: 10px;  
+  font-size: .85rem;
+}
+.card-bottom i{
+  font-size: .75rem;
+}
+.custom-card-body h3 {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+}
+
+.location {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+.price {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 12px;
+}
+
+.custom-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.soft-delete-btn {
+  font-size: 0.85rem;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+
+.soft-delete-btn {
+  background-color: #fdecea;
+  color: #c62828;
+}
+
+.soft-delete-btn:hover {
+  background-color: #f8bbd0;
+}
+
+/* @media (max-width: 992px) {
+  .wishlist-page{  
+        padding-inline: 8vw;
+        padding-block: 5vh;
+    }
+  .custom-card {
+    width: 47%;
+  }
+}
+
+@media (max-width: 670px) {
+  .wishlist-page{  
+        padding-inline: 4vw;
+        padding-block: 5vh;
+    }
+  .custom-card {
+    width: 100%;
+  }
+  .custom-card img {
+    height: 300px;
+}
+} */
+
+
+@media (max-width: 1200px) {
+  .wishlist-page{  
+        padding-inline: 8vw;
+        padding-block: 5vh;
+    }
+  .custom-card {
+    width: 44%;
+  }
+}
+
+@media (max-width: 992px){
+  .custom-card {
+    width: 47%;
+  }
+}
+
+@media (max-width: 620px) {
+  .wishlist-page{  
+        padding-inline: 4vw;
+        padding-block: 5vh;
+    }
+  .custom-card {
+    width: 100%;
+  }
+  .custom-card img {
+    height: 300px;
+}
+}
+
+
+</style>
+<body>
+    <div class="wishlist-page">
+        <h2>Wishlists</h2>  
+        <% if(!wishlists.length > 0) { %>
+            <div class="get-started">
+                <h4>No wishlists</h4>                
+            </div>     
+        <% } else { %>  
+
+            <div class="custom-card-container">
+                <% wishlists.forEach(wishlist => { %>
+                  <% if(wishlist.isAvailable) { %>
+                  <div class="custom-card">
+                    <a href="/listings/<%= wishlist._id %>" style="color: black; text-decoration: none; width: 100%;">
+                    <img src="<%= wishlist.images[0].path %>" alt="<%= wishlist.title %>">
+                    <div class="custom-card-body">
+                      <h3><%= wishlist.title %></h3>
+                      <p class="location"><%= wishlist.location %></p>
+                      <p class="price">
+                        <% if("INR" != (currUser?.countryInfo?.currency || "INR")) { %>
+                        <%= currencyConverter(wishlist.price, "INR", currUser?.countryInfo?.currency || "INR") %> / night
+                        <% } else { %>
+                         <%= Number(wishlist.price).toLocaleString(navigator.language || "en-IN", {style : "currency", currency : currUser?.countryInfo?.currency || "INR"}) %> / night
+                        <% } %>
+                      </p> 
+                      <div class="card-bottom">
+                      <%= wishlist.aboutPlace.beds %> beds    
+                      <span style="font-size: .8rem; float: right;"><i class="fa-solid fa-star"></i> <b><%= calculateAvgRating(wishlist) %></b></span>
+                    </div>
+                    </div>
+              
+                  </a>
+                  </div>
+                <% } %>
+                <% }) %>
+            </div>
+
+            <!-- <div class="custom-card-container">
+            <% wishlists.forEach(wishlist => { %>
+            <div class="custom-card">             
+              <a href="/listings/<%= wishlist._id %>" style="color: black; text-decoration: none; width: fit-content;">          
+                <div class="img-div">
+                  <img src="<%= wishlist.images[0].path %>" class="card-img-top" alt="listing-image"/>
+                </div>
+                <div class="card-img-overlay"></div>
+                <div class="custom-card-body">
+                  <p class="card-text">
+                    <b><%= wishlist.title %></b>  
+                    <p class="location"><%= wishlist.location %></p>
+                    <span>
+                    <% let conPrice = 0; %>
+                    <span class="price">
+                      <% if("INR" != (currUser ? currUser.countryInfo.currency || "INR" : "INR")) { %>
+                      <%= conPrice = currencyConverter(wishlist.price, "INR", currUser ? currUser.countryInfo.currency || "INR" : "INR") %> / night
+                      <% } else { %>
+                       <%= Number(wishlist.price).toLocaleString(
+                          navigator.language || "en-IN", {style : "currency", currency : currUser ? currUser.countryInfo.currency || "INR" : "INR"}) %> / night
+                      <% } %>
+                    </span>  
+                    <span style="font-size: .8rem; float: right;"><i class="fa-solid fa-star"></i> <b><%= calculateAvgRating(wishlist) %></b></span>
+                    
+                  </span>
+                  </p>            
+                </div>
+              </a>
+            </div>
+            <% }) %>
+          </div> -->
+
+        <% } %>    
+    </div>
+    <script>
+        console.log(<%- JSON.stringify(wishlists) %>);
+        
+    </script>
+</body>

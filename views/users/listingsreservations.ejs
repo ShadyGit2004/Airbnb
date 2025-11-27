@@ -1,0 +1,402 @@
+<%- layout("/layouts/boilerplate.ejs")  %>
+
+<style>
+
+   .reservations-page{
+        width: 100%;    
+        padding-inline: 15vw;
+        padding-block: 5vh;
+    }
+    h2{
+        letter-spacing: -.3px;
+        font-weight: 700;
+        margin-bottom: 2rem;
+    } 
+
+    .reservations-category{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      /* background-color: red; */
+      
+    }
+    .reservations-category h5{
+      cursor: pointer;
+      text-transform: capitalize;
+    }
+    /* .card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.card {
+  flex: 0 0 32%;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.card-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+
+.card-location {
+  color: #777;
+  margin-bottom: 8px;
+}
+
+.card-price {
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.card-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.edit-btn, .delete-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.edit-btn {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+@media (max-width: 992px) {
+  .card {
+    flex: 0 0 48%;
+  }
+}
+
+@media (max-width: 600px) {
+  .card {
+    flex: 0 0 100%;
+  }
+} */
+
+.custom-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  /* justify-content: space-between; */
+}
+
+.custom-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  min-width: 30%;
+  width: 31%;
+  /* flex-grow: 1; */
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.custom-card:hover {
+    box-shadow: 0 4px 12px rgba(29, 29, 29, 0.137);;
+}
+
+.custom-card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.custom-card-body {
+  padding: 10px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-card-body h3 {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+}
+
+.location {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+.price {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 12px;
+}
+
+.custom-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.soft-edit-btn,
+.soft-delete-btn {
+  font-size: 0.85rem;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.soft-edit-btn {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}
+
+.soft-edit-btn:hover {
+  background-color: #bbdefb;
+}
+
+.soft-delete-btn {
+  background-color: #fdecea;
+  color: #c62828;
+}
+
+.soft-delete-btn:hover {
+  background-color: #f8bbd0;
+}
+
+@media (max-width: 1240px) {
+  .custom-card {
+    width: 47%;
+  }
+}
+
+@media (max-width: 800px) {
+  .custom-card-container{
+    justify-content: space-between;
+  }
+  .custom-card {
+    width: 100%;
+  }    
+  .custom-card img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+}
+
+
+
+
+
+
+/* 🌟 Shimmer Effect */
+.shimmer-card {
+  width: 32%;
+  height: 240px;
+  background: #e2e2e2;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-card::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    #e2e2e2 0%,
+    #f5f5f5 50%,
+    #e2e2e2 100%
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (max-width: 992px) {
+  .card,
+  .shimmer-card {
+    width: 48%;
+  }
+  .reservations-page{
+        padding-inline: 8vw;
+    }
+}
+
+@media (max-width: 600px) {
+  .card,
+  .shimmer-card {
+    width: 100%;
+  }
+  .reservations-page{  
+        padding-inline: 4vw;
+    }
+
+}
+
+.reservations-details{
+  width: 100%;
+  padding: 1rem 0;
+  margin-top: 3rem;
+  display: none;
+}
+.selected-btn{
+  text-underline-offset: 1rem;
+  text-decoration: 5px black underline;  
+}
+
+</style>
+<body>
+    <div class="reservations-page">        
+        <h2>My listings reservations</h2>
+        <div class="reservations-category">
+          <h5>upcoming</h5> &nbsp;&nbsp;
+          <h5>completed</h5>&nbsp;&nbsp;
+          <h5>cancelled</h5>&nbsp;&nbsp;
+          <h5>all</h5>
+        </div> 
+
+      <div class="upcoming reservations-details">
+
+
+        <% if(!reservations.length > 0) { %>          
+          <h6>No reservations </h6>
+        <% } else { %>  
+        <div class="custom-card-container">
+            <% reservations.forEach(reservation => { %>
+              <div class="custom-card">
+                <img src="<%= reservation.listingId.images[0].path %>" alt="<%= reservation.listingId.title %>">
+                <div class="custom-card-body">
+                  <h3><%= reservation.listingId.title %></h3>
+                  <p class="location"><%= reservation.listingId.location %> (<%= reservation.listingId.country %>)</p>
+                  <p class="price">
+                    <% if("INR" != (currUser?.countryInfo?.currency || "INR")) { %>
+                    <%= currencyConverter(reservation.listingId.price, "INR", currUser?.countryInfo?.currency || "INR") %> / night
+                    <% } else { %>
+                     <%= Number(reservation.listingId.price).toLocaleString(navigator.language || "en-IN", {style : "currency", currency : currUser?.countryInfo?.currency || "INR"}) %> / night
+                    <% } %>
+                  </p>
+                  <p class="location">
+                    <b>Booking info</b>  <br>
+                    Booked by : <%= reservation.guestId.username %> <br>
+                    Booked at : <%= reservation.bookedAt.toLocaleString() %> <br>
+                    Check in date : <%= reservation.checkIn.toLocaleDateString() %> (<%= reservation.listingId.houseRules.checkIn %>) <br>
+                    Check out date : <%= reservation.checkOut.toLocaleDateString() %> (<%= reservation.listingId.houseRules.checkOut %>) <br>
+                    Stay : <%= reservation.stayDays > 1 ? reservation.stayDays + " days" : reservation.stayDays + " day" %> <br>
+                    Location : <%= reservation.guestId.countryInfo.city %>, <%= reservation.guestId.countryInfo.region %> (<%= reservation.guestId.countryInfo.country %>)<br>
+                    Email : <%= reservation.guestId.email%>
+                  </p>
+                   <p class="price">Total amount : 
+                    <% if("INR" != (currUser?.countryInfo?.currency || "INR")) { %>
+                    <%= currencyConverter(reservation.totalAmount, "INR", currUser?.countryInfo?.currency || "INR") %>
+                    <% } else { %>
+                     <%= Number(reservation.totalAmount).toLocaleString(navigator.language || "en-IN", {style : "currency", currency : currUser?.countryInfo?.currency || "INR"}) %>
+                    <% } %>
+                  </p>
+                  <div class="custom-actions" style="margin-top: auto; margin-left: auto;">
+                    <form action="/listings/<%= currUser._id %>/book/cancel/<%= reservation._id %>?_method=DELETE" method="POST">
+                      <!-- <button type="submit" class="soft-delete-btn">Cancel</button> -->
+                      <button type="submit" class="btn btn-dark btn-sm mt-2" style="font-size: .8rem;">Cancel</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            <% }) %>
+         </div>
+        <% } %>
+
+      </div>
+
+      <div class="completed reservations-details">completed reservations</div>
+      <div class="cancelled reservations-details">cancelled reservations</div>
+      <div class="all reservations-details">all reservations</div>
+          <!-- <div id="card-container" class="card-container">
+            <div class="shimmer-card"></div>
+            <div class="shimmer-card"></div>
+            <div class="shimmer-card"></div>
+          </div> -->
+
+    </div>
+   
+      
+      <script>
+
+        let btns = document.querySelectorAll(".reservations-category h5");
+        let reservationsDetails = document.querySelectorAll(".reservations-details");
+
+        reservationsDetails[0].style.display = "block"; 
+        btns[0].classList.add("selected-btn");
+
+        btns.forEach((btn, idx)=>{
+
+          btn.addEventListener("click", ()=>{
+            btns.forEach((b)=>{b.classList.remove("selected-btn")})
+            reservationsDetails.forEach((r)=>{r.style.display = "none"})
+            reservationsDetails[idx].style.display = "block";
+            btn.classList.add("selected-btn");
+          });
+          
+        });       
+
+
+
+
+      //  console.log(<%- JSON.stringify(reservations) %>);
+        
+        // Simulate API/data load
+        // setTimeout(() => {         
+        //   const container = document.getElementById("card-container");
+        //   container.innerHTML = ""; // remove shimmer
+      
+        //   <%- JSON.stringify(reservations) %>.forEach(reservation => {
+        //     container.innerHTML += `
+             
+        //     `;
+        //   });
+        // }, 500); // loading delay
+      </script>
+      
+</body>

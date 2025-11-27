@@ -1,0 +1,419 @@
+<%- layout("/layouts/boilerplate.ejs")  %>
+
+<style>
+   .listings-page{
+        width: 100%;    
+        padding-inline: 15vw;
+        padding-block: 5vh;
+    }
+    h2{
+        letter-spacing: -.3px;
+        font-weight: 700;
+        margin-bottom: 2rem;
+    } 
+    /* .card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.card {
+  flex: 0 0 32%;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.card-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+
+.card-location {
+  color: #777;
+  margin-bottom: 8px;
+}
+
+.card-price {
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.card-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.edit-btn, .delete-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.edit-btn {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+@media (max-width: 992px) {
+  .card {
+    flex: 0 0 48%;
+  }
+}
+
+@media (max-width: 600px) {
+  .card {
+    flex: 0 0 100%;
+  }
+} */
+
+.custom-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  /* justify-content: space-between; */
+}
+
+.custom-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  min-width: 30%;
+  width: 31%;
+  /* max-width: 23rem; */
+  /* flex-grow: 1; */
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s cubic-bezier(0.19, 1, 0.22, 1); 
+}
+
+.custom-card:hover {
+    box-shadow: 0 4px 12px rgba(29, 29, 29, 0.180);;
+}
+
+.custom-card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.custom-card-body {
+  padding: 10px;
+  flex: 1;
+  /* height: 100%; */
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-card-body h3 {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+}
+
+.location {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 6px;
+  text-transform: capitalize;
+}
+
+.price {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 12px;
+}
+
+.custom-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.soft-edit-btn,
+.soft-delete-btn {
+  font-size: 0.85rem;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.soft-edit-btn {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}
+
+.soft-edit-btn:hover {
+  background-color: #bbdefb;
+}
+
+.soft-delete-btn {
+  background-color: #fdecea;
+  color: #c62828;
+}
+
+.soft-delete-btn:hover {
+  background-color: #f8bbd0;
+}
+
+
+/* 🌟 Shimmer Effect */
+.shimmer-card {
+  width: 32%;
+  height: 240px;
+  background: #e2e2e2;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-card::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    #e2e2e2 0%,
+    #f5f5f5 50%,
+    #e2e2e2 100%
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+
+@media (max-width: 1240px) {
+  .custom-card {
+    width: 48%;
+  }
+}
+
+@media (max-width: 992px) {
+  .listings-page{ 
+        padding-inline: 8vw;
+    }
+  .card,
+  .shimmer-card {
+    width: 48%;
+  }
+}
+
+@media (max-width: 680px) {
+  .card,
+  .shimmer-card {
+    width: 100%;
+  }
+  .listings-page{
+        width: 100%;    
+        padding-inline: 4vw;
+    }    
+  .custom-card {
+      width: 100%;
+    }
+
+  .custom-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+  }
+}
+
+.toggle{
+    padding: 3px;
+    height: 1.25rem;
+    width: 2.2rem;
+    height: 1.15rem;
+    width: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    border-radius: 50px;
+    cursor: pointer;
+    background-color: rgba(206, 206, 206, 0.932);
+    transition: all cubic-bezier(0.19, 1, 0.22, 1) 0.3s;
+}
+.toggle-move{
+    justify-content: end !important;
+    background-color: #222222 !important;
+}
+.toggle:hover{
+    background-color: #222222;
+}
+.toggle-circle{
+    height: 1rem;
+    width: 1rem;
+    height: .85rem;
+    width: .85rem;
+    border-radius: 50%;
+    background-color: #F7F7F7;
+}
+.row-flex{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+</style>
+<body>
+    <div class="listings-page">        
+        <div class="row-flex" style="align-items: start; padding-right: 1.5rem;">
+          <h2>My listings</h2>       
+          <% if(listings.length){ %>           
+          <a href="listings/new" class="btn btn-sm">Add listing</a>
+          <% } %>
+        </div>
+        <% if(!listings.length){ %>
+          <a href="listings/new" class="btn btn-dark">Add listing</a>
+        <% } %>
+
+        <div class="custom-card-container">
+            <% listings.forEach(listing => { %>
+              <div class="custom-card">
+                <img src="<%= listing.images[0].path %>" alt="<%= listing.title %>">
+                <div class="custom-card-body">
+                  <div class="row-flex gap-1" style="width: 100%; align-items: start;">
+                  <h3><%= listing.title %></h3>
+
+                  <form action="/listings/<%= listing._id %>/isAvailable" method="get" id="avail-form" class="row-flex gap-2"> 
+                    <small><%= listing.isAvailable ? 'Available' : 'N/A' %></small>                   
+                    <div class="toggle avail-btn <%= listing.isAvailable ? 'toggle-move' : '' %>">
+                      <div class="toggle-circle"></div>
+                    </div>
+                  </form>
+                </div>
+
+                  <p class="location"><%= listing.houseType %> in <%= listing.location %>, <%= listing.country %></p>
+                  <p class="price">
+                    <% if("INR" != (currUser?.countryInfo?.currency || "INR")) { %>
+                    <%= currencyConverter(listing.price, "INR", currUser?.countryInfo?.currency || "INR") %> / night
+                    <% } else { %>
+                     <%= Number(listing.price).toLocaleString(navigator.language || "en-IN", {style : "currency", currency : currUser?.countryInfo?.currency || "INR"}) %> / night
+                    <% } %>
+                  </p>
+                 
+                  <div class="custom-actions">
+                    <!-- <a href="/listings/<%= listing._id %>/edit" class="soft-edit-btn">Edit</a> -->
+                    <a href="/listings/<%= listing._id %>/edit" class="btn btn-outline-dark btn-sm" style="font-size: .75rem;">Edit</a>
+                    <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST">
+                      <!-- <button type="submit" class="soft-delete-btn">Delete</button> -->
+                      <button type="submit" class="btn btn-dark btn-sm" style="font-size: .75rem;">Delete</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+          
+              <!-- <div class="custom-card">
+                <a class="listing-a" href="/listings/<%= listing._id %>">
+                  <div class="img-div">
+                    <img src="<%= listing.images[0].path %>" class="card-img-top" alt="listing-image"/>
+                  </div>
+                  <div class="card-img-overlay"></div>
+                  <div class="custom-card-body">
+                    <p class="card-text">
+                      <b><%= listing.title %></b> 
+                      <br />
+                      <span>
+                        
+                      <span class="index-price">
+                        <% if("INR" != (currUser ? currUser.countryInfo.currency || "INR" : "INR")) { %>
+                        <%= currencyConverter(listing.price, "INR", currUser ? currUser.countryInfo.currency || "INR" : "INR") %> / night
+                        <% } else { %>
+                         <%= Number(listing.price).toLocaleString(
+                            navigator.language || "en-IN", {style : "currency", currency : currUser ? currUser.countryInfo.currency || "INR" : "INR"}) %> / night
+                        <% } %>
+                        <span style="font-size: .8rem; float: right;"><i class="fa-solid fa-star"></i> <b><%= calculateAvgRating(listing) %></b></span>
+                      </span>                                         
+                    </span>
+                    </p>   
+                    <div class="custom-actions">
+                      <a href="/listings/<%= listing._id %>/edit" class="soft-edit-btn">Edit</a>
+                      <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST">
+                        <button type="submit" class="soft-delete-btn">Delete</button>
+                      </form>
+                    </div>              
+                  </div>
+                 
+                </a>
+              </div> -->
+          
+              <% }) %>
+          </div>
+
+      
+
+          <!-- <div id="card-container" class="card-container">
+            <div class="shimmer-card"></div>
+            <div class="shimmer-card"></div>
+            <div class="shimmer-card"></div>
+          </div> -->
+
+    </div>
+   
+      
+      <script>
+
+        let availBtns = document.querySelectorAll(".avail-btn");
+        availBtns.forEach((btn)=>{
+          btn.addEventListener("click", ()=>{
+            btn.classList.toggle("toggle-move"); 
+            btn.parentElement.submit();       
+          });
+        })
+
+        // console.log(<%- JSON.stringify(listings) %>);
+        
+        // Simulate API/data load
+        // setTimeout(() => {         
+        //   const container = document.getElementById("card-container");
+        //   container.innerHTML = ""; // remove shimmer
+      
+        //   <%- JSON.stringify(listings) %>.forEach(listing => {
+        //     container.innerHTML += `
+             
+        //     `;
+        //   });
+        // }, 500); // loading delay
+      </script>
+      
+</body>

@@ -1,0 +1,307 @@
+
+/* #nav-div{
+    height: fit-content;
+  } */
+
+/* ALL INDEX LISTINGS */
+#listingOptions{
+    position: fixed;
+    top: 5rem;     
+    width: 100%;
+    padding: 8px 5rem;     
+    display: flex;
+    align-items: center;
+    justify-content: space-between;  
+    z-index: 3; 
+    gap: 1.5rem;
+    background-color: #fff;
+}
+#options-div{     
+    width: 70%;
+    flex: 1;
+    padding: 10px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    overflow-x: auto;
+    display: flex;
+}
+#options-div::-webkit-scrollbar{
+    display: none;
+}
+#options-div .icons-text{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-right: 2.75rem;
+    cursor: pointer;   
+}
+#options-div .icons-text{
+    opacity: 1;
+}
+#options-div .icons-text p{
+    margin: 0;
+    font-size: .73rem;
+    font-weight: 600;
+    margin-top: .45rem;  
+    opacity: 0.7;  
+    text-transform: capitalize;   
+}
+#options-div .icons-text:hover p{
+    opacity: 1;
+    text-underline-offset: 12px;
+    text-decoration: 2px solid rgba(206, 206, 206, 0.932) underline;
+}#options-div .icons-text:hover i{
+    opacity: 1;
+}
+
+#options-div .icons-text i{    
+    font-size: 1.25rem; 
+    opacity: 0.7; 
+    transition: all cubic-bezier(0.19, 1, 0.22, 1) 0.53s;
+}
+#filter-taxs{   
+    position: relative;
+    height: 4rem;
+    width: fit-content;
+    gap: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+}
+#filter{
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+    gap: 10px;  
+    padding: 14px 12px ;
+}
+#filter i {
+    font-size: 1rem;
+}
+#taxs{
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+    gap: 10px;   
+}
+.filter-taxs-hover{
+    padding: 10px 12px;
+    border-radius: 14px;
+    cursor: pointer;
+    border: .75px solid rgba(207, 207, 207, 0.932);
+    transition: all cubic-bezier(0.19, 1, 0.22, 1) 0.3s;
+}
+.filter-taxs-hover:hover{
+    border-color: #222222;
+}
+#filter-taxs p{
+    margin: 0;
+    font-weight: 500;
+    font-size: .78rem;
+}
+#taxs .toggle{
+    padding: 3px;
+    height: 1.65rem;
+    width: 2.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    border-radius: 50px;
+    cursor: pointer;
+    background-color: rgba(206, 206, 206, 0.932);
+    transition: all cubic-bezier(0.19, 1, 0.22, 1) 0.3s;
+}
+.toggle-move{
+    justify-content: end !important;
+    background-color: #222222 !important;
+}
+#taxs .toggle:hover{
+    background-color: #222222;
+}
+#taxs .toggle-circle{
+    height: 1.25rem;
+    width: 1.25rem;
+    border-radius: 50%;
+    background-color: #F7F7F7;
+}
+
+
+
+  #filter-form-div{
+    position: absolute;
+    top: 100%;
+    right: .5rem;
+    background-color: #fff;
+    border: 1px solid rgb(221, 219, 219);
+    border-radius: 12px;
+    padding: .85rem;
+  }
+  #option-div form{
+    text-align: center;
+  }
+
+
+
+
+.allListings{ 
+    width: 100%; 
+    padding-top: 10px;  
+    /* display: flex;     
+    justify-content: center;    */
+    /* padding-left: 3vw; */
+    /* background-color: #FF385C; */
+}
+.allListings .center{  
+    width: 100%;
+    margin-top: 5.5rem;
+    /* padding-left: 3vw; */
+    /* padding-right: 1vw; */
+    padding: 0 5vw 5vw;
+    display: flex;
+    flex-wrap: wrap;   
+    gap: 1.5rem;  
+    /* background-color: yellowgreen; */
+}
+.listing-a{   
+    text-decoration: none;
+    color: #222222 !important;
+}
+
+
+/* CARDS STYLING */
+.card{    
+    padding: 0 !important;   
+    border: none !important; 
+    /* width: 20vw !important; */
+    /* width: 20rem !important; */
+    width: 23% !important;
+    /* max-width: 20rem !important;
+    flex-grow: 1 ; */
+    margin-bottom: .75rem;
+    /* margin-left: 1.5rem; */
+    border-radius: 20px !important; 
+}
+
+@media screen and (max-width: 1450px) {
+    .allListings .center{  
+        gap: 0;
+        justify-content: space-between;
+    }
+    .allListings .card{
+        /* width: 18rem !important; */
+        /* width: 26vw !important; */
+        width: 31% !important;
+        margin-bottom: 2rem;
+    }
+}
+
+@media screen and (max-width : 1200px) {
+    #listingOptions{
+        padding: 8px 2.5rem; 
+    }
+    .allListings .center{  
+        padding: 0 4vw 4vw;
+        gap: 1rem;  
+    }
+}
+
+@media screen and (max-width: 1050px) {
+   
+    .allListings .card{
+        width: 30%;
+    }
+}
+@media screen and (max-width: 980px) {
+    .allListings .center{  
+        padding: 0 1.5rem 3vw;
+    }
+    .allListings .card{
+        /* width: 18rem !important; */
+        /* width: 26vw !important; */
+        width: 48% !important; 
+    }
+
+    #listingOptions{
+        padding: 8px 1.5rem; 
+        z-index: 3; 
+    }
+}
+
+@media screen and (max-width: 670px){
+    .allListings .card{
+        width: 50%; 
+    }
+    
+    .allListings .center{  
+        padding: 0 1rem 3vw;
+    }
+    #listingOptions{
+        top: 8.5rem;
+        padding: 8px 1rem; 
+        gap: .75rem;
+    }
+    #options-div .icons-text{
+        margin-right: 2rem;
+    }
+    #options-div .icons-text i{    
+        font-size: 1rem; 
+    }
+
+    #filter-taxs{   
+        gap: 8px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+   
+    .allListings .card{
+        /* width: 18rem !important; */
+        /* width: 26vw !important; */
+        width: 100% !important;
+        margin: 0 auto 1.5rem;
+    }
+    #listingOptions{        
+        /* flex-wrap: wrap; */
+    }
+    #options-div{     
+        /* min-width: 50%; */
+        gap: 0;
+    }
+    #filter-taxs{
+        /* width: 100%;
+        justify-content: space-between; */
+    }
+   
+}
+
+/* overlay nhi show o rha h */
+
+
+.img-div{  
+    height: 20rem;   
+    /* height: 20vw; */
+}
+.card-img-overlay{
+    opacity: 0;
+    transition: opacity cubic-bezier(0.19, 1, 0.22, 1) 0.25s;
+}
+.card-img-overlay:hover{
+    opacity: 0.2;
+    background-color: white;
+}
+.card-img-top{
+    width: 100% !important;
+    height: 100% !important;  
+    object-fit: cover !important;
+    object-position: center !important;
+    border-radius: 16px !important;
+}
+.card-body{
+    padding: 0 !important;    
+}
+.card-text{
+    font-size: .95rem !important;
+    padding: 6px 0 !important;
+    font-weight: 400 !important;
+}

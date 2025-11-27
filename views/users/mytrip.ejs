@@ -1,0 +1,213 @@
+<%- layout("/layouts/boilerplate.ejs")  %>
+
+<style>
+
+#nav-search-box{
+    display: none;
+  }
+   .trip-page{
+        width: 100%;    
+        padding-inline: 15vw;
+        padding-block: 5vh;
+    }
+    h2{
+        letter-spacing: -.3px;
+        font-weight: 700;
+    } 
+    .get-started{
+        width: 22rem;
+        padding: 2rem 0;
+    }
+    .get-started p{
+        font-size: 1.1rem;
+        color: #6b6b6b;
+        line-height: 1.3;
+        margin: 1rem 0 3rem;
+    }
+    .get-started a{
+        text-decoration: none;
+        padding: 12px 22px;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: -.1px;
+        border: none;
+        color: white;
+        border-radius: 8px;
+        background: linear-gradient( to right, rgb(228, 16, 62), rgb(207, 29, 98));
+    }
+    
+   .reservations-page{
+        width: 100%;    
+        padding-inline: 15vw;
+        padding-block: 5vh;
+    }
+    h2{
+        letter-spacing: -.3px;
+        font-weight: 700;
+        margin-bottom: 2rem;
+    } 
+   
+
+.custom-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  /* justify-content: space-between; */
+}
+
+.custom-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  /* min-width: 30%;
+  width: 31%; */
+  /* max-width: 23rem; */
+  width: 48%;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.custom-card:hover {
+    box-shadow: 0 4px 12px rgba(29, 29, 29, 0.137);;
+}
+
+.custom-card img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+}
+
+.custom-card-body {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-card-body h3 {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+}
+
+.location {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+.price {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 12px;
+}
+
+.custom-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.soft-delete-btn {
+  font-size: 0.85rem;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+
+.soft-delete-btn {
+  background-color: #fdecea;
+  color: #c62828;
+}
+
+.soft-delete-btn:hover {
+  background-color: #f8bbd0;
+}
+
+@media (max-width: 1000px) {
+  .trip-page{
+        padding-inline: 4vw;
+        padding-block: 5vh;
+    }
+}
+
+@media (max-width: 670px) {  
+  .custom-card {
+    width: 100%;
+  }
+}
+
+</style>
+</style>
+<body>
+    <div class="trip-page">
+        <h2>Trips</h2>  
+        <% if(!trips.length > 0) { %>
+
+        <div class="get-started">
+            <h2>Build the perfect trip</h2>
+            <p>Explore homes, experiences and services. When you book, your reservations will appear here.</p>
+            <a class="trip-get-started" href="/listings">Get Started</a>
+        </div>     
+
+        <% } else {%>
+
+        <div class="custom-card-container">
+            <% trips.forEach(trip => { %>
+              <div class="custom-card">
+                <img src="<%= trip.listingId.images[0].path %>" alt="<%= trip.listingId.title %>">
+                <div class="custom-card-body">
+                  <h3><%= trip.listingId.title %></h3>
+                  <p class="location"><%= trip.listingId.location %> (<%= trip.listingId.country %>)</p>                  
+                  <p class="price">
+                    <% if("INR" != (currUser?.countryInfo?.currency || "INR")) { %>
+                    <%= currencyConverter(trip.listingId.price, "INR", currUser?.countryInfo?.currency || "INR") %> / night
+                    <% } else { %>
+                     <%= Number(trip.listingId.price).toLocaleString(navigator.language || "en-IN", {style : "currency", currency : currUser?.countryInfo?.currency || "INR"}) %> / night
+                    <% } %>
+                  </p>
+                  <p class="location">
+                    <b>Booking info</b>  <br>
+                  Check in when : <%= trip.checkIn.toDateString() %> <%= trip.listingId.houseRules.checkIn %> <br>
+                  Check out when : <%= trip.checkOut.toDateString() %> <%= trip.listingId.houseRules.checkOut %><br>
+                  Stay : <%= trip.stayDays > 1 ? trip.stayDays + " days" : trip.stayDays + " day" %> <br>
+                  Booked at : <%= trip.bookedAt.toLocaleString() %> <br>
+                  Location : <%= trip.listingId.location %> (<%= trip.listingId.country %>)<br>
+                  Type : <%= trip.listingId.houseType %>
+                  </p>
+                  <p class="location"> <b>Host info</b>  <br>
+                    Host name : <%= trip.ownerId.username %> <br>
+                    Location : <%= trip.ownerId.countryInfo.city %>, <%= trip.ownerId.countryInfo.region %> (<%= trip.ownerId.countryInfo.country %>) <br>
+                    Email : <%= trip.ownerId.email %> <br>
+                    Hosting from <%= trip.ownerId.createdAt.toLocaleDateString() %> <br>
+                  </p>
+                  <p class="price">Total amount : 
+                    <% if("INR" != (currUser?.countryInfo?.currency || "INR")) { %>
+                    <%= currencyConverter(trip.totalAmount, "INR", currUser?.countryInfo?.currency || "INR") %>
+                    <% } else { %>
+                     <%= Number(trip.totalAmount).toLocaleString(navigator.language || "en-IN", {style : "currency", currency : currUser?.countryInfo?.currency || "INR"}) %>
+                    <% } %>
+                  </p>
+                  <div class="custom-actions" style="margin-left: auto;">
+                    <form action="/listings/<%= currUser._id %>/book/cancel/<%= trip._id %>?_method=Delete" method="post">
+                      <!-- <button type="submit" class="soft-delete-btn">Cancel</button> -->
+                      <button type="submit" class="btn btn-dark btn-sm" style="font-size: .8rem;">Cancel</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+
+        <% } %>
+    </div>
+    <script>
+        // console.log(<%- JSON.stringify(trips) %>);
+        
+    </script>
+</body>

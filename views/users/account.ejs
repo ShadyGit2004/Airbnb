@@ -1,0 +1,125 @@
+<%- layout("/layouts/boilerplate.ejs")  %>
+
+<style>
+     #nav-search-box{
+    display: none;
+  }
+   .profile-page{
+        width: 100%;    
+        padding-inline: 19vw;
+        padding-block: 4vh;
+    }
+    h5{
+        font-size: 1.15rem;
+    }
+    h2{
+        letter-spacing: -.3px;
+        font-weight: 600;
+    }
+    b, a{       
+        color: #111;
+        font-weight: 600;
+        font-size: 1.15rem;
+    }   
+    .account-options{    
+        width: 100%;         
+        margin: 0 auto; 
+        margin-top: 5rem;    
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+    .a-info{  
+        flex-shrink: 0 !important;
+        /* width: 20rem;  */
+        width: 30%;
+        min-width: 17.5rem;
+        height: 9rem;
+        /* flex-grow: 1; */
+        text-decoration: none;  
+    }
+    @media screen and (max-width: 1450px) {
+        .profile-page{
+            padding-inline: 10vw;
+            padding-block: 4vh;
+            /* margin: 0 auto; */
+        }
+        .a-info{ 
+            width: 28%;
+            min-width: 16rem;
+            /* color: red; */
+        }
+    }
+    @media screen and (max-width:678px) {
+        .profile-page{
+            padding-inline: 8vw;
+            padding-block: 3vh;
+            /* margin: 0 auto; */
+        }
+        .a-info{ 
+            width: 100%;
+        }
+    }
+    .personal-info{
+        width: 100%;
+        height: inherit;
+        padding: 7px 15px;
+        box-shadow: 0 1.5px 16px rgba(197, 197, 197, 0.836);
+        border-radius: 12px;
+        cursor: pointer;    
+    }
+    .personal-info i{
+        font-size: 1.65rem;
+        margin: 0 0 1.75rem;
+        opacity: 0.9;
+    }
+    .personal-info .info-text h6{
+        margin-bottom: .65rem;
+        font-weight: 600;
+    }
+    .personal-info .info-text p{
+        color: #494949;       
+        font-size: .85rem;
+        line-height: 1.17;
+        font-weight: 400;
+    }
+</style>
+<body>
+    <div class="profile-page">
+        <h2>Account</h2>
+        <h5><b><%= currUser.username %>,</b> <%= currUser.email %> · <b><a href="/account/profile/<%= currUser._id %>">Go to profile</a></b></h5>
+        <div class="account-options">
+            <a class="a-info" href="/account/personal-info">
+            <div class="personal-info">
+                <i class="fa-regular fa-address-card"></i>
+                <div class="info-text">
+                    <h6>Personal info</h6>
+                    <p>Provide personal details and how we can reach you</p>
+                </div>
+            </div>
+            </a>
+            <a class="a-info" href="/account/language-currency">
+                <div class="personal-info">
+                    <i class="fa-solid fa-language" style="font-size: 1.45rem;"></i>
+                    <!-- <i class="fa-solid fa-earth-asia"></i> -->
+                    <div class="info-text">
+                        <h6>Language & currency</h6>
+                        <p>Provide personal details and how we can reach you</p>
+                    </div>
+                </div>
+            </a>
+        <a class="a-info" href="/account/login-security">
+                <div class="personal-info">
+                    <i class="fa-solid fa-shield" style="font-size: 1.45rem;"></i>
+                    <div class="info-text">
+                        <h6>Login & security</h6>
+                        <p>Delete account after deleting all bookings and listings</p>
+                    </div>
+                </div>
+            </a>       
+        </div>
+    </div>
+</body>
+

@@ -1,0 +1,196 @@
+<%- layout("/layouts/boilerplate.ejs")  %>
+
+<link rel="stylesheet" href="css/signup.css">
+
+<style>
+    input {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+  
+      .rule {
+        margin: 5px 0;
+        font-size: 14px;
+      }
+  
+      .rule.valid {
+        color: green;
+      }
+  
+      .rule.invalid {
+        color: red;
+      }
+  
+      #strengthBar {
+        height: 10px;
+        background: red;
+        width: 0%;
+        margin-top: 10px;
+        border-radius: 5px;
+        transition: 0.3s;
+      }
+
+
+
+      /* .loading-button {
+  position: relative;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-family: 'Arial', sans-serif;
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  background-color: #4CAF50;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #fff;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+} */
+
+
+
+</style>
+<body>
+    <div id="signup-wrap">
+        <div id="signup-pannel">
+            <div id="singup-headings">
+                <h5>Log in or sign up</h5>
+            </div>
+            <form action="/signup" method="post" class="needs-validation" novalidate>
+                <h4>Welcome to Airbnb</h4>
+               
+                <div id="inputs">
+                    <label for="username" class="form-label">Username</label>  
+                    <input type="text" name="username" id="username" class="form-control" required>         
+                    <div class="valid-feedback">Looks good!</div>
+                    <div class="invalid-feedback">Username is required</div>
+    
+                    <label for="email" class="form-label">Email</label>  
+                    <input type="email" name="email" id="email" class="form-control" required>         
+                    <div class="invalid-feedback">Email is required</div>
+    
+                    <label for="password" class="form-label">Password</label>  
+                    <input type="password" name="password" id="password" class="form-control" required>         
+                    <div class="invalid-feedback">Password is required</div>
+                </div>
+                <button class="login-btn">Continue</button>
+
+                <div style="margin: 1.5rem 0 0;">
+                    <h5 style="font-size: .85rem;">Have an account ? <a href="/login">Login</a></h5>
+                </div>
+
+                <!-- extra -->
+                <!-- <div id="rules" class="mt-3">
+                    <div class="rule" id="rule-length">✔ Minimum 6 characters</div>
+                    <div class="rule" id="rule-upper">✔ At least one uppercase</div>
+                    <div class="rule" id="rule-lower">✔ At least one lowercase</div>
+                    <div class="rule" id="rule-digit">✔ At least one digit</div>
+                    <div class="rule" id="rule-special">✔ At least one special character</div>
+                    <div class="rule" id="rule-name">✔ Does not contain username or email</div>
+                    <div class="rule" id="rule-repeat">✔ No repeating characters (like aaa)</div>
+                  </div>
+                 -->
+              <div id="strengthBar"></div>  
+              <!-- extra -->
+
+              <!-- <button id="submitBtn" class="loading-button">
+                <span class="btn-text">Submit</span>
+                <span class="spinner" style="display: none;"></span>
+              </button> -->
+
+            </form>   
+    </div>
+</div>  
+
+    <script>
+
+// const button = document.getElementById('submitBtn');
+//   const spinner = button.querySelector('.spinner');
+//   const btnText = button.querySelector('.btn-text');
+
+//   button.addEventListener('click', () => {
+//     // Show loader
+//     spinner.style.display = 'inline-block';
+//     btnText.textContent = 'Loading...';
+//     button.disabled = true;
+
+//     // Simulate a request (e.g., API call)
+//     setTimeout(() => {
+//       // Hide loader
+//       spinner.style.display = 'none';
+//       btnText.textContent = 'Submit';
+//       button.disabled = false;
+//     }, 2000); // Simulated delay
+//   });
+
+
+    const signupBtn = document.querySelector(".login-btn");
+  //   const passwordInp = document.getElementById("password");
+  //   const userInput = document.getElementById("username");
+  //   const emailInput = document.getElementById("email");
+  //   const strengthBar = document.getElementById("strengthBar");
+
+  //  passwordInp.addEventListener("input", () => {
+  //     const password =passwordInp.value;
+  //     const userName = userInput.value || '';
+  //     const email = emailInput.value || '';
+
+  //     const result = validateBankLevelPassword(password, userName, email);
+  //     if(result.score != 7){
+  //       signupBtn.setAttribute("type", "button");
+  //       signupBtn.style.opacity = 0.3;
+  //     }else{
+  //        signupBtn.setAttribute("type", "submit");
+  //       signupBtn.style.opacity = 1;
+  //     }
+  //     updateUI(result);
+  //   });
+
+  //   function validateBankLevelPassword(password, userName, email) {
+  //     const rules = {
+  //       length: password.length >= 6,
+  //       upper: /[A-Z]/.test(password),
+  //       lower: /[a-z]/.test(password),
+  //       digit: /[0-9]/.test(password),
+  //       special: /[^A-Za-z0-9]/.test(password),
+  //       noName: !password.toLowerCase().includes(userName.toLowerCase()) && 
+  //               !password.toLowerCase().includes(email.toLowerCase()),
+  //       noRepeat: !/(.)\1{2,}/.test(password)
+  //     };
+
+  //     const score = Object.values(rules).filter(Boolean).length;
+  //     return { rules, score };
+  //   }
+
+  //   function updateUI(result) {
+  //     document.getElementById("rule-length").className = "rule " + (result.rules.length ? "valid" : "invalid");
+  //     document.getElementById("rule-upper").className = "rule " + (result.rules.upper ? "valid" : "invalid");
+  //     document.getElementById("rule-lower").className = "rule " + (result.rules.lower ? "valid" : "invalid");
+  //     document.getElementById("rule-digit").className = "rule " + (result.rules.digit ? "valid" : "invalid");
+  //     document.getElementById("rule-special").className = "rule " + (result.rules.special ? "valid" : "invalid");
+  //     document.getElementById("rule-name").className = "rule " + (result.rules.noName ? "valid" : "invalid");
+  //     document.getElementById("rule-repeat").className = "rule " + (result.rules.noRepeat ? "valid" : "invalid");
+
+  //     const percent = (result.score / 7) * 100;
+  //     strengthBar.style.width = percent + "%";
+  //     strengthBar.style.background = percent < 40 ? "#FC6D35" : percent < 70 ? "#FFB401" : "#018489";
+  //   }
+    </script>
+</body>

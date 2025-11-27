@@ -1,0 +1,985 @@
+<%- layout("/layouts/boilerplate.ejs")  %>
+<script>
+      
+    let user = <%- JSON.stringify(user) %>;
+    let allListings = <%- JSON.stringify(allListings) %>;   
+    
+</script>
+
+
+<style>  
+ #nav-search-box{
+    display: none;
+  }
+   /* #nav-div{
+    height: auto;
+   } */
+    .show-user{
+        padding: 3vh 12vw;
+        display: flex;
+        gap: 100px;
+        justify-content: space-between;
+        /* flex-wrap: wrap; */
+    }
+    .about-h2{
+        font-weight: 700;
+    }
+    
+    .user-profile{
+        width: 30%;
+        /* background-color: red; */
+    }
+
+
+    .host-info{        
+        display: flex;
+        flex-direction: column;
+        position: sticky;
+        top: 8rem;
+        min-width: 19.5rem;
+    }
+
+    
+.host-info .host-profile{
+    width: auto;
+    padding: 25px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    /* gap: 50px; */
+    justify-content: space-between;
+    border: none;
+    box-shadow: 0px 1.5px 15px  rgba(202, 202, 202, 0.932);
+}
+.host-info .host-profile .host-profile-img{
+    height: auto;
+    display: flex;
+    padding: 0 25px;
+    padding-right: 50px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.host-info .host-profile .host-profile-img .profile{
+    width: fit-content;
+}
+.host-info .host-profile .host-profile-img .profile .profile-img{
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: white;       
+    overflow: hidden;   
+    background-color: #232323;
+}
+.host-info .host-profile .host-profile-img .profile .profile-img img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: 50% 30%;
+    background-color: #fff;
+}
+.host-info .host-profile .host-profile-img h3{
+    margin-top: .5rem;
+    font-weight: 800;
+    font-size: 2rem;
+}
+.host-info .host-profile .host-profile-img h6{
+    margin-top: -.5rem;
+    font-size: .9rem;
+    font-weight: 600;
+}
+.host-profile .host-reviews-rating-info{
+    width: 6.5rem;
+    display: flex;
+    flex-direction: column;    
+}
+.host-profile .host-reviews-rating-info h5{
+
+}
+.host-profile .host-reviews-rating-info p{
+    font-size: .65rem;
+    font-weight: 600;
+    margin: 0;
+    margin-top: -.35rem
+}
+.host-profile .host-reviews-rating-info .host-reviews{
+  
+}
+.host-profile .host-reviews-rating-info .host-rating{
+    padding: .65rem 0;
+    margin: .65rem 0;
+    border-top: .25px solid rgba(219, 219, 219, 0.932);
+    border-bottom: .25px solid rgba(219, 219, 219, 0.932);
+}
+.host-profile .host-reviews-rating-info .host-years-hosting{
+  
+}
+
+
+    .host-info .host-details{
+        width: 100%;
+        margin-top: 2rem;
+        padding: 25px;
+        border: .1px solid #dadada;
+        background-color: #fff;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .host-info .host-details h5{
+        font-size: 1.4rem;
+        font-weight: 600;
+    }
+    .host-info .host-details i{
+        font-size: 1.2rem;
+        color: #3d3d3d;
+    }
+
+    .user-about{
+        width: 70%;
+        /* background-color: green; */
+    }
+    .user-about .user-about-info{
+       padding: 2.25rem 0 2rem;
+       color: black;
+       border-bottom: .1px solid #dadada;
+    }
+    .user-about-info .fa-check{
+        color: black;
+    }
+    .user-about .user-about-info .about-info{
+        display: flex;       
+        gap: 20px;
+        justify-content: space-between;
+    }
+    .user-about .user-about-info .info{
+        width: 50%;
+        margin-bottom: .75rem;
+        font-size: 1.05rem;
+    }
+    .user-about .user-about-info p{
+        margin-top: 1rem;
+    }
+    .users-reviews{
+        padding: 3rem 0;
+        border-bottom: .1px solid #dadada;
+    }
+    .user-about h5{
+        font-size: 1.35rem;
+        font-weight: 600;
+        margin-bottom: 2rem;
+    }
+    .reviews{
+        width: 100%;
+        display: flex;         
+        gap: 10px;   
+        overflow: hidden;
+        overflow-x: scroll;
+        white-space: nowrap;
+
+    }
+    .reviews::-webkit-scrollbar, .listings::-webkit-scrollbar{
+        display: none;
+    }
+    .review{
+        height: 14rem;
+        width: 23rem;
+        border-radius: 12px;
+        padding: 20px;
+        border: .1px solid #dadada;
+        display: flex;        
+        flex-direction: column;     
+            
+    }
+    .review p{    
+        width: 21rem;
+        white-space: wrap;    
+        margin: 0 auto;         
+    }
+    .review-author-info{     
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-top: auto;
+    }
+    .review-author-info .author-img{
+        height: 50px;
+        width: 50px;
+        background-color: #232323;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 500;
+        font-size: .95rem;
+        color: #fff;
+        text-transform: uppercase;
+        overflow: hidden;
+    }
+    .review-author-info .author-img img{
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        object-position: 50% 35%;
+        background-color: #fff;
+    }
+    .review-author-info .author-info h6{
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: -1.5px;    
+    }
+    .review-author-info .author-info span{
+        color: #3d3d3d;
+        font-size: .87rem;
+    }
+
+    .ask-user-about{
+        padding: 3rem 0;
+        border-bottom: .1px solid #dadada;
+    }
+    .user-interests{
+        padding-right: 1.25rem;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    .interest{
+        display: inline-block;
+        border-radius: 50px;
+        border: .1px solid #dadada;
+        padding: 10px 20px;
+    }
+    .interest i {
+        font-size: 1.1rem;
+        margin-right: .65rem;
+    }
+    .users-listings{
+        padding: 3rem 0;
+        border-bottom: .1px solid #dadada;
+    }
+    .listings{
+        width: 100%;
+        display: flex;
+        gap: 15px;
+        overflow: hidden;
+        overflow-x: scroll;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    .listing{    
+        width: 14.75vw;  
+        flex-shrink: 0;
+    }
+    .listing p{
+        color: #3d3d3d;
+        font-size: .95rem;
+        line-height: 1.2;
+        width: 14vw;
+        white-space: wrap;
+    }
+    .listing .listing-img{
+        height: 14vw;
+        width: 100%;
+        border-radius: 16px;
+        overflow: hidden;
+    }
+    .listing .listing-img img{
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+    .listing .listing-name{
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        margin-top: .8rem;
+        margin-bottom: -5px;
+        font-size: .95rem;
+        font-weight: 600;     
+    }
+    .listing .listing-name h6{             
+        width: 90%;
+        white-space: wrap;
+    }
+    .listing .listing-name span{             
+        display: inline-flex;
+        align-items: center;
+    }
+    a{
+        text-decoration: none;
+        color: initial;
+    }
+    .show-more-reviews, .view-all-listings, .no-reviews-yet{
+        display: inline-block;
+        font-weight: 600;
+        text-decoration: .1px solid black underline;
+        cursor: pointer;
+        color: #2c2c2c;
+        transition: all cubic-bezier(0.19, 1, 0.22, 1) 0.15s;
+        margin-top: 2rem;
+    }
+    .view-all-listings{
+        font-size: .87rem;  
+        margin-top: 1.25rem;     
+    }
+    .show-more-reviews:hover, .view-all-listings:hover{
+       color: black;       
+    }
+    /* all listings */
+    .all-listings-popup-container{
+        height: 100%;
+        width: 100%;
+        padding: 0 25px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #0f0f0f5e;
+    }
+    .all-popup-listings{       
+        width: 66rem;
+        padding: 25px;    
+        padding-right: 0;
+        border-radius: 32px;
+        background-color: #fff;  
+        overflow: hidden;       
+        box-shadow: 2px 2px 35px rgba(0, 0, 0, 0.137),
+        -2px -2px 35px rgba(0, 0, 0, 0.137);   
+        animation: anim .5s cubic-bezier(0.19, 1, 0.22, 1);   
+    }
+    .all-popup-listings a {
+        width: 19.5rem;
+    }
+    @keyframes anim {
+        to{
+            transform: translateY(0);
+        }
+        from{
+            transform: translateY(30px);
+        }
+    }
+    .popup-listings-header, .popup-reviews-header{
+        width: 100%;      
+        background-color: #fff;
+    }
+    .popup-listings-header h4, .popup-reviews-header h4{
+        margin-bottom: 1.5rem;
+        font-size: 1.4rem;
+        font-weight: 600;
+    }
+    .popup-listings-header i, .popup-reviews-header i{
+        font-size: 1.05rem;
+        margin-bottom: 2rem;
+        cursor: pointer;
+    }
+    .popup-listings{   
+        height: 75vh;      
+        width: 100%;  
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap; 
+        gap: 20px;
+        padding-right: 20px;
+        overflow: hidden;
+        overflow-y: scroll;        
+    }
+  
+    .popup-listing{
+        width: inherit; 
+        flex-shrink: 0;
+    }
+    .popup-listing p{
+        color: #3d3d3d;
+        font-size: .95rem;
+        line-height: 1.2;
+        width: 100%;
+        white-space: wrap;
+    }
+    .popup-listing  .popup-listing-img{
+        height: 18rem;
+        width: 100%;
+        border-radius: 16px;
+        overflow: hidden;
+    }   
+    .popup-listing  .popup-listing-img img{
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+    .popup-listing  .popup-listing-name{
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        margin-top: .8rem;
+        margin-bottom: -5px;
+        font-size: .95rem;
+        font-weight: 600;    
+    }
+    .popup-listing  .popup-listing-name h6{             
+        width: 90%;       
+        white-space: wrap;
+    }
+    .popup-listing  .popup-listing-name span{  
+        min-width: fit-content;
+        display: flex;
+        align-items: center;             
+    }
+
+    /* all reviews */
+
+    .all-reviews-popup-container{
+        height: 100%;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #0f0f0f5e;
+    }
+    .all-popup-reviews{       
+        width: 35rem;
+        padding: 25px;  
+        padding-right: 0; 
+        border-radius: 32px;
+        background-color: #fff;  
+        overflow: hidden;       
+        box-shadow: 2px 2px 35px rgba(0, 0, 0, 0.137),
+        -2px -2px 35px rgba(0, 0, 0, 0.137);   
+        animation: anim .5s cubic-bezier(0.19, 1, 0.22, 1);           
+    }
+    .popup-reviews{   
+        height: 75vh;      
+        width: 100%;  
+        padding-right: 25px;
+        display: flex;
+        flex-direction: column; 
+        gap: 0;
+        overflow: hidden;
+        overflow-y: scroll;     
+    }
+    .popup-review{
+        height: auto;
+        width: 100%;
+        padding: 25px 0;        
+        border-bottom: .1px solid #dadada;
+        display: flex;        
+        flex-direction: column-reverse;    
+    }
+    .popup-review p{    
+        width: 100%;
+        white-space: wrap;    
+        margin: 0;
+    }
+    .popup-review .review-author-info{     
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 1rem;      
+    }    
+
+    .hide{
+        display: none;
+    }
+
+
+  
+    @media screen and (max-width : 1170px) {
+        
+        .show-user{
+            padding: 4.25vh;
+            gap: 80px;
+            flex-wrap: wrap;
+        }
+        .user-profile{
+            width: 350px;
+            margin: 0 auto;
+        }
+        .user-about{
+            width: 100%;
+        }
+        
+        .popup-listings{            
+            gap: 10px;
+        }
+        .popup-listing{
+            margin-bottom: 1.75rem;
+        }
+
+        .all-popup-listings a{
+            width: 24rem; 
+        }
+        .listing{    
+            width: 16rem;
+        }
+        .listing .listing-img{
+            height: 15rem;
+        }
+    }
+
+    @media screen and (max-width : 980px){
+        .show-user{
+            padding: 3vw;
+            gap: 80px;
+        }
+    }
+
+    @media screen and (max-width : 920px) {
+
+        
+        .popup-listings{            
+            gap: 0;
+        }
+
+        .all-popup-listings{    
+            padding: 1rem;  
+            padding-right: 0;  
+        }
+        .all-popup-listings a{
+            min-width: 17.25rem; 
+            width: 38vw; 
+        }
+        
+    }
+
+    @media screen and (max-width : 670px) {
+
+        .show-user{
+            padding: 1.5rem 1rem;
+            gap: 80px;
+        }
+        .all-listings-popup-container{
+            padding: 0 1rem;
+        }
+        .all-popup-reviews{       
+            width: 95%;
+            margin: 0 auto;
+        }
+        .listing .listing-img{
+            height: 16rem;
+        }
+        .all-popup-listings a{
+           width: 100%; 
+        }
+    }
+
+</style>
+
+<body>
+    <div class="show-user">
+        <div class="user-profile">
+            <div class="host-info">  
+                <div class="host-profile">       
+                    <div class="host-profile-img">
+                        <div class="profile">
+                           <div class="profile-img">
+                            <% if (user.profileImg) { %> 
+                               <img src="<%= user.profileImg %>" alt="host-profile">           
+                              <% } else { %>                           
+                               <%= user.username.trim().slice(0,1) %>
+                           <% } %> 
+                           </div>
+                        </div>   
+                        <h3><%= user.username %></h3>                          
+                        <h6><%= user.statusType %></h6>
+                    </div>
+                    <div class="host-reviews-rating-info">
+                        <div class="host-reviews">
+                            <h5><b class="reviews-data">0</b></h5>
+                            <p>Reviews</p>
+                        </div>
+                        <div class="host-rating">
+                            <h5 style="display: inline-flex; align-items: center;"><b class="rating-data">0 </b> <i class="fa-solid fa-star" style="font-size: .8rem;"></i></h5>
+                            <p>Rating</p>
+                        </div>
+                        <div class="host-years-hosting">
+                            <h5><b class="year-of-hosting-data">0</b></h5>
+                            <p class="hosting-year">Months hosting</p>
+                        </div>
+                    </div>
+                </div>    
+                <div class="host-details">
+                    <h5><%= user.username %>'s confirmed information</h5>
+                    <p class="mb-2">Identity &nbsp;&nbsp; <i class="fa-solid fa-check"></i></p>
+                    <p>Email address &nbsp;&nbsp; <i class="fa-solid fa-check"></i></p>                
+                </div>
+           </div>
+        </div>
+        <div class="user-about">
+            <h2 class="about-h2">About <%= user.username %></h2>
+            <% if (user.about) { %>               
+            <div class="user-about-info">
+                <div class="about-info">
+                    <% if (user.about.school) { %>
+                        <div class="info"><i class="fa-solid fa-graduation-cap"></i> &nbsp;&nbsp; Where I went to school : <%= user.about.school %></div>
+                    <% } %>
+                    <% if (user.about.work) { %>
+                        <div class="info"><i class="fa-solid fa-briefcase"></i> &nbsp;&nbsp; My work : <%= user.about.work %></div>
+                    <% } %>           
+                </div>
+                <div class="about-info">
+                    <% if (user.about.languages) { %>                        
+                        <div class="info show-languages-i-speak"></div>
+                    <% } %>
+                    <% if (user.about.pets) { %>
+                        <div class="info"><i class="fa-solid fa-paw"></i> &nbsp;&nbsp; Pets : <%= user.about.pets %></div>
+                    <% } %>  
+                </div>                             
+                  <div class="about-info">
+                    <% if (user.about.liveAt) { %>
+                        <div class="info"><i class="fa-solid fa-earth-asia"></i> &nbsp;&nbsp; Lives in <%= user.about.liveAt %></div>
+                    <% } %>
+                    <% if (user.about.dob) { %>
+                        <div class="info"><i class="fa-solid fa-cake-candles"></i> &nbsp;&nbsp; Born in the <%= user.about.dob %>s</div>
+                    <% } %>
+                </div>
+                <p><%= user.about.intro %></p>
+                <!-- <p>Hello, Welcome to my profile. I am Shady. I love travelling, exploring, adventuring, researching, designing and meeting people from all around the world. I believe in power of hospitality to make other feel welcomed and valued.
+                    For your Airbnb stay my commitment is to ensure a comfortable stay, maintain a clean and welcoming environment for my guests. During your stay i will be always available over call or text to address your needs.</p> -->
+            </div>
+            <% } %> 
+            <div class="users-reviews">
+                <!-- <h5><%= user.username %>'s reviews</h5> -->
+                <h5>What guests are saying about <%= user.username %></h5>
+                <div class="reviews"> 
+                    <% let count = 0; %>   
+                    <% if (allListings.length>0) { %>          
+                    <% for (const listing of allListings) { %>
+                    <% if (listing.reviews.length) { %>   
+                    <% for (const review of listing.reviews) { %>
+                        <% if (count >= 5) { %>
+                            <% break; %>             
+                        <% } %>
+                        <% count += 1 %>
+                        <div class="review">                       
+                        <p><%= review.comment.length > 170
+                         ?  '"...'+review.comment.slice(0, 170).concat(" ...") :  '"...'+review.comment+'..."' %></p>                    
+                        <div class="review-author-info">
+                            <div class="author-img">                           
+                                    <% if (review.author.profileImg) { %>
+                                        <img src="<%= review.author.profileImg %>" alt="<%= review.author.username %>">
+                                    <% } else { %>
+                                        <%= review.author.username.trim().slice(0,1)%>
+                                    <% } %>                                               
+                            </div>
+                            <div class="author-info">
+                                <h6><%= review.author.username %></h6>
+                                <span><%= review.createdAt.toDateString()%></span>
+                            </div>
+                        </div>                   
+                    </div>                   
+                    <% } %>   
+                    <% } %>    
+                    <% } %>                 
+                    <% } %>
+                </div>    
+                <% if(count > 0) { %>                        
+                    <span class="show-more-reviews">Show more reviews</span>     
+                <% } else {%>
+                    <span class="no-reviews-yet">No Reviews Yet</span>   
+                <% } %>       
+            </div>                      
+            <% if (user.about.interests.length && user.about.interests[0] != "") {%>
+            <div class="ask-user-about">
+                <h5>Ask <%= user.username %> about</h5>
+                <div class="user-interests">
+                    <% for (const interest of user.about.interests) { %>
+                    <div class="interest">                       
+                        <span><span class="interest-icon"></span><%= interest %></span>                         
+                    </div>             
+                    <% } %>                        
+                </div>
+            </div>
+            <% } %>
+            <% if (allListings.length>0) {%>                
+            <div class="users-listings">
+                <h5><%= user.username %>'s listings</h5>                
+                <div class="listings">
+                    <% if(allListings.length <= 10) { %>
+                    <% for (const listing of allListings) { %>
+                    <a href="/listings/<%= listing._id %>">
+                        <div class="listing">
+                        <div class="listing-img">
+                            <img src="<%= listing.images[0].path %>" alt="listing-image">
+                        </div>
+                        <div class="listing-name">
+                        <h6><%= listing.title %></h6>                        
+                        <span> 
+                            <%= listing.reviews.length > 0 ? calculateAvgRating(listing) : "0" %> <i class="fa-solid fa-star" style="font-size: .7rem; margin-left: .1rem;"></i>
+                        </span>
+                        </div>
+                        <p><%= listing.description.toString().slice(0,35).concat("...") %></p>
+                        </div>    
+                    </a> 
+                    <% } %>               
+                    <% } else { %>   
+                    <% for (let i = 0; i < 10; i++) { %>
+                    <% const listing = allListings[i] %>                             
+                    <a href="/listings/<%= listing._id %>">
+                        <div class="listing">
+                        <div class="listing-img">
+                            <img src="<%= listing.images[0].path %>" alt="listing-image">
+                        </div>
+                        <div class="listing-name">
+                        <h6><%= listing.title %></h6>  
+                                            
+                        <span> 
+                        <%= listing.reviews.length > 0 ? calculateAvgRating(listing) : "0" %> <i class="fa-solid fa-star" style="font-size: .7rem; margin-left: .1rem;"></i>
+                        </span>
+                        
+                        </div>
+                        <p><%= listing.description.toString().slice(0,35).concat("...") %></p>
+                        </div>    
+                    </a> 
+                    <% } %>                         
+                    <% } %>      
+                </div>
+                <% if(allListings.length > 10) { %>
+                    <span class="view-all-listings">View all <%= allListings.length %> listings</span>               
+                <% } %>    
+            </div>
+            <% } %>
+            <% if(count>0) {%>
+            <div class="all-reviews-popup-container hide">  
+            <div class="all-popup-reviews">
+                <div class="popup-reviews-header">
+                    <i class="fa-solid fa-xmark close-all-reviews"></i> 
+                    <h4><span class="all-reviews-count"></span> reviews</h4>             
+                </div>              
+                <div class="popup-reviews">                  
+                        <% if (allListings.length>0) { %>      
+                        <% for (const listing of allListings) { %> 
+                        <% if (listing.reviews.length>0) { %>                                                              
+                        <% for (const review of listing.reviews) { %>                         
+                        <div class="popup-review">                       
+                            <p><%= review.comment %></p>                    
+                            <div class="review-author-info">
+                                <div class="author-img">                           
+                                        <% if (review.author.profileImg) { %>
+                                            <img src="<%= review.author.profileImg %>" alt="<%= review.author.username %>">
+                                        <% } else { %>
+                                            <%= review.author.username.trim().slice(0,1)%>
+                                        <% } %>                                               
+                                </div>
+                                <div class="author-info">
+                                    <h6><%= review.author.username %> 
+                                    (<%= review.author.statusType %>)
+                                    </h6>
+                                    <span><%= review.createdAt.toDateString()%></span>
+                                </div>
+                            </div>                   
+                        </div>                   
+                        <% } %>   
+                        <% } %>    
+                        <% } %>                 
+                        <% } %>                                      
+                        <% if(!count>0) {%>
+                            <span class="no-reviews-yet">No Reviews Yet</span>   
+                        <% } %>
+                </div>             
+            </div>
+            </div>
+            <% } %>
+            <% if(allListings.length > 10) { %>
+            <div class="all-listings-popup-container hide">  
+                <div class="all-popup-listings">
+                <div class="popup-listings-header">
+                    <i class="fa-solid fa-xmark close-all-listings"></i> 
+                    <h4><%= user.username %>'s listings</h4>             
+                </div>              
+                <div class="popup-listings">
+                  <% if (allListings) { %>
+                    <% for (const listing of allListings) { %>
+                        <a href="/listings/<%= listing._id %>">
+                            <div class="popup-listing">
+                            <div class="popup-listing-img">
+                                <img src="<%= listing.images[0].path %>" alt="listing-image">
+                            </div>
+                            <div class="popup-listing-name">
+                            <h6><%= listing.title %></h6>
+                            <span> 
+                                <%= listing.reviews.length > 0 ? calculateAvgRating(listing) : "0" %> <i class="fa-solid fa-star" style="font-size: .7rem; margin-left: .1rem;"></i>
+                            </span>
+                            </div>
+                            <p><%= listing.description.toString().slice(0,35).concat("...") %></p>
+                            </div>    
+                        </a> 
+                        <% } %>   
+                  <% } %>
+                </div>
+             
+            </div>
+            </div>
+            <% } %>   
+        </div>
+    </div>
+
+    <script>
+
+        function hostData() {
+        let yearData = document.querySelector(".user-profile .year-of-hosting-data");
+        let yearMonthPara = document.querySelector(".user-profile .hosting-year");
+        let ratingData = document.querySelector(".user-profile .rating-data");
+        let reviewsData = document.querySelector(".user-profile .reviews-data");  
+
+        let currentDate = new Date;
+        let monthOfHosting = currentDate.getMonth()+1 - parseInt(user.joinAt.toString().trim().slice(5,7));
+        let yearOfHosting = currentDate.getFullYear() - parseInt(user.joinAt.toString().trim().slice(0,4));
+
+        if (yearOfHosting == 0) {
+            if (monthOfHosting > 1) {
+                yearData.innerHTML = monthOfHosting;
+                yearMonthPara.innerHTML = `Months hosting`;  
+            } else {
+                yearData.innerHTML = 1;
+                yearMonthPara.innerHTML = "Month hosting";
+            }
+        } else {
+            if (yearOfHosting == 1) {
+                yearData.innerHTML = yearOfHosting;
+                yearMonthPara.innerHTML = `Year hosting`;   
+            } else {                 
+                yearData.innerHTML = yearOfHosting;
+                yearMonthPara.innerHTML = `Years hosting`;   
+            }        
+        }    
+
+        let allReviews = 0;
+        let allAvgStars = 0;
+        if(allListings.length){          
+        for (const listings of allListings) {    
+            if (listings.reviews.length) {
+                allReviews += listings.reviews.length;           
+                for (let review of listings.reviews) {          
+                    for (let i = 0; i < 5; i++) { 
+                        if (review.rating > i) {
+                            allAvgStars += 1;  
+                        } else break;                                                               
+                    }
+                }
+            }
+        }    
+        allAvgStars = allAvgStars/allReviews; 
+        }
+        
+        ratingData.innerHTML = allAvgStars > 0 ? Number(allAvgStars.toString().trim().slice(0,4)): 0; 
+        reviewsData.innerHTML = allReviews.toLocaleString("en-IN");
+        if (allReviews>0) {
+            let allReviewsCount =  document.querySelector(".all-reviews-popup-container .all-reviews-count");
+            allReviewsCount.innerHTML = allReviews.toLocaleString("en-IN");
+        }       
+        }
+        hostData();
+
+        function showInterestsIcons(){
+        let spanIcon = document.querySelectorAll(".ask-user-about .interest-icon");
+        let idx = 0;
+
+        for (let interest of user.about.interests) {
+            if (interest == "Outdoor") {
+                spanIcon[idx].innerHTML = '<i class="fa-solid fa-cloud-sun"></i>';
+                idx++;
+            } else if(interest == "Food"){
+                spanIcon[idx].innerHTML = '<i class="fa-solid fa-burger"></i>';
+                idx++;
+            } else if(interest == "Sports"){
+                spanIcon[idx].innerHTML = '<i class="fa-solid fa-volleyball"></i>';
+                idx++;
+            } else if(interest == "Wine"){
+                spanIcon[idx].innerHTML = '<i class="fa-solid fa-wine-glass"></i>';
+                idx++;
+            } else if(interest == "Reading"){
+                spanIcon[idx].innerHTML = '<i class="fa-solid fa-book-open-reader"></i>';
+                idx++;
+            } else if(interest == "Water sports"){
+                spanIcon[idx].innerHTML = '<i class="fa-solid fa-person-swimming"></i>';
+                idx++;
+            } else if(interest == "Chess"){
+                spanIcon[idx].innerHTML = '<i class="fa-solid fa-chess"></i>';
+                idx++;
+            } else if(interest == "Adventure"){
+                spanIcon[idx].innerHTML = '<i class="fa-solid fa-person-skating"></i>';
+                idx++;
+            } else if(interest == "Yoga"){
+                spanIcon[idx].innerHTML = '<i class="fa-solid fa-dumbbell"></i>';
+                idx++;
+            } else {
+                spanIcon[idx].innerHTML = '';
+            }
+        }
+        }
+        
+        if (user.about.interests[0] != "") {
+            showInterestsIcons();
+        }
+
+        function showAllListings() {
+        let allListingsContainer = document.querySelector(".all-listings-popup-container");
+        let closeAllListings = document.querySelector(".all-listings-popup-container .close-all-listings");
+        let viewAllListings = document.querySelector(".users-listings .view-all-listings");
+
+        viewAllListings.addEventListener("click", ()=>{
+            allListingsContainer.classList.remove("hide");
+        });
+
+        closeAllListings.addEventListener("click", ()=>{
+            allListingsContainer.classList.add("hide");
+        });
+       }
+        
+        if(allListings.length > 10){
+            showAllListings();
+        }
+
+        function showAllReviews() {
+        let allReviewsContainer = document.querySelector(".all-reviews-popup-container");
+        let closeAllReviews = document.querySelector(".all-reviews-popup-container .close-all-reviews");
+        let showAllReviews = document.querySelector(".users-reviews .show-more-reviews");
+
+        showAllReviews.addEventListener("click", ()=>{
+            allReviewsContainer.classList.remove("hide");
+        });
+
+        closeAllReviews.addEventListener("click", ()=>{
+            allReviewsContainer.classList.add("hide");
+        });
+        }
+        
+        let reviewsData = document.querySelector(".user-profile .reviews-data");
+        if(Number(reviewsData.innerHTML) > 0){
+            showAllReviews();
+        }
+
+
+        function showLanguageISpeak(){
+            let showLng = document.querySelector(".user-about-info .about-info .show-languages-i-speak");
+            let lastLng = user.about.languages.slice(user.about.languages.length -1 , user.about.languages.length);
+            let lngData = user.about.languages;
+            if (lngData.length > 1) {
+                for (let i = 1; i < lngData.length; i++) {
+                if (lngData[i] == lastLng) {                    
+                    // alert(lngData[i].replace(lngData[i], "and "+lastLng));
+                    lngData[i] = lngData[i].replace(lngData[i], `and ${lastLng}`); 
+                }
+            }
+            }          
+            showLng.innerHTML = lngData.length > 1 ? `<i class="fa-solid fa-language"></i> &nbsp;&nbsp; Speaks ${lngData.toString().trim().split(",").join(", ")}` : lngData[0] ? `<i class="fa-solid fa-language"></i> &nbsp;&nbsp; Speak ${lastLng}` : "";
+        }  
+        showLanguageISpeak();
+
+    </script>
+</body>

@@ -1,0 +1,177 @@
+<%- layout("/layouts/boilerplate.ejs")  %>
+
+<style>
+    nav, footer{
+        display: none;
+    }
+    .modal-page{
+        padding: 4rem 16vw;
+    }    
+    .modal-header{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: .85rem .75rem;
+        padding-right: 1rem;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: rgb(255, 255, 255);
+    }
+    .back-to-listing{       
+        height: 35px;
+        width: 35px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        color: black;
+        font-size: .95rem;
+        text-decoration: none;
+    }
+    .back-to-listing:hover{
+        background-color: #FAFAFA;
+    }
+    .modal-page .photo-tour{
+        display: flex;
+        gap: 15px;
+        margin-top: 2rem;
+    }
+    .modal-page .tour-img{
+        height: 100px;
+        width: 160px;
+        flex-grow: 1;
+    }
+    .modal-page .photo-tour img{
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .modal-photos-container{
+        /* padding: 5rem 0; */   
+        
+        /* background-color: red;     */
+    }
+    .modal-photos{
+        display: flex;
+        justify-content: space-between;
+        margin-top: 4rem;       
+    }
+    h4{
+        font-size: 1.3rem;
+        font-weight: 600;
+    }
+    .modal-photos-name{
+        position: sticky;
+        top: 5rem;
+        height: fit-content;
+        width: 30%;
+        width: fit-content;
+        background-color: #fff;
+    }
+    .modal-photos-img{      
+    }
+    .modal-photos img{
+        max-height: 500px;
+        width: fit-content;
+        max-width: 500px;
+    }
+
+    @media screen and (max-width: 1080px) {
+        .modal-page{
+            padding: 4rem 6vw;
+        } 
+        .modal-page h4{
+            margin-top: 1rem;
+        }
+        .modal-photos img{
+            max-height: 500px;
+            width: fit-content;
+            max-width: 400px;
+        }
+    }
+
+    @media screen and (max-width: 650px) {
+        .modal-page{
+            padding: 4rem 3.5vw 0;
+        } 
+        .modal-header{
+            padding: .85rem .5rem;
+            padding-right: 1rem;
+        }
+        h4{
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        .modal-page .photo-tour{
+            gap: 10px;
+        }
+        .modal-photos{
+            flex-direction: column;
+        }
+        .modal-photos-name{
+            position: static;
+        }
+        .modal-page .tour-img{
+            height: 100px;
+            width: 180px;
+            
+        }
+        .modal-photos img{
+            max-height: fit-content;
+            width: 100%;
+            max-width: inherit;
+        }
+    }
+</style>
+<body> 
+    
+    <div class="modal-header">
+        <a href="/listings/<%= listing._id %>" class="back-to-listing"><i class="fa-solid fa-chevron-left"></i></a>
+        <div class="favorite-option" style="position: static;">
+            <form action="/listings/add-to-wishlists/<%= listing._id %>" method="POST">  
+                <% if(inWishlist) { %>              
+                    <button type="submit"><i class="fa-solid fa-heart wishlist-heart"></i>
+                        <span>Saved</span>
+                    </button>
+                <% } else { %>              
+                    <button type="submit"><i class="fa-regular fa-heart" style="color: black;"></i>
+                        <span>Save</span>
+                    </button>
+                <% } %>              
+        </form>
+        </div>  
+   </div>
+    <div class="modal-page">        
+
+        <h4>Photo tour</h4>
+        <div class="photo-tour">
+        <% for (const image of modalImages)  { %>   
+            <div class="tour-img">
+                <img src="<%= image.path %> " alt="modal-img">      
+            </div>         
+        <% } %>       
+        </div>
+
+
+    <div class="modal-photos-container">
+        <% modalImages.forEach((image,i) => { %>   
+            <div class="modal-photos">
+                <div class="modal-photos-name">
+                    <h4><%= image.filename %></h4>
+                    <p><%= listing?.amenities?.["bedroom"] %></p>
+                </div>
+                <div class="modal-photos-img">
+                    <img src="<%= image.path.replace("/upload", "/upload/q_auto:good") %>" alt="">
+                </div>
+            </div>        
+        <% }) %>  
+    </div>
+
+</div>
+</body>

@@ -1,0 +1,306 @@
+
+.black-border{
+    border: 2px solid rgb(17, 17, 17) !important;
+}
+
+
+/* NEW FORM STYLING */
+
+.add-btn, .edit-btn{   
+    margin: 1rem 0;
+    border: none !important;
+    background-color: #FF385C !important;
+}
+
+
+.listing-form-page{
+    padding: 1.5vh 16vw;
+}
+
+
+
+.span-title, .span-description{
+    font-size: .85rem;
+    color: #504f4f;
+}
+
+.about-place{
+    margin: 4rem 0 2rem;
+    font-weight: 600;
+}
+
+.house-type-options-div, .privacy-type-options-div, .amenities-options-div, .guests-div, .check-in-check-out-div, .cancellation-div, .max-min-days{
+    padding: 20px 0;    
+    user-select: none;
+}
+
+.house-type-options-div h4, .privacy-type-options-div h4, .amenities-options-div h4, .guests-div h4, .check-in-check-out-div h4, .cancellation-div h4, .max-min-days h4{
+    font-weight: 600;
+    margin-bottom: 1.85rem;
+}
+.listing-labels{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.house-type-options-div label, .amenities-options-div label{
+    height: 120px;
+    min-width: 165px;       
+    width: 15rem;  
+    /* width: 24%;   */
+    flex-grow: 1;
+    /* max-width: 17rem; */
+    max-width: 50%;
+    padding: 20px 16px;     
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.2;
+    display: inline-flex;
+    flex-direction: column-reverse;
+    align-items: start;
+    justify-content: start;
+    gap: 10px;
+    border: .1px solid rgb(192, 192, 192);
+    transition: all cubic-bezier(0.19, 1, 0.22, 1) .25s;
+}
+.house-type-options-div label i, .amenities-options-div label i{
+    font-size: 1.4rem;
+}
+
+.house-type-options-div label:active, .privacy-type-options-div label:active, .amenities-options-div label:active{
+    transform: scale(0.9);
+}
+.house-type-options-div label:hover, .privacy-type-options-div label:hover, .amenities-options-div label:hover{
+    border: 2px solid rgb(17, 17, 17);
+}
+.house-type-options-div input[type="radio"], .privacy-type-options-div input[type="radio"], .amenities-options-div input[type="checkbox"]{
+    display: none;
+}
+
+.privacy-type-options-div label{
+    height: 120px;
+    width: 450px;       
+    padding: 18px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    border: .1px solid rgb(192, 192, 192);
+    transition: all cubic-bezier(0.19, 1, 0.22, 1) .25s;
+    display: block;
+    margin-bottom: 1rem;
+}
+.privacy-type-options-div label span{
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+.privacy-type-options-div label p{
+    font-size: .9rem;
+    color: #6e6e6e;
+    line-height: 1.2;    
+    margin-top: .35rem;
+}
+
+.amenities-options-div h5{
+    font-weight: 500;
+    font-size: 1.2rem;
+    margin-bottom: 1.85rem;
+}
+.amenities-sec-1, .amenities-sec-2, .amenities-sec-3, .guests-div, .check-in-check-out-div, .cancellation-div, .max-min-days{ 
+    margin-bottom: 2rem;
+}
+
+
+
+ .guests{   
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    padding: 0 12px;   
+}
+ .guests-options{    
+    border: 1px solid rgba(206, 206, 206, 0.952);
+    border-radius: 12px;
+    padding: 25px 18px;
+    box-shadow: 1px 1px 6px rgba(66, 66, 66, 0.089),
+    -1px -1px 6px rgba(66, 66, 66, 0.089);
+    background-color: #fff;
+}
+ .guests-options > span{
+    display: inline-block;
+    margin-top: 1rem;
+    float: right;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: .1px solid black underline;
+}
+ .guests-options .add-guest, .house-rules-div .add-guest{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+.house-rules-div .add-guest{
+    justify-content: start;
+    gap: 20px;
+}
+
+ .guests-options .add-guest .add-guest-left h6{
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: .1rem;
+}
+
+ .guests-options .add-guest .add-guest-right, .house-rules-div .add-guest .add-guest-right{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 7px;
+}
+ .guests-options .add-guest .minus-guest,  .guests-options .add-guest .plus-guest, .house-rules-div .minus-guest, .house-rules-div .plus-guest{
+    height: 32px;
+    width: 32px;
+    border: 1px solid rgba(177, 177, 177, 0.952);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #3f3f3f;
+    font-size: .78rem;
+    cursor: pointer;
+}
+ .guests-options .add-guest .minus-guest i,  .guests-options .add-guest .plus-guest i, .house-rules-div .minus-guest i,  .house-rules-div .plus-guest i{
+    pointer-events: none;
+}
+ .guests-options .add-guest .total-guest, .house-rules-div .total-guest{
+    width: 1.85rem;
+    text-align: center;
+    font-size: 1rem;
+    outline: none;
+    border: none;
+}
+
+/* edit page orignal images*/
+.orignal-images-container{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    padding: 0 0 2.5rem;
+    user-select: none;
+}
+.orignal-images-container form{
+    display: inline;
+    height: inherit;
+    width: inherit;
+}
+.orignal-images{
+    height: fit-content; 
+    width: 12.5vw; 
+    max-width: 13vw; 
+    flex-grow: 1;
+    border-radius: 12px; 
+    /* border: 1px rgb(204, 202, 202) dashed;  */
+    overflow: hidden; 
+    cursor: pointer;
+}
+.orignal-images input[type="file"]{
+    display: none;
+}
+.orignal-images .img-box{
+    height: 9vw;
+    width: 100%;
+}
+.orignal-images .form-btn{
+    width: 100%;
+    padding: 8px 0 0;
+    display: flex; 
+    gap: 8px;
+    flex-direction: column;
+}
+.orignal-images .form-btn button:nth-child(2){    
+    background-color: #f04c6a;
+}
+.orignal-images .form-btn button{
+    /* border-radius: 0; */
+    padding: .65rem;
+    font-size: .89rem;
+    line-height: 1;
+    font-weight: 500;
+    border: none;
+    outline: none;
+    /* color: #fff; */
+}
+.orignal-images .img-box img{
+    margin: 0 auto;
+    height: 100%; 
+    width: 100%; 
+    object-position: 50% 70%;
+    object-fit: cover;
+    border-radius: 12px; 
+}
+
+
+@media screen and (max-width: 1000px) {
+
+    .listing-form-page{
+        padding: 1.5vh 8vw;
+    }
+    .about-place{
+        margin: 3rem 0 1.5rem;
+    }
+    .orignal-images{
+        width: 48%; 
+        max-width: 48%; 
+    }
+    .orignal-images .img-box{
+        height: 26vw;
+    }
+}
+
+@media (max-width: 650px) {
+    .listing-form-page{
+        padding: 1.5vh 3.5vw;
+    }
+
+    .about-place{
+        margin: 1.85rem 0 .75rem;
+    }
+    .amenities-sec-1, .amenities-sec-2, .amenities-sec-3, .guests-div, .check-in-check-out-div, .cancellation-div,  .max-min-days{ 
+        margin-bottom: 1rem;
+    }
+    .house-type-options-div label, .amenities-options-div label{ 
+        width: 48%;    
+        max-width: 48%;   
+    }
+    .privacy-type-options-div label{
+        width: 100%;   
+    }
+
+    .orignal-images .img-box{
+        height: 12rem;
+    }
+
+
+}
+
+@media (max-width: 440px) {
+    .listing-form-page{
+        padding: 1.5vh 3vw;
+    }
+    .house-type-options-div label, .amenities-options-div label{ 
+        width: 100%;    
+        max-width: 100%;    
+    }
+    .privacy-type-options-div label{
+        width: 100%;   
+    }
+    
+    .orignal-images{
+        width: 100%; 
+        max-width: 100%; 
+    }
+    .orignal-images .img-box{
+        height: 15rem;
+    }
+}

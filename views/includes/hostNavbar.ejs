@@ -1,0 +1,46 @@
+<nav>
+  <div id="nav-div" class="border-bottom">
+    <div id="nav-logo">
+      <a class="navbar-brand" href="/my-listings"><i class="fa-brands fa-airbnb" style="color: black;"></i> <span style="color: black;">airbnb</span></a>
+    </div>
+    <div id="nav-linksandlogin">
+      <div id="nav-links-div">
+      <!-- <a class="nav-link" href="/listings/new">Airbnb your home</a>      -->
+      <a class="nav-link" href="/hosting">Switch to travelling</a>      
+      <% if (currUser) { %>
+        <i class="fa-solid fa-globe globe"></i>  
+       <% } %> 
+      </div>
+      <div id="nav-login-div">
+        <i class="fa-solid fa-bars"></i>
+        <div id="nav-profile">                  
+        <i class="fa-solid fa-circle-user"></i>        
+        </div>
+          
+          <% if (currUser && currUser.userStatus == "hosting") { %> 
+          <div id="login-opt-div">
+             <a href="/my-listings-reservations">My reservastion</a>   
+             <a href="/my-listings">My listings</a>   
+             <div class="login-a-div">
+              <a class="nav-link" href="/account/profile/<%= currUser._id %>/edit">Profile</a>    
+              <a href="/account">Account</a> 
+             </div>  
+             <a href="/listings/new">Airbnb your home</a>
+             <a href="#">Host an experience</a>
+             <a href="#">Help center</a>
+             <div class="login-a-div">
+               <a href="#">Languages & translation</a> 
+               <span class="nav-link globe" style=" font-size: .91rem; padding: 10px 0;"> <%= (0).toLocaleString(navigator.language||"en-IN", {style : "currency", currency : currUser?.countryInfo?.currency}).match(/[^\d.]+/g) %>&nbsp; currency</span> 
+             </div>  
+             <a href="/hosting">Switch to travelling</a>   
+             <a href="/logout">Log out</a>  
+         </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</nav>
+<script>
+  let currUser = '<%- JSON.stringify(currUser) %>';
+</script>
+<script src="/js/navbar.js"></script>

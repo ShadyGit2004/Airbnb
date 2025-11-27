@@ -1,0 +1,25 @@
+module.exports = [
+    "Asia/Kolkata",
+    "America/New_York",
+    "Europe/London",
+    "Europe/Paris",
+    "Europe/Amsterdam",
+    "Europe/Berlin",
+    "Europe/Rome",
+    "Asia/Tokyo",
+    "Asia/Dubai",
+    "Australia/Sydney",
+    "America/Los_Angeles",
+    "America/Chicago",
+    "Asia/Singapore",
+    "Africa/Johannesburg",
+    "Europe/Berlin",
+    "America/Toronto",
+    "America/Sao_Paulo",
+    "Asia/Seoul",
+    "Asia/Shanghai",
+    "Pacific/Auckland",
+    "Europe/Moscow",
+    "Asia/Tehran"
+  ];
+            

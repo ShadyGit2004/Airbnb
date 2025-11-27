@@ -1,0 +1,74 @@
+<!-- <nav class="navbar navbar-expand-md bg-body-ligth border-bottom sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/"><i class="fa-brands fa-airbnb"></i> <span>airbnb</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/listings">All Listings</a>
+          <a class="nav-link" href="/listings/new">Add New Lisitng</a>      
+        </div>
+      </div>
+    </div>
+  </nav> -->
+
+
+<nav>
+  <div id="nav-div" class="border-bottom">
+    <div id="nav-logo">
+      <a class="navbar-brand" href="/listings"><i class="fa-brands fa-airbnb"></i> <span>airbnb</span></a>
+    </div>
+    <div id="nav-search-box">
+      <div id="anywhere">Anywhere</div>
+      <div id="anyweek">Any week</div>
+      <div id="addguest">Add guests</div>
+      <span><i class="fa-solid fa-magnifying-glass"></i></span>
+    </div>
+    <div id="nav-linksandlogin">
+      <div id="nav-links-div">      
+      <a class="nav-link" href="/hosting"> <%= currUser ? "Switch to hosting" : "Become a host" %></a>         
+      <% if (currUser) { %>
+        <i class="fa-solid fa-globe globe"></i>  
+       <% } %> 
+      </div>
+      <div id="nav-login-div">
+        <i class="fa-solid fa-bars"></i>
+        <div id="nav-profile">                  
+        <i class="fa-solid fa-circle-user"></i>        
+        </div>         
+             
+        <div id="login-opt-div">
+          <% if (currUser  && currUser.userStatus == "travelling") { %>            
+          <div class="login-a-div">
+            <a class="nav-link" href="/my-wishlists"><i class="fa-regular fa-heart" style="font-size: 1.05rem; font-weight: 500;"></i> Whislists</a>    
+            <a class="nav-link" href="/my-trips"><i class="fa-brands fa-airbnb" style="font-size: 1.05rem; font-weight: 600;"></i>Trips</a>   
+            <a class="nav-link" href="/account/profile/<%= currUser._id %>/edit"><i class="fa-regular fa-circle-user" style="color: black; font-size: 1rem; font-weight: 600;"></i>Profile</a>             
+            <div class="login-a-div">
+              <a class="nav-link" href="/account"><i class="fa-solid fa-gear"></i>Account</a>   
+              <span class="nav-link globe" style=" font-size: .91rem; padding: 10px 0;"><i class="fa-solid fa-globe"></i>Languages & currency</span> 
+            </div>  
+            <a class="nav-link" href="/hosting">Become a host</a> 
+            <a class="nav-link" href="/logout">Log out</a>   
+          </div>
+           <% } else { %>
+            <a class="nav-link" href="/signup">Sign up</a>
+            <a class="nav-link" href="/login">Log in</a>   
+           <% } %> 
+          <a href="/listings">Explore</a>
+          <a href="#">Host an experience</a>
+          <a href="#">Help center</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</nav>
+<script>
+  let currUser = '<%- JSON.stringify(currUser) %>';  
+</script>
+<script src="/js/navbar.js"></script>
+
+
+

@@ -1,0 +1,1 @@
+module.exports = ["INR","AUD", "BRL", "BGN", "CAD", "CLP", "CNY", "COP", "CRC", "CZK", "AED", "EUR", "EGP", "HKD", "HUF", "IDR", "JPY", "MXN", "MAD", "TWD","NZD", "NOK", "PEN", "PHP", "GBP", "QAR", "RON", "SAR", "SGD", "ZAR", "KRW", "SEK", "CHF", "THB", "TRY", "UGX", "UAH", "USD", "UYU", "VND"];

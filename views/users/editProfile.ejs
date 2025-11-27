@@ -1,0 +1,1506 @@
+<%- layout("/layouts/boilerplate.ejs")  %>
+
+
+<script>
+    let name = '<%= currUser.username %>';
+    let url = '<%= currUser.profileImg %>';
+    let aboutObj = '<%- JSON.stringify(currUser.about)%>';
+</script>
+
+<style>
+     #nav-search-box{
+        display: none;
+    }
+    .edit-profile-page{
+        width: 100%;
+        padding: 2rem 15vw;
+        display: flex;
+        align-items: start;
+        justify-content: center;
+        /* gap: 150px; */
+        position: relative;             
+    }
+
+    .profile-box{    
+        margin-right: 150px;       
+        position: sticky;
+        top: 8.5rem;  
+        /* background-color: red; */
+    }
+    .edit-profile-img{      
+        position: relative;                 
+    }
+    .edit-profile-img #add-img{
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        transform: translate(-50%, 0);
+        padding: 7.5px 16px;
+        border: none;
+        border-radius: 50px;
+        text-align: center;
+        font-size: .87rem;
+        font-weight: 600;
+        text-transform: capitalize;
+        background-color: #fff;
+        box-shadow: 0 .5px 15px rgba(48, 48, 48, 0.253);
+    }
+    .edit-profile-img #add-img i{
+        margin-right: .3rem;
+        font-size: .92rem;
+    }
+    .edit-profile-img .edit-profile{
+        height: 215px;
+        width: 215px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        font-size: 8rem;
+        font-weight: 700;
+        background-color: #232323;
+        border-radius: 50%;
+        text-transform: uppercase;
+    }
+    .edit-profile-img .edit-profile img{
+        height: 100%;
+        width: 100%;     
+        object-position: 50% 30%;;        
+        object-fit: cover;      
+        background-color: #fff;
+    }
+
+    #file-popup-container{        
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100vw;        
+        z-index: 5;        
+        background-color: #20202065;
+    }
+    #file-popup{
+        height: 92vh;
+        width: 43vw;
+        min-width: 25rem;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);   
+        border-radius: 30px;
+        color: white;
+        background-color: #000000;    
+        box-shadow: 2px 2px 24px rgba(37, 37, 37, 0.767),
+        -1px 0 24px rgba(37, 37, 37, 0.767);              
+    }
+    #file-popup .file-header{
+        padding: 18px 25px;  
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top-left-radius: 30px;
+        border-top-right-radius: 30px;
+        background-color: #111111;
+    }
+    #file-popup .file-header i{
+        opacity: 0.9;
+        cursor: pointer;
+    }
+    #file-popup span{
+        opacity: 0.9;
+        font-size: .97rem;
+        font-weight: 700;
+        cursor: pointer;
+    } 
+    #file-popup .preview{
+        opacity: 1;
+        font-size: .97rem;
+        font-weight: 700;
+        cursor: text;
+    } 
+    #file-popup .edit{
+        padding: 8px 12px;
+        border-radius: 8px;
+        background-color: transparent;
+        transition: all cubic-bezier(0.19, 1, 0.22, 1) .25s;
+    } 
+    #file-popup .edit:hover{        
+        background-color: #202020;
+    } 
+    #file-popup span:hover, i:hover{
+        opacity: 1 !important;
+    }
+    #file-popup .file-img{
+        width: 325px;
+        height: 325px;
+        position: absolute;
+        top: 33%;
+        left: 50%;
+        transform: translate(-50%, -33%);
+        border-radius: 50%;
+        overflow: hidden;
+    }
+    #file-popup img{
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        object-position: 50% 30%;
+    }
+    #file-popup .file-button{
+        width: 100%;
+        padding: 16px 25px;
+        padding-left: 15px;
+        position: absolute;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;        
+        border-bottom-left-radius: 30px;
+        border-bottom-right-radius: 30px;
+        background-color: #111111;
+    }
+    #file-popup button{
+        padding: 13px 26px;
+        color: #f3fbfb;
+        font-size: .97rem;
+        font-weight: 700;
+        border-radius: 10px;
+        border: none;
+        outline: none;       
+        background: linear-gradient( to right, rgb(238, 35, 79), rgb(219, 24, 99));
+    }
+    #tips-container{
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100vw;        
+        z-index: 6;       
+        color: #fff; 
+        background-color: #1d1d1d65;
+    }
+    #tips{
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%); 
+        height: fit-content;
+        width: 25rem;
+        padding: 20px 25px 10px;
+        background-color: #111111;
+        border: 1px solid #313131;
+        border-radius: 15px;  
+        animation: translateY .65s cubic-bezier(0.19, 1, 0.22, 1) 1;  
+    }
+    /* @keyframes translateY {
+        to{
+            transform: translate(-50%, -50%); 
+            opacity: 1;            
+        }
+        from{
+            transform: translate(-50%, -40%); 
+            opacity: 0;
+        }
+    } */
+    #tips .tips-header{
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.25rem;
+    }
+    #tips .tips-header span{
+        font-size: .97rem;
+        font-weight: 700;
+    }
+    #tips .tips-header .close-tips{
+        margin-right: 35%;
+        opacity: 0.9;
+        cursor: pointer;
+    }
+    #tips h6{
+        margin-bottom: 1.5rem;
+        line-height: 1.5;
+        letter-spacing: -.5px;
+        word-spacing: 1px;
+    }
+    #tips ul{
+       margin-left: .5rem;   
+    }
+    #tips ul li{
+        letter-spacing: -.1px;
+    }
+
+
+    /* .edit-intrusts{
+     
+    } */
+    .your-profile{       
+        margin-bottom: 1rem;
+    }
+    .your-profile h2{
+        font-size: 1.85rem;
+        font-weight: 800;       
+        margin-bottom: 1.5rem;
+        letter-spacing: .01px;
+    }
+    p{        
+        line-height: 1.5;
+        color: rgb(75, 75, 75);
+    }
+
+
+    .intrusts-section-div{  
+        width: 100%;           
+        /* background-color: yellow; */
+        margin-bottom: 2.5rem;       
+    }
+    .intrusts-div{    
+        display: flex;
+        gap: 60px;
+        /* width: 20rem;          */
+    }  
+    .intrusts-div .intrusts{         
+        width: 20rem;   
+        padding: 20px 0;             
+        display: flex;       
+        gap: 12px;     
+        cursor: pointer;
+        border-bottom: .1px solid rgb(212, 212, 212); 
+    }
+    .intrusts-div .intrusts:hover{
+        background-color: #f3fbfb;
+    }
+    .intrusts-div .intrusts i{   
+        width: 25px;      
+        text-align: center; 
+        font-size: 1.2rem;
+        color: rgb(29, 29, 29); 
+        pointer-events: none;     
+    }
+    .intrusts-div .intrusts h5{
+        font-size: 1.05rem;
+        font-weight: 400;
+        color: rgb(94, 94, 94);
+        pointer-events: none;     
+    }
+
+
+    /* .about-you{
+      
+    } */
+    .about-you p{
+        margin: 0;
+        font-size: .98rem;
+        margin-bottom: .25rem;
+    }
+
+    .your-intro{
+       padding: 0 0 2.5rem;
+       border-bottom: .1px solid rgb(214, 214, 214);
+    }
+    .your-intro h3{
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+    }
+    .your-intro .add-intro-div{
+        padding: 20px 16px;
+        border: .1px solid rgb(156, 156, 156);
+        border-style: dashed;
+        border-radius: 15px;
+    }  
+    .your-intro span{
+        font-size: .98rem;
+        font-weight: 600;
+        color: rgb(43, 43, 43); 
+        text-decoration: .1px solid black underline;
+    }   
+
+    .what-you-are-into{
+       padding: 2.5rem 0 2rem;
+       border-bottom: .1px solid rgb(214, 214, 214);
+    }
+    .what-you-are-into h4{
+        font-size: 1.35rem;
+        font-weight: 600;
+    }
+    .what-you-are-into span{
+        font-size: .87rem;
+        font-weight: 600;
+        color: rgb(43, 43, 43);       
+        text-decoration: .1px solid black underline;
+    }
+    .about-you span:hover{
+        color: black;
+        cursor: pointer;
+    }
+    /* .what-you-are-into .add-btn-box{
+
+    } */
+    .what-you-are-into button{        
+        padding: 5px 35px;
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: rgb(107, 106, 106);
+        border: dashed .1px rgb(156, 156, 156);      
+        border-radius: 50px;
+        background-color: transparent;
+        margin: 1.5rem .65rem 1.75rem 0;
+    }
+    .what-you-are-into button i{
+        pointer-events: none;
+    }
+    .done{       
+        margin-top: 1.25rem;
+        padding: 10px 22px;
+        font-weight: 600;
+        float: right;        
+    }
+
+    .hide{
+        display: none;  
+    }
+    .disabled{             
+        opacity: 0.2;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+    .popup-box-container{
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100vw;        
+        z-index: 5;        
+        background-color: #20202065;
+    }
+    .popup-box-container .popup-box{
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);        
+        width: 36rem;
+        border-radius: 12px;
+        background-color: #fff;
+        animation: translateY .65s cubic-bezier(0.19, 1, 0.22, 1) 1;                    
+    }
+    .popup-box-container .popup-title-and-input{
+        padding: 20px 25px 55px;     
+    }
+    .popup-box-container .popup-title-and-input i{
+        margin-bottom: 2.1rem;
+        font-size: 1.1rem;
+        cursor: pointer;
+        color: rgb(58, 58, 58);
+    }
+    .popup-box-container .popup-title-and-input i:hover{
+        color: black;
+    }
+    .popup-box-container .popup-title-and-input h4{
+        font-size: 1.6rem;
+        font-weight: 600;
+    }
+    .popup-box-container .popup-title-and-input p{
+        line-height: 1.3;
+        font-size: .98rem;
+        font-weight: 500;
+        margin-bottom: 2rem;
+        color: rgb(110, 110, 110);
+    }
+    .popup-box-container .popup-title-and-input input{
+        width: 100%;
+        padding: 15px 12px;
+        border-radius: 8px;
+        border: .1px solid #8a8a8a;
+    }
+    textarea{
+        height: 7rem;
+        width: 100%;
+        padding: 10px 12px;
+        line-height: 1.35;
+        border-radius: 8px;
+        border: .1px solid #8a8a8a;
+        margin-bottom: -.3rem;
+    }
+    .popup-box .char-limit-span{       
+        display: block;
+        font-size: .78rem;
+        font-weight: 500;
+        text-align: right;
+        opacity: 0.9;
+        margin-top: .35rem;       
+        color: rgb(100, 100, 100);
+    }   
+    .popup-box .char-limit-span i{
+        display: inline;
+        font-size: .73rem;
+        margin-right: .35rem;
+        color: rgb(214, 48, 18);
+    }
+    .form-check{
+        width: 100%;
+        padding: 26px 0;
+        font-size: .98rem;
+        font-weight: 500;     
+        border-bottom: .1px solid #c7c7c7;
+        display: flex;
+        align-items: center;
+        flex-direction: row-reverse;
+        justify-content: space-between;       
+        user-select: none;
+    }    
+    .form-check-label{
+        width: 100% !important;
+        cursor: pointer !important;   
+    }
+    .form-check-input{
+        height: 1.5rem !important;
+        width: 1.5rem !important;
+        padding: 0 !important;
+        border-radius: 4px !important;
+        border: .1px solid rgb(99, 99, 99) !important;
+        cursor: pointer;        
+        box-shadow: none !important;        
+    }
+    .form-check-input:checked{           
+        background-color: rgb(32, 32, 32) !important;
+    }    
+    .form-check-input:hover{
+       border: .1px solid black !important;
+    }
+    .popup-box-container .popup-box .popup-save-btn{
+        border-top: .1px solid #cacaca;
+        padding: 16px 25px;
+        display: flex;
+        justify-content: end;
+    }
+    .popup-box-container .popup-box .popup-save-btn .save{
+        padding: 12px 36px;
+        font-weight: 600;
+    }
+    .user-data{
+        font-weight: 400 !important;
+        color: rgb(24, 24, 24) !important;
+    }       
+    .popup-box-container .options-container{
+        padding: 0;        
+    }
+    .popup-box-container .options-container .search-box{
+        margin-top: 25px;
+        padding: 0;
+        border-bottom: none;   
+        flex-direction: row;   
+        border-radius: 50px;
+        position: relative;           
+    }
+    .popup-box-container .options-container .search-box .fa-magnifying-glass{
+        display: inline-block !important;
+        font-size: .93rem;
+        position: absolute;
+        top: 55%;
+        left: 3%;
+        transform: translate(-3%, -55%);
+    }
+    .popup-box-container .options-container input[type="search"]{
+        padding: 10px 37px;
+        border-radius: 50px;
+        font-size: .87rem;       
+        color: #4d4d4d !important;
+        outline-offset: 0;       
+        background-color: #f6fdfd;
+    }
+    .popup-box-container .options-container input[type="search"]::placeholder{
+        font-size: .87rem;
+        color: #4d4d4d;
+    }
+    .popup-box-container .options-container .fa-xmark{
+        padding: 20px 25px 0; 
+    }
+    .popup-box-container .popup-box .options-container .options-box{
+        padding: 0 25px 55px;   
+        height: 30rem;
+        overflow: hidden;
+        overflow-y: auto;
+    }
+    .popup-box-container .popup-box .options-container .options-box::-webkit-scrollbar{       
+        display: none;
+    }
+    /* .popup-box-container .interest-container{
+        
+    }
+    .popup-box-container .interests-icons{
+      
+    } */
+    .popup-box-container .interests-icons .icons{
+        margin-bottom: 1rem;
+    }
+    .popup-box-container .interests-icons .icon{
+        padding: 5px 10px;
+        height: fit-content;
+        width: fit-content;
+        box-sizing: border-box;
+        display: inline-flex;   
+        align-items: center;   
+        border: .1px solid #adadade5;
+        font-size: .9rem;
+        font-weight: 500;
+        gap: 6px;
+        margin: .5rem .5rem 0 0;
+        border-radius: 20px;
+        cursor: pointer; 
+        opacity: 0.8;   
+        user-select: none;  
+        transition: transform cubic-bezier(0.19, 1, 0.22, 1) .25s;
+    }
+    .popup-box-container .interests-icons .icon:active{
+        transform: scale(0.9);
+    }
+    .popup-box-container .interests-icons .icon:hover{
+        border: 1px solid black;
+        opacity: 1;
+    }
+    .popup-box-container .interests-icons i{
+        font-size: 1.1rem;
+        display: inline;
+        margin: 0;
+        opacity: 1;     
+    }
+    .popup-box-container .interests-icons #show-all{
+        font-size: .87rem;
+        font-weight: 600;
+        color: rgb(43, 43, 43);   
+        cursor: pointer;    
+        text-decoration: .1px solid black underline;
+    }
+    .popup-box-container .interests-icons #show-all:hover{
+        color: black;
+        cursor: pointer;
+    }
+    .popup-box-container #selected{
+        font-size: 1rem;
+        font-weight: 700;
+        color: #141414;
+    }
+    .popup-box-container .popup-box .interest-save-btn{
+        border-top: .1px solid #cacaca;
+        padding: 16px 25px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .popup-box-container .popup-box .interest-save-btn .save{
+        padding: 12px 36px;
+        font-weight: 600;
+    }  
+    .popup-box-container .all-options{
+        position: relative;
+    }
+    .popup-box-container .popup-box .all-options .option-header{
+        display: flex;     
+        padding-bottom: 1.3rem; 
+        position: relative;
+    }
+    .popup-box-container .popup-box .all-options .option-header h6{
+        position: absolute;
+        left: 50%;
+        top: 22%;
+        transform: translate(-50%, -22%);
+        font-weight: 600;
+        color: #030303;       
+    }
+    .popup-box-container .popup-box .all-options .options-box{
+        padding: 0 25px 120px; 
+    }
+    .popup-box-container .popup-box .all-options .form-check{
+        align-items: center;
+        flex-direction: row;
+        color: #222222; 
+        align-items: center;
+        gap: 16px;
+        justify-content: start;      
+    }   
+    .popup-box-container .popup-box .all-options .form-check i{
+        margin-bottom: 0;      
+        font-size: 1.15rem;              
+    }
+    .popup-box-container .popup-box .all-options .form-check-input{
+        margin-left: 3px;
+    }
+    .popup-box-container .popup-box .all-options .search-box{
+        margin-top: 0px;
+    }
+    .popup-box-container .all-options .done-btn-div{
+        width: 100%;
+        overflow: hidden;
+        position: absolute;
+        bottom: 0;
+        padding: 15px 18px;
+        border-top: .1px solid #b4b4b4;
+        background-color: #fff;
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+    }
+    .popup-box-container .all-options .done-btn{
+        width: 100%;
+        padding: 10px 30px;
+        text-align: center;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+    }  
+    .border{
+        border: 2px solid black !important;
+    }   
+    .what-you-are-into .data-icons{
+        width: 95%;
+        margin: .65rem 0 1.25rem;
+    }
+    .what-you-are-into .icon{
+        padding: 10px 20px;
+        height: fit-content;
+        width: fit-content;
+        display: inline-flex;   
+        align-items: center;    
+        text-decoration: none;
+        border: .1px solid #d3d3d3e5;
+        font-size: .89rem;
+        font-weight: 400;
+        gap: 10px;
+        margin: .75rem .75rem 0 0;
+        border-radius: 50px;
+        color: #202020;
+    }
+    .what-you-are-into .icon i{
+        font-size: 1.2rem;
+        color: #363636;
+    }
+    .what-you-are-into .icon:hover{
+        color: #202020;
+        cursor: default;
+    }
+
+
+    @media (max-width: 1200px) {
+        .edit-profile-page{ 
+            padding: 2rem 7vw;    
+        }
+        .profile-box{    
+            margin-right: 95px;
+        }
+        /* .edit-intrusts{
+        } */
+        .intrusts-div{    
+            gap: 0;
+            flex-wrap: wrap;              
+        }  
+        .intrusts-div .intrusts{         
+            width: 100%;   
+            padding: 22px 0;      
+        }
+    }
+    @media (max-width: 900px) {
+        .edit-profile-page{
+            flex-wrap: wrap;
+            padding: 2rem 4vw;    
+        }
+        .profile-box{    
+            position: static;
+            margin: 0 auto 6rem;
+        }
+        .popup-box-container .popup-box{        
+            width: 95%;                    
+        }
+    }
+</style>
+<body>  
+    <div class="edit-profile-page">
+        <div class="profile-box">
+            <div class="edit-profile-img">           
+                <div class="edit-profile"></div>
+                <button id="add-img"><i class="fa-solid fa-camera"></i> Add</button>              
+            </div>          
+        </div>
+        <div class="edit-intrusts">
+            <div class="your-profile">
+                <h2>Your profile</h2>
+                <p>The information you share will be used across Airbnb to help other guests and Hosts get to know you.</p>
+            </div>
+            <div class="intrusts-section-div">
+                <div class="intrusts-div">
+                    <div class="intrusts popup-option" data-index="0">
+                        <i class="fa-solid fa-cake-candles"></i>
+                        <h5  class ="<%= currUser.about.dob ? 'user-data' : '' %>">Decade I was born <b class="user-data"><%= currUser.about.dob ? `: ${currUser.about.dob}` : "" %></b></h5>
+                    </div>
+                    <div class="intrusts popup-option" data-index="3">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <h5 class ="<%= currUser.about.school ? 'user-data' : '' %>">Where i went to school <b class="user-data"> <%= currUser.about.school ? `: ${currUser.about.school}`  : "" %></b></h5>
+                    </div>                                      
+                </div>
+                <div class="intrusts-div">
+                    <div class="intrusts popup-option" data-index="1">
+                        <i class="fa-solid fa-paw"></i>
+                        <h5 class ="<%= currUser.about.pets ? 'user-data' : '' %>">Pets <b class="user-data"><%= currUser.about.pets ? `: ${currUser.about.pets}` : "" %></b></h5>
+                    </div>
+                    <div class="intrusts popup-option" data-index="4">
+                        <i class="fa-solid fa-briefcase"></i>
+                        <h5 class ="<%= currUser.about.work ? 'user-data' : '' %>">My work <b class="user-data"><%= currUser.about.work ? `: ${currUser.about.work}` : "" %></b></h5>
+                    </div>
+                </div>
+                <div class="intrusts-div">
+                    <div class="intrusts popup-option" data-index="2">
+                        <i class="fa-solid fa-earth-asia"></i>
+                        <h5 class ="<%= currUser.about.liveAt ? 'user-data' : '' %>">Where I live <b class="user-data"><%= currUser.about.liveAt ? `: ${currUser.about.liveAt}` : "" %></b></h5>
+                    </div>                    
+                    <div class="intrusts popup-option" data-index="5">
+                        <i class="fa-solid fa-language"></i>                        
+                        <h5 class ="<%= currUser.about.languages[0] ? 'user-data' : '' %>">Languages I speak <b class="user-data show-languages-i-speak"></b></h5>
+                    </div>
+                </div>
+            </div>
+            <div class="about-you">
+                <div class="your-intro">
+                    <h3>About you</h3>                    
+                    <div class="add-intro-div">
+                        <p>Write something fun and punchy.</p>
+                        <span class="popup-option" data-index="6">Add intro</span>
+                    </div>
+                    <div class="intro-data hide">
+                        <h6 style="margin-bottom: 1rem;" class="user-data"><%= currUser.about.intro %></h6>
+                        <span class="popup-option" data-index="6">Edit intro</span>
+                    </div>
+                </div>
+                <div class="what-you-are-into">
+                    <h4>What you're into</h4>                   
+                     <div class="into-data hide">
+                        <!-- <h6 class="user-data" style="margin: 1rem 0;"> <%= currUser.about.interests.toString().trim().split(",").join(", ") %> <br>                           
+                        </h6> -->
+                        <div class="data-icons">
+
+                        </div>
+                        <span class="popup-option" data-index="7">Edit interests</span>
+                     </div>
+                    <div class="into-options">
+                    <p>Find common ground with other guests and hosts by adding interests to your profile.</p>
+                    <div class="add-btn-box">
+                        <button class=".add-btn popup-option" data-index="7"><i class="fa-solid fa-plus"></i></button>
+                        <button class=".add-btn popup-option" data-index="7"><i class="fa-solid fa-plus"></i></button>
+                        <button class=".add-btn popup-option" data-index="7"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                    <span class="popup-option" data-index="7">Add interests</span>
+                    </div>
+                </div>
+            </div>
+            <a href="/account/profile/<%= currUser._id %>" class="btn btn-dark done">Done</a>
+        </div>
+    </div>
+    <div id="file-popup-container" class="hide">
+        <div id="file-popup">
+            <form action="/account/profile/<%= currUser._id %>/edit" method="post" enctype="multipart/form-data">
+                <div class="file-header">
+                    <i class="fa-solid fa-xmark close-popup"></i>
+                    <span class="preview">Preview</span>
+                    <span class="tip-span">Tips</span>
+                </div>
+                <input type="file" accept="image/*" name="profileImg" id="file" class="hide">
+                <div class="file-img"></div>  
+                               
+                <div class="file-button">
+                    <span class="edit">Edit Photo</span>
+                    <button type="submit">Use this photo</button>
+                </div>
+            </form>
+       </div>
+    </div>
+    <div id="tips-container" class="hide">
+        <div id="tips">
+            <div class="tips-header">
+                <i class="fa-solid fa-xmark close-tips"></i>
+                <span>Photo tips</span>
+            </div>
+            <h6>Here are a few things we use to evaluate a good profile photo.</h6>
+            <ul>
+                <li>Your face is well lit, not blurry and fills the frame.</li>
+                <li>You’re facing forward and are the only person in your photo.
+                </li>
+                <li>Your photo doesn’t feature animals or landscapes instead of you.</li>
+            </ul> 
+       </div> 
+    </div> 
+    <!-- use max instead of maxlength in textarea, pet, school, work -->
+    <div class="popup-box-container hide">
+        <div class="popup-box hide">
+            <form action="/account/profile/<%= currUser._id %>/edit" method="post" novalidate class="needs-validation">
+                <div class="popup-title-and-input">
+                    <i class="fa-solid fa-xmark"></i>
+                    <h4>Decade you were born</h4>
+                    <p>Don’t worry, other people won’t be able to see your exact birthday.</p>                
+                    <input type="number" min="10" max="20" name="about[dob]" placeholder="Born in the 00s" class="form-control" value="<%= currUser.about.dob %>"> 
+                    <div class="invalid-feedback">value should be valid (10 to 20)</div>               
+                </div>
+                <div class="popup-save-btn">
+                    <button type="submit" class="btn btn-dark save submitBtn">
+                        <span class="submitBtn-text">Save</span>
+                        <div class="spinner" style="display: none;">
+                            <span class="dot dot-1"></span>
+                            <span class="dot dot-2"></span>
+                            <span class="dot dot-3"></span>
+                        </div>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="popup-box hide">
+            <form action="/account/profile/<%= currUser._id %>/edit" method="post" class="needs-animation">
+                <div class="popup-title-and-input">
+                    <i class="fa-solid fa-xmark"></i>
+                    <h4>Do you have any pets in your life?</h4>
+                    <p>Share any pets you have and their names. Example: My calico cat Whiskers or my speedy tortoise Leonardo.</p>               
+                    <input type="text" name="about[pet]" id="pet" placeholder="Pets:" value="<%= currUser.about.pets %>">                
+                    <span class="char-limit-span pet"></span>                    
+                </div>
+                <div class="popup-save-btn">
+                    <button type="submit" class="btn btn-dark save pet-save submitBtn">
+                        <span class="submitBtn-text">Save</span>
+                        <div class="spinner" style="display: none;">
+                            <span class="dot dot-1"></span>
+                            <span class="dot dot-2"></span>
+                            <span class="dot dot-3"></span>
+                        </div>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="popup-box hide">
+            <form action="/account/profile/<%= currUser._id %>/edit" method="post" class="needs-animation">
+                <div class="popup-title-and-input">
+                    <i class="fa-solid fa-xmark"></i>
+                    <h4 class="mb-4">Where you live</h4>            
+                    <input type="text" name="about[liveAt]" placeholder="Country city" value="<%= currUser.about.liveAt %>"> 
+                </div>
+                <div class="popup-save-btn">
+                    <button type="submit" class="btn btn-dark save submitBtn">
+                        <span class="submitBtn-text">Save</span>
+                        <div class="spinner" style="display: none;">
+                            <span class="dot dot-1"></span>
+                            <span class="dot dot-2"></span>
+                            <span class="dot dot-3"></span>
+                        </div>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="popup-box hide">
+            <form action="/account/profile/<%= currUser._id %>/edit" method="post" class="needs-animation">
+            <div class="popup-title-and-input">
+                <i class="fa-solid fa-xmark"></i>
+                <h4>Where did you go to school?</h4>
+                <p>Whether it’s home school, secondary school or trade school, name the school that made you who you are.</p>               
+                <input type="text" name="about[school]" id="school" placeholder="Where i went to school:" value="<%= currUser.about.school %>">                
+                <span class="char-limit-span school"></span>
+            </div>
+            <div class="popup-save-btn">
+                <button type="submit" class="btn btn-dark save school-save submitBtn">
+                    <span class="submitBtn-text">Save</span>
+                    <div class="spinner" style="display: none;">
+                        <span class="dot dot-1"></span>
+                        <span class="dot dot-2"></span>
+                        <span class="dot dot-3"></span>
+                    </div>
+                </button>
+            </div>
+            </form>
+        </div>
+        <div class="popup-box hide">
+            <form action="/account/profile/<%= currUser._id %>/edit" method="post" class="needs-animation">
+            <div class="popup-title-and-input">
+                <i class="fa-solid fa-xmark"></i>
+                <h4>What do you do for work?</h4>
+                <p>Tell us what your profession is. If you don’t have a traditional job, tell us your life’s calling. Example: Nurse, parent to four kids, or retired surfer. Where is this shown?</p>                
+                <input type="text" name="about[work]" id="work" placeholder="My work:" value="<%= currUser.about.work %>">                
+                <span class="char-limit-span work"></span>
+            </div>
+            <div class="popup-save-btn">
+                <button type="submit" class="btn btn-dark save work-save submitBtn">
+                    <span class="submitBtn-text">Save</span>
+                    <div class="spinner" style="display: none;">
+                        <span class="dot dot-1"></span>
+                        <span class="dot dot-2"></span>
+                        <span class="dot dot-3"></span>
+                    </div>
+                </button>
+            </div>
+            </form>
+        </div>
+        <div class="popup-box hide">
+            <form action="/account/profile/<%= currUser._id %>/edit" method="post" class="needs-animation">
+            <div class="popup-title-and-input options-container">
+                <i class="fa-solid fa-xmark"></i>
+                <div class="options-box">               
+                <h4>Languages you speak</h4>             
+                
+                    <div class="form-check search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="search" name="" id="search" placeholder="Seacrh for a language">
+                    </div>
+                    <div class="form-check">
+                        <input type="hidden" name="about[languages]" value="">
+                        <input class="form-check-input about-languages" type="checkbox" name="about[languages]" value="English" id="English">                        
+                        <label class="form-check-label lng-label" for="English">English</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="hidden" name="about[languages]" value="">
+                        <input class="form-check-input about-languages" type="checkbox" name="about[languages]" value="Hindi" id="Hindi">
+                        <label class="form-check-label lng-label" for="Hindi">Hindi</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="hidden" name="about[languages]" value="">
+                        <input class="form-check-input about-languages" type="checkbox" name="about[languages]" value="Italian" id="Italian">                        
+                        <label class="form-check-label lng-label" for="Italian">Italian</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="hidden" name="about[languages]" value="">
+                        <input class="form-check-input about-languages" type="checkbox" name="about[languages]" value="French" id="French">
+                        <label class="form-check-label lng-label" for="French">French</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="hidden" name="about[languages]" value="">
+                        <input class="form-check-input about-languages" type="checkbox" name="about[languages]" value="Chinese" id="Chinese">
+                        <label class="form-check-label lng-label" for="Chinese">Chinese</label>
+                    </div>              
+               
+                </div>
+            </div>
+            <div class="popup-save-btn">
+                <button type="submit" class="btn btn-dark save submitBtn">
+                    <span class="submitBtn-text">Save</span>
+                    <div class="spinner" style="display: none;">
+                        <span class="dot dot-1"></span>
+                        <span class="dot dot-2"></span>
+                        <span class="dot dot-3"></span>
+                    </div>
+                </button>
+            </div>
+            </form>
+        </div>
+        <div class="popup-box hide">
+            <form action="/account/profile/<%= currUser._id %>/edit" method="post" class="needs-animation">
+            <div class="popup-title-and-input">
+                <i class="fa-solid fa-xmark"></i>
+                <h4>About you</h4>        
+                <p>Tell us a little bit about yourself so your future Hosts or guests can get to know you.</p>       
+                <textarea name="about[intro]" id="about-you-textarea" maxlength="250"><%= currUser.about.intro %></textarea>
+                <span class="char-limit-span about"></span>               
+            </div>
+            <div class="popup-save-btn">
+                <button type="submit" class="btn btn-dark save about-save submitBtn">
+                    <span class="submitBtn-text">Save</span>
+                    <div class="spinner" style="display: none;">
+                        <span class="dot dot-1"></span>
+                        <span class="dot dot-2"></span>
+                        <span class="dot dot-3"></span>
+                    </div>
+                </button>
+            </div>
+            </form>
+        </div>
+        <div class="popup-box hide">
+            <form action="/account/profile/<%= currUser._id %>/edit" method="post" class="needs-animation">
+            <div class="interest-container">
+            <div class="popup-title-and-input">
+                <i class="fa-solid fa-xmark"></i>
+                <h4>What are you into?</h4>        
+                <p>Pick some interests that you enjoy and that you want to show on your profile.</p>
+                <div class="interests-icons">
+                    <div class="icons">
+                    <span class="icon food"><i class="fa-solid fa-burger"></i> Food</span>
+                    <span class="icon sports"><i class="fa-solid fa-volleyball"></i> Sports</span>
+                    <span class="icon outdoor"><i class="fa-solid fa-cloud-sun"></i> Outdoor</span>
+                    <span class="icon wine"><i class="fa-solid fa-wine-glass"></i> Wine</span>
+                    <span class="icon reading"><i class="fa-solid fa-book-open-reader"></i> Reading</span>
+                    <span class="icon water-sports"><i class="fa-solid fa-person-swimming"></i> Water sports</span>
+                    <span class="icon chess"><i class="fa-solid fa-chess"></i> Chess</span>
+                    <span class="icon adventure"><i class="fa-solid fa-person-skating"></i> Adventure</span>
+                    <span class="icon yoga"><i class="fa-solid fa-dumbbell"></i> Yoga</span>
+                    </div>
+                    <span id="show-all">Show all</span>
+                </div>                
+            </div>
+            <div class="popup-save-btn interest-save-btn">
+                <span id="selected"><span id="selected-data"></span> selected</span>
+                <button type="submit" class="btn btn-dark save about-save submitBtn">
+                    <span class="submitBtn-text">Save</span>
+                    <div class="spinner" style="display: none;">
+                        <span class="dot dot-1"></span>
+                        <span class="dot dot-2"></span>
+                        <span class="dot dot-3"></span>
+                    </div>
+                </button>
+            </div>              
+            </div>
+            <div class="popup-title-and-input options-container all-options hide">
+                <div class="option-header">
+                <i class="fa-solid fa-xmark close-option-btn"></i>
+                <h6>Interests</h6>
+                </div>
+                <div class="options-box">
+
+                <div class="form-check search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="search" id="search-interest" placeholder="Seacrh for interests">
+                </div>
+
+                <div class="form-check">
+                    <input type="hidden" name="about[interests]" value="">
+                    <input class="form-check-input about-interests" type="checkbox" name="about[interests]" value="Outdoor" id="Outdoor">    
+                    <i class="fa-solid fa-cloud-sun"></i>                  
+                    <label class="form-check-label interestLabel" for="Outdoor">Outdoor</label>
+                </div>
+                <div class="form-check">
+                    <input type="hidden" name="about[interests]" value="">
+                    <input class="form-check-input about-interests" type="checkbox" name="about[interests]" value="Adventure" id="Adventure">
+                    <i class="fa-solid fa-person-skating"></i> 
+                    <label class="form-check-label interestLabel" for="Adventure">Adventure</label>
+                </div>    
+                <div class="form-check">
+                    <input type="hidden" name="about[interests]" value="">
+                    <input class="form-check-input about-interests" type="checkbox" name="about[interests]" value="Reading" id="Reading">       
+                    <i class="fa-solid fa-book-open-reader"></i>         
+                    <label class="form-check-label interestLabel" for="Reading">Reading</label>
+                </div>
+                <div class="form-check">
+                    <input type="hidden" name="about[interests]" value="">
+                    <input class="form-check-input about-interests" type="checkbox" name="about[interests]" value="Food" id="Food">    
+                    <i class="fa-solid fa-burger"></i>                                         
+                    <label class="form-check-label interestLabel" for="Food">Food</label>
+                </div>
+                <div class="form-check">
+                    <input type="hidden" name="about[interests]" value="">
+                    <input class="form-check-input about-interests" type="checkbox" name="about[interests]" value="Yoga" id="Yoga">
+                    <i class="fa-solid fa-dumbbell"></i> 
+                    <label class="form-check-label interestLabel" for="Yoga">Yoga</label>
+                </div>   
+                <div class="form-check">
+                    <input type="hidden" name="about[interests]" value="">
+                    <input class="form-check-input about-interests" type="checkbox" name="about[interests]" value="Sports" id="Sports"> 
+                    <i class="fa-solid fa-volleyball"></i>                        
+                    <label class="form-check-label interestLabel" for="Sports">Sports</label>
+                </div>
+                <div class="form-check">
+                    <input type="hidden" name="about[interests]" value="">
+                    <input class="form-check-input about-interests" type="checkbox" name="about[interests]" value="Wine" id="Wine">
+                    <i class="fa-solid fa-wine-glass"></i>
+                    <label class="form-check-label interestLabel" for="Wine">Wine</label>
+                </div> 
+                <div class="form-check">
+                    <input type="hidden" name="about[interests]" value="">
+                    <input class="form-check-input about-interests" type="checkbox" name="about[interests]" value="Chess" id="Chess">
+                    <i class="fa-solid fa-chess"></i>
+                    <label class="form-check-label interestLabel" for="Chess">Chess</label>
+                </div> 
+                <div class="form-check">
+                    <input type="hidden" name="about[interests]" value="">
+                    <input class="form-check-input about-interests" type="checkbox" name="about[interests]" value="Water sports" id="Water-sports">
+                    <i class="fa-solid fa-person-swimming"></i>
+                    <label class="form-check-label interestLabel" for="Water-sports">Water sports</label>
+                </div> 
+                </div>   
+                <div class="done-btn-div">
+                    <button type="button" class="btn btn-dark done-btn">Done</button>
+                </div>        
+            </div>
+            
+            </form>
+        </div>
+    </div> 
+
+    <script>
+    
+    function submitBtnAnimation() {
+        document.querySelectorAll('.needs-animation').forEach((form)=>{
+            if(form){    
+                form.addEventListener('submit', function (e) {
+                    const button = form?.querySelector('.submitBtn');
+                    const spinner = button?.querySelector('.spinner');
+                    const buttonText = button?.querySelector('.submitBtn-text');    
+        
+                    // Disable button and show spinner immediately on submit
+                    if(button) button.disabled = true;
+                    if(buttonText) buttonText.style.display = 'none';
+                    if(spinner) spinner.style.display = 'inline-flex';
+                    // No preventDefault — normal form submission will proceed
+                });
+            }
+        });
+    }
+    submitBtnAnimation();
+
+
+
+        aboutObj = JSON.parse(aboutObj);
+
+        function setProfile(){
+            let addImg = document.querySelector("#add-img")
+            let editProfile = document.querySelector(".edit-profile-page .edit-profile-img .edit-profile");
+            // editProfile.innerHTML = url ? `<img src="https://images.unsplash.com/photo-1734443837628-d5a0124a3846?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDIzfHRvd0paRnNrcEdnfHxlbnwwfHx8fHw%3D" alt="img">` : name.trim().slice(0,1); 
+            editProfile.innerHTML = url ? `<img src="${url}" alt="profileImage">` : name.trim().slice(0,1); 
+            addImg.innerHTML = url ? '<i class="fa-solid fa-camera"></i> Edit' : '<i class="fa-solid fa-camera"></i> Add';
+        }
+        setProfile();   
+
+        function limitCheckLogic(charLimitSpan, input, limit, saveBtn){
+        charLimitSpan.innerHTML=`<b>${limit - input.value.length}</b> characters available`;
+        input.addEventListener("input",()=>{              
+            charLimitSpan.innerHTML=`<b>${limit - input.value.length}</b> characters available`;
+            if(input.value.length > limit){  
+                charLimitSpan.innerHTML=`<i class="fa-solid fa-circle-exclamation"></i> <b>${input.value.length - limit}</b> characters over limit`; 
+                charLimitSpan.style.color = "rgb(214, 48, 18)";             
+                saveBtn.classList.add("disabled");  
+                saveBtn.disabled = true;              
+            }else{
+                charLimitSpan.style.color = "rgb(100, 100, 100)";
+                saveBtn.classList.remove("disabled");
+                saveBtn.disabled = false;
+            }                       
+        });
+        }
+
+        function textareaLimitCheck(){
+        let aboutYouTextarea = document.querySelector(".popup-box-container .popup-box #about-you-textarea");        
+        let saveBtn = document.querySelector(".popup-save-btn .about-save");
+        let charLimitSpan =  document.querySelector(".popup-box-container .popup-box .about"); 
+        let limit = 250;
+        limitCheckLogic(charLimitSpan, aboutYouTextarea, limit, saveBtn);
+       }
+        textareaLimitCheck();
+
+        function petLimitCheck(){
+        let pet = document.querySelector(".popup-box-container .popup-box #pet");        
+        let saveBtn = document.querySelector(".popup-save-btn .pet-save");
+        let charLimitSpan =  document.querySelector(".popup-box-container .popup-box .pet"); 
+        let limit = 40;
+        limitCheckLogic(charLimitSpan, pet, limit, saveBtn);
+        }
+        petLimitCheck();  
+
+        function schoolLimitCheck(){
+        let school = document.querySelector(".popup-box-container .popup-box #school");        
+        let saveBtn = document.querySelector(".popup-save-btn .school-save");
+        let charLimitSpan =  document.querySelector(".popup-box-container .popup-box .school"); 
+        let limit = 40;
+        limitCheckLogic(charLimitSpan, school, limit, saveBtn);
+        }
+        schoolLimitCheck();
+        
+        function workLimitCheck(){
+        let work = document.querySelector(".popup-box-container .popup-box #work");        
+        let saveBtn = document.querySelector(".popup-save-btn .work-save");
+        let charLimitSpan =  document.querySelector(".popup-box-container .popup-box .work"); 
+        let limit = 20;
+        limitCheckLogic(charLimitSpan, work, limit, saveBtn);
+        }
+        workLimitCheck();
+
+        function showPopup(){
+        let intrusts = document.querySelectorAll(".popup-option");
+        let popupContainer = document.querySelector(".popup-box-container");
+        let popups = document.querySelectorAll(".popup-box-container .popup-box");
+        for (let intrust of intrusts) {
+            intrust.addEventListener("click",(e)=>{           
+               let child = e.target.dataset.index;
+               let displayedPopup = popups[child];
+               popupContainer.classList.remove("hide");
+               displayedPopup.classList.remove("hide");
+
+               let cross = displayedPopup.querySelector("i");
+               
+               cross.addEventListener("click", ()=>{
+                popupContainer.classList.add("hide");
+                displayedPopup.classList.add("hide");                           
+               });                   
+            });        
+        }
+       } 
+        showPopup();
+
+        function checkLanguages() {
+            let aboutlanguages = document.querySelectorAll(".popup-box .about-languages");           
+            let count = 0;
+            for (const language of aboutlanguages) {
+                if (language.value === aboutObj.languages[count]) {
+                    // console.log(language.value);                    
+                    language.setAttribute("checked", "checked");
+                    count++;
+                }               
+            }           
+        }
+        checkLanguages();
+
+        function checkInterests() {
+            let aboutInterests = document.querySelectorAll(".popup-box .about-interests"); 
+            let dataIcons = document.querySelector(".what-you-are-into .into-data .data-icons");
+            let icons = document.querySelectorAll(".popup-box .icons .icon"); 
+            let selectedData = document.querySelector(".popup-box .interest-container .interest-save-btn #selected-data");       
+            let count = 0;
+            for (const interest of aboutInterests) {                          
+                if (interest.value === aboutObj.interests[count]) {                   
+                    interest.setAttribute("checked", "checked");
+                    count++;
+                    let icon = document.querySelector(`.popup-box .interests-icons .${interest.id.trim().toLowerCase()}`)
+                    dataIcons.innerHTML += `<span class="icon">${icon.innerHTML}</span>`;
+                    icon.classList.add("border");       
+                }                       
+            }  
+            selectedData.innerHTML = aboutObj.interests[0] ? `${aboutObj.interests.length}/${icons.length}`: `0/${icons.length}`;                 
+        }
+        checkInterests();
+      
+        function manipulateInnerHTMLData(){
+            let addIntroDiv = document.querySelector(".about-you .add-intro-div");
+            let introData = document.querySelector(".about-you .intro-data");
+            let IntoOptionsDiv = document.querySelector(".what-you-are-into .into-options");           
+            let intoData = document.querySelector(".what-you-are-into .into-data");
+
+            if (aboutObj.intro) {
+            if (aboutObj.intro.length) {                
+                addIntroDiv.classList.add("hide");
+                introData.classList.remove("hide");
+            }else{
+                addIntroDiv.classList.remove("hide");
+                introData.classList.add("hide");
+            }
+            }
+            // if (aboutObj.interests.length || aboutObj.interests != "") {
+            //     alert("not empty" + aboutObj.interests.length)
+            // }else{
+            //     alert("empty" + aboutObj.interests.length)
+            // }
+           
+            if(aboutObj.interests){
+            if (aboutObj.interests[0]) {                
+                IntoOptionsDiv.classList.add("hide");
+                intoData.classList.remove("hide");
+            }else{
+                IntoOptionsDiv.classList.remove("hide");
+                intoData.classList.add("hide");
+            }
+            }
+        }
+        manipulateInnerHTMLData();
+
+        function showLanguageISpeak(){
+            let showLng = document.querySelector(".intrusts-div .intrusts .show-languages-i-speak");
+            let lastLng = aboutObj.languages.slice(aboutObj.languages.length -1 , aboutObj.languages.length );
+            let lngData = aboutObj.languages;
+            if (lngData.length > 1) {
+                for (let i = 1; i < lngData.length; i++) {
+                if (lngData[i] == lastLng) {                    
+                    // alert(lngData[i].replace(lngData[i], "and "+lastLng));
+                    lngData[i] = lngData[i].replace(lngData[i], `and ${lastLng}`); 
+                }
+            }
+            }
+            showLng.innerHTML = lngData.length > 1 ? `: ${lngData.toString().trim().split(",").join(", ")}` : lngData[0] ? `: ${lastLng}` : "";
+        }
+        showLanguageISpeak();
+
+        function searchLogic(labels, search) {                 
+            let str = search.value.toLowerCase();  
+            for (const label of labels) {  
+                label.innerHTML = label.innerText.replace(str, str);
+                if (label.innerHTML.toLowerCase().trim().includes(`${search.value.toLowerCase()}`)) {                       
+                    label.innerHTML = label.innerText.replace(str, `<span style="color: grey">${str}</span>`);                    
+                    label.style.fontWeight = "600"                           
+                    label.parentElement.style.display = "flex";                                                                           
+                } else{                       
+                    label.parentElement.style.display = "none";                                      
+                }                  
+            }                                  
+        }
+        
+        function searchLanguage() {
+        let searchLng = document.querySelector(".popup-box #search");        
+        let lngLables = document.querySelectorAll(".popup-box .lng-label");  
+        searchLng.addEventListener("input", ()=>{              
+        let str = searchLng.value.toLowerCase();   
+        if (searchLng.value != "") {           
+            searchLogic(lngLables, searchLng);     
+        } else{
+            for (const lngLabel of lngLables) {  
+                lngLabel.innerHTML = lngLabel.innerText.replace(`<span style="color: grey">${str}</span>`, str); 
+                lngLabel.parentElement.style.display = "flex";      
+                lngLabel.style.fontWeight = "500";            
+            }  
+           }
+        });
+        }
+        searchLanguage();
+
+        function searchInterests() {
+        let searchInrst = document.querySelector(".popup-box #search-interest");        
+        let interestsLables = document.querySelectorAll(".popup-box .interestLabel");  
+        searchInrst.addEventListener("input", ()=>{           
+        let str = searchInrst.value.toLowerCase();   
+        if (searchInrst.value != "") {           
+            searchLogic(interestsLables, searchInrst);     
+        } else{
+            for (const interestLabel of interestsLables) {  
+                interestLabel.innerHTML = interestLabel.innerText.replace(`<span style="color: grey">${str}</span>`, str); 
+                interestLabel.parentElement.style.display = "flex";      
+                interestLabel.style.fontWeight = "500";            
+            }  
+           }
+        });
+        }
+        searchInterests()
+
+        function checkAllInterests() {      
+
+        let interestContainer = document.querySelector(".popup-box .interest-container");
+        let optionsContainer = document.querySelector(".popup-box .all-options");       
+        let allInterests = document.querySelectorAll(".popup-box .about-interests");   
+        let iconsDiv = document.querySelector(".popup-box .icons");
+        let icons = document.querySelectorAll(".popup-box .icons .icon");
+        let showAllBtn = document.querySelector(".popup-box #show-all");
+        let doneBtn = document.querySelector(".popup-box .all-options .done-btn");
+        let closeOptionBtn = document.querySelector(".popup-box .close-option-btn");
+        let selectedData = document.querySelector(".popup-box #selected-data");
+        let selectedIcon = aboutObj.interests[0] ? aboutObj.interests.length : 0;          
+        // selectedData.innerHTML = `${selectedIcon}/${icons.length}`;
+        showAllBtn.addEventListener("click", ()=>{
+            optionsContainer.classList.remove("hide");
+            interestContainer.classList.add("hide");
+        });
+        closeOptionBtn.addEventListener("click", ()=>{
+            optionsContainer.classList.add("hide");
+            interestContainer.classList.remove("hide");
+        });
+        doneBtn.addEventListener("click", ()=>{
+            optionsContainer.classList.add("hide");
+            interestContainer.classList.remove("hide");
+        });        
+
+        function checkIconBorder(icon) {
+            icon.classList.toggle("border"); 
+        }
+
+        function checkIcon(icon) {
+            checkIconBorder(icon)    
+            let interestLabel = document.querySelector(`.popup-box .all-options #${icon.innerText.trim().split(" ").join("-")}`);
+            if (icon.classList.contains("border") && interestLabel) {                   
+                interestLabel.checked = true;
+                selectedIcon++;
+                selectedData.innerHTML = `${selectedIcon}/${icons.length}`;
+            }else{
+                interestLabel.checked = false;
+                selectedIcon--;
+                selectedData.innerHTML = `${selectedIcon}/${icons.length}`;
+            }
+        }      
+
+        function checkLabel(interest){
+            let icon = document.querySelector(`.popup-box .interests-icons .${interest.id.trim().toLowerCase()}`);
+            if(interest.checked){                   
+                checkIcon(icon)               
+            }else{
+                checkIcon(icon)
+            }
+        }
+
+        for (const icon of icons) {
+            icon.addEventListener("click",()=>{
+               checkIcon(icon)
+            })
+        }
+        
+        for (const interest of allInterests) {
+            interest.addEventListener("change", ()=>{
+               checkLabel(interest);
+            })
+        }    
+
+        let iIcons = document.querySelectorAll(".options-box i");
+        for (const iIcon of iIcons) {
+            iIcon.addEventListener("click", ()=>{
+                iIcon.previousElementSibling.click();
+            })
+        }
+        }
+        checkAllInterests();
+
+        function showFilePopup() {
+            
+        }
+        let fileInput = document.querySelector("#file");
+        let filePopupContainer = document.querySelector("#file-popup-container");
+        let fileImageCircle = document.querySelector("#file-popup-container .file-img");
+        let addImg = document.querySelector("#add-img");
+        let closePopup = document.querySelector("#file-popup .close-popup");
+        let tipsPopup = document.querySelector("#tips-container");
+        let openTips = document.querySelector("#file-popup .tip-span");
+        let closeTips = document.querySelector("#tips .tips-header .close-tips");
+        let profileForm = document.querySelector(".edit-profile-img form");
+
+        addImg.addEventListener("click", ()=>{          
+            fileInput.click();                
+        });     
+
+        fileInput.addEventListener("input",()=>{
+            const selectedFile = fileInput.files[0];
+            // console.log(selectedFile); 
+            // fileImageCircle.innerHTML = fileInput.files[0];
+            if (selectedFile) {
+                filePopupContainer.classList.toggle("hide"); 
+                const fileReader = new FileReader();
+                fileReader.readAsDataURL(selectedFile);
+                fileReader.addEventListener("load", function () {               
+                fileImageCircle.innerHTML = `<img src=" ${this.result} " />`;
+            });       
+            }                         
+        }) 
+        openTips.addEventListener("click",()=>{
+            tipsPopup.classList.remove("hide");
+        });
+        closeTips.addEventListener("click",()=>{
+            tipsPopup.classList.add("hide");
+        });
+        closePopup.addEventListener("click", ()=>{          
+            filePopupContainer.classList.toggle("hide");                
+            fileInput.value = "";
+        });    
+
+    </script>
+</body>
+
+
+<!-- <div class="popup-title-and-input options-container">
+    <i class="fa-solid fa-xmark"></i>
+    <div class="options-box">
+    <h4>What are you into?</h4>        
+    <p>Pick some interests that you enjoy and that you want to show on your profile.</p>       
+    <div class="form-check search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="search" name="" id="search-interest" placeholder="Seacrh for interests">
+    </div>
+    <div class="form-check">
+        <input type="hidden" name="about[interests]" value="">
+        <input class="form-check-input about-interests" type="checkbox" name="about[interests]" value="Outdoor" id="Outdoor">                        
+        <label class="form-check-label interestLabel" for="Outdoor">Outdoor</label>
+        </div>
+    <div class="form-check">
+        <input type="hidden" name="about[interests]" value="">
+        <input class="form-check-input about-interests" type="checkbox" name="about[interests]" value="Adventure" id="Adventure">
+        <label class="form-check-label interestLabel" for="Adventure">Adventure</label>
+    </div>    
+    <div class="form-check">
+        <input type="hidden" name="about[interests]" value="">
+        <input class="form-check-input about-interests" type="checkbox" name="about[interests]" value="Reading" id="Reading">                        
+        <label class="form-check-label interestLabel" for="Reading">Reading</label>
+    </div>
+    <div class="form-check">
+        <input type="hidden" name="about[interests]" value="">
+        <input class="form-check-input about-interests" type="checkbox" name="about[interests]" value="Yoga" id="Yoga">
+        <label class="form-check-label interestLabel" for="Yoga">Yoga</label>
+    </div>   
+</div>
+</div>             -->

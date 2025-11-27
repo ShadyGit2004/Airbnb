@@ -1,0 +1,128 @@
+
+<%- layout("/layouts/boilerplate.ejs")  %>
+
+<!-- <style>
+   .trip-page{
+        width: 100%;    
+        padding-inline: 19vw;
+        padding-block: 5vh;
+    }
+    h2{
+        letter-spacing: -.3px;
+        font-weight: 700;
+    } 
+    .get-started{
+        width: 22rem;
+        padding: 2rem 0;
+    }
+    .get-started p{
+        font-size: 1.1rem;
+        color: #6b6b6b;
+        line-height: 1.3;
+        margin: 1rem 0 3rem;
+    }
+    .get-started a{
+        text-decoration: none;
+        padding: 12px 22px;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: -.1px;
+        border: none;
+        color: white;
+        border-radius: 8px;
+        background: linear-gradient( to right, rgb(228, 16, 62), rgb(207, 29, 98));
+    }
+</style>
+<body>
+    <div class="message-host">
+        <h2>Message host</h2>  
+        <form action="/message-host/<%= currUser._id %>/<%= listing.owner._id %>" method="POST">
+            <input type="text" name="name" placeholder="Your Name" required><br>
+            <input type="email" name="email" placeholder="Your Email" required><br>
+            <textarea name="message" placeholder="Your Message"required></textarea><br>
+            <button class="btn btn-dark" type="submit">Message Host</button>
+        </form> 
+    </div>
+</body> -->
+
+
+<style>
+    .form-box {
+      /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; */
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .message-box {
+      width: 100%;
+      max-width: 550px;
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.09);
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 28px;
+      font-weight: 700;
+      color: #333;
+    }
+
+    label {
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 130px;
+    }
+
+    button {
+      background: #FF385C;
+      color: white;
+      font-size: 17px;
+      padding: 14px 22px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      width: 100%;
+    }
+
+    button:hover {
+      background: #e03052;
+    }
+  </style>
+  <body>
+   <div class="form-box">
+    <form class="message-box" action="/message-host/<%= currUser._id %>/<%= listing.owner._id %>" method="POST">
+        <h2>Contact the Host</h2>
+    
+        <label>Your Name</label>
+        <input type="text" name="name" placeholder="Enter your name" required />
+    
+        <label>Your Email</label>
+        <input type="email" name="email" placeholder="Enter your email" required />
+    
+        <label>Your Message</label>
+        <textarea name="message" placeholder="Write your message to the host…" required></textarea>
+    
+        <button type="submit">Send Message</button>
+      </form>
+   </div>
+  </body>
+
+ 

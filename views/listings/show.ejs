@@ -1,0 +1,2226 @@
+<% layout('/layouts/boilerplate.ejs') -%>
+
+<link rel="stylesheet" href="/css/rating.css">
+<link rel="stylesheet" href="/css/style.css">
+<!-- 
+<link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+<script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+<script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+<script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+<script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script> -->
+
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+
+
+<script>    
+    let mapKey = "<%- process.env.MAP_API_KEY %>";
+    let mapbox_token = "<%- process.env.MAPBOX_TOKEN %>";
+    let lat = '<%= listing.position.lat %>';
+    let lng = '<%= listing.position.lng %>';
+    let listingName = "<%= listing.title %>";        
+    document.title = `Airbnb | ${listingName}`;
+
+    // function isValidJSON(jsonString) {
+    //     try {
+    //         JSON.parse(jsonString);
+    //         return true;
+    //     } catch (e) {
+    //         return false;
+    //     }
+    // }
+
+    let currGuest = '<%- JSON.stringify(currUser) %>' ? JSON.parse('<%- JSON.stringify(currUser) %>') : {};
+    // let listing = JSON.parse('<%- JSON.stringify(listing) %>'); // koi koi listing m y dikt kr ra h
+    
+    let listing = <%- JSON.stringify(listing) %>;       
+    let allListings = <%- JSON.stringify(allListings) %>; 
+    let allBookings = <%- JSON.stringify(allBookings) %>; 
+    
+
+    // alert(listing.isAvailable) 
+     
+    let avgStars = '<%= avgRating %>';  
+    
+    let ownerCurrency = listing.owner.countryInfo ? listing.owner.countryInfo.currency || "INR" : "INR";
+    let guestCurrency = currGuest.countryInfo ? currGuest.countryInfo.currency || "INR" : "INR";    
+    
+</script>
+
+<body>
+
+    <div class="listing-nav">
+        <div class="listing-nav-links-left">
+        <a href="#l-image">Photos</a>
+        <a href="#lisitng-amenities">Amenities</a>
+        <a href="#l-review">Reviews</a>
+        <a href="#l-location">Location</a>
+        </div>
+        <div class="listing-nav-links-right">
+            <div class="nav-reserve">                
+                <div style="min-width: fit-content;">
+                <span style="font-size: .9rem;" class="nav-price"></span>
+                <h6 class="add-dates-h6">Add dates for prices </h6>
+                <span style="color: #696969; margin-top: -.3rem;"><span class="nav-star-span" style="display: inline; color: black;"></span> <%= listing.reviews.length ? listing.reviews.length + " reviews" : "No reviews" %> </span>
+                </div>             
+                <a href="#reserve-dates-box" id="nav-reserve"></a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="show-listing-page">
+
+   <!-- <div class="row show-page"> -->    
+   <div class="show-page">
+
+    <!-- <div class="col-8 offset-2" style="position: relative;"> -->
+    <div style="position: relative;" class="listing-top-heading">
+        <h4 class="create"><%= listing.title %></h4>
+        <div class="favorite-option" style="top: 22px;">
+            <form action="/listings/add-to-wishlists/<%= listing._id %>" method="POST">  
+                <% if(inWishlist) { %>              
+                    <button type="submit"><i class="fa-solid fa-heart wishlist-heart"></i>
+                        <span>Saved</span>
+                    </button>
+                <% } else { %>              
+                    <button type="submit"><i class="fa-regular fa-heart" style="color: black;"></i>
+                        <span>Save</span>
+                    </button>
+                <% } %>              
+           </form>
+        </div>  
+    </div>
+
+    <!-- <div class="col-8 offset-2"> -->
+    <div>
+        <div class="top-listing-images" id="l-image">
+            
+            <div class="img-div-show">                
+                <div class="cover-parent cover-img-1"><span class="cover"><img src="<%= listing.images[0].path.replace("/upload", "/upload/q_auto:low") %>" alt="listing-cover-image"></span></div>         
+                <div class="cover-parent cover-img-2"><span class="cover"><img src="<%= listing.images[1].path.replace("/upload", "/upload/q_auto:low") %>" alt="listing-bedroom-image"></span></div> 
+                <div class="cover-parent cover-img-3"><span class="cover"><img src="<%= listing.images[2].path.replace("/upload", "/upload/q_auto:low") %>" alt="listing-garden-image"></span></div>          
+                <div class="cover-parent cover-img-4"><span class="cover"><img src="<%= listing.images[3].path.replace("/upload", "/upload/q_auto:low") %>" alt="listing-balcony-image"></span></div> 
+                <div class="cover-parent cover-img-5"><span class="cover"><img src="<%= listing.images[4].path.replace("/upload", "/upload/q_auto:low") %>" alt="listing-kitchen-image"></span></div>                                    
+                <div class="modal-images">
+                    <form action="/listings/<%= listing._id %>" method="get"> 
+                        <input type="text" name="modal" value="true" hidden>                        
+                        <button type="submit" id="modal-btn" style="background-color: transparent; padding: 4px 10px; border: none; outline: none;">Show all images</button>
+                   </form>
+                </div>  
+            </div>           
+           
+           <!-- <% if(currUser && currUser._id.equals(listing.owner._id)) { %>
+            <div class="showDiv-btns">
+                <a class="btn btn-dark" href="/listings/<%= listing._id %>/edit">Edit</a>
+                <form action="/listings/<%= listing._id %>?_method=delete" method="post">
+                <button class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+           <% } %> -->
+        </div>
+    </div>        
+
+    <!-- <div class="row"> -->
+    <div >
+        <!-- <div class="col-8 offset-2 reserveListingDiv">            -->
+        <div class="reserveListingDiv">           
+            
+        <div class="reserve-left">            
+            <div class="show-listing-details">
+                <div class="sec-1 border-bottom">
+                     <h4 class="listing-name"><%= listing.privacyType ? listing.privacyType : "" %> <%= listing.houseType ? listing.houseType : "" %> in <%= listing.location.replace(listing.location[0],listing.location[0].toUpperCase()) %>, <%= listing.country.replace(listing.country[0],listing.country[0].toUpperCase()) %></h4>
+                      <p>
+                        <%= listing.aboutPlace.guests.adults > 0 ? listing.aboutPlace.guests.adults > 1 ? listing.aboutPlace.guests.adults+" guests ∙" : listing.aboutPlace.guests.adults+" guest ∙" : "" %>
+                        <%= listing.aboutPlace.bedrooms > 0 ? listing.aboutPlace.bedrooms > 1 ? listing.aboutPlace.bedrooms+" bedrooms ∙" : listing.aboutPlace.bedrooms+" bedroom ∙" : "" %>
+                        <%= listing.aboutPlace.beds > 0 ? listing.aboutPlace.beds > 1 ? listing.aboutPlace.beds+" beds ∙" : listing.aboutPlace.beds+" bed ∙" : "" %>
+                        <%= listing.aboutPlace.bathrooms > 0 ? listing.aboutPlace.bathrooms > 1 ? listing.aboutPlace.bathrooms+" bathrooms" : listing.aboutPlace.bathrooms+" bathroom" : ""%>
+                    </p>
+                     <h5><span id="show-lisitng-avgstar"></span> <span class="show-more-reviews" 
+                        style= "<%= listing.reviews.length > 0 ? '' : 'text-decoration: none; pointer-events: none; font-weight: 500;' %>"> <%= listing.reviews.length > 0 ? listing.reviews.length > 1 ? listing.reviews.length + " reviews" : listing.reviews.length + " review" : "No reviews yet"%> </span></h5>
+                </div>    
+                <div class="sec-2 border-bottom">
+                     <div class="show-listing-host-img">
+                        <% if (listing.owner.profileImg) { %> 
+                            <img src="<%= listing.owner.profileImg %>" alt="host-profileImg">           
+                        <% } else { %>                           
+                            <%= listing.owner.username.trim().slice(0,1) %>
+                        <% } %>
+                     </div>
+                     <div class="show-listing-host-info">
+                         <h6>Hosted by <%= listing.owner.username %></h6>
+                         <span id="show-listing-host">1 month hosting</span>
+                     </div>
+                </div>
+                <div class="sec-3 border-bottom"></div>
+                <div class="sec-4 border-bottom">
+                 <p><%= listing.description %></p>         
+                 <h6>The space</h6>     
+                 <p>The <%= listing.title %>, <%= listing.location %> (<%= listing.country %>) </p>          
+                 <p>The "<%= listing.title %>" is a <%= listing.aboutPlace.bedrooms > 0 ? listing.aboutPlace.bedrooms+"BHK" : "" %> <%= listing.houseType %> in <%= listing.location %>. </p>   
+                  <p>....</p>               
+                 <button class="btn btn-outline-dark" id="show-more-desc">Show more</button>      
+                </div>
+                <div class="sec-5 border-bottom hide">
+                 <h4>Where you’ll sleep<h4>
+                     <div class="listing-bedroom-imgs">
+                         <div class="bedroom-img">
+                             <div class="img-1">
+                                 <img src="<%= listing.images[1].path.replace("/upload", "/upload/q_auto:low") %>" alt="">
+                             </div>
+                             <span>Bedroom</span>
+                             <span>1 king bed</span>
+                         </div>
+                         <div class="bedroom-img">
+                             <div class="img-1">
+                                 <img src="<%= listing.images[4].path.replace("/upload", "/upload/q_auto:low") %>" alt="">
+                             </div>
+                             <span>Living room</span>
+                             <span>1 sofa</span>
+                         </div>
+                     </div>
+                </div>
+            </div>
+
+            <div class="desc-div-container detail-div-container hide">
+                <div class="desc-div detail-div">
+                    <div class="desc-div-header detail-div-header">
+                        <i class="fa-solid fa-xmark cross"></i>
+                    </div>
+                    <h4>About this space</h4>     
+                    <br>  
+                    <br>      
+                    <br>      
+                    <p> <%= listing.description %></p>
+                    <p>- check in  <%= listing.houseRules.checkIn %></p>          
+                    <p>- check out  <%= listing.houseRules.checkOut %></p>          
+                    <p>- <%= listing.houseRules.selfCheckIn %> </p>   
+                    <% if(listing.amenities) {%>                         
+                    <div class="desc-amenity">   
+                        <h6><strong>Amenities</strong></h6>   
+                    </div>          
+                    <% } %>
+                    <h6><strong>The space</strong></h6> 
+                    <p>The <%= listing.title %>, <%= listing.location %> (<%= listing.country %>) </p>          
+                    <p>The "<%= listing.title %>" is a <%= listing.aboutPlace.bedrooms > 0 ? listing.aboutPlace.bedrooms+"BHK" : "" %> <%= listing.houseType %> in <%= listing.location %>. </p>   
+    
+                    <h6><strong>House Rules</strong></h6> 
+                    <P><%= listing.houseRules.pets ? listing.houseRules.pets : "Pets is not allowed" %></P>
+                    <P><%= listing.houseRules.party ? listing.houseRules.party : "Party is not allowed" %></P>
+                    <P><%= listing.houseRules.smoking ? listing.houseRules.smoking : "Smoking is not allowed" %></P>
+                    <P><%= listing.houseRules.photography ? listing.houseRules.photography : "Commercial photography is not allowed" %></P> 
+                </div>
+            </div>
+
+        <% if(listing.amenities) { %>
+        <div class="what-place-offers" id="lisitng-amenities">                    
+            <h4>What this place offers</h4>                        
+            <div class="amenities">
+                <div class="amenities-left"></div>
+                <div class="amenities-right"></div>
+            </div>                    
+            <button class="btn btn-outline-dark show-all-amenities">Show all <span class="total-amenities"></span> amenities</button>
+        </div>                      
+            
+        <div class="amen-div-container detail-div-container hide">
+            <div class="amen-div detail-div">
+                <div class="amen-div-header detail-div-header">
+                    <i class="fa-solid fa-xmark cross"></i>
+                </div>
+                <h4>What this place offers</h4>     
+                <br>  
+                <div class="amen-div-amenities"></div>          
+            </div>
+        </div>
+        <% } %> 
+
+           
+        <div class="select-dates">              
+            <h4 class="date-heading">Select check-in date</h4>
+            <p><small class="date-para">Add your travel dates for exact pricing</small></p>
+
+            <div class="calender">
+                <div class="left-calender">
+                    <div class="month">
+                        <button class="prev"><i class="fa-solid fa-chevron-left"></i></button>
+                        <div class="month-name"></div>
+                        <button class="hidden-next"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                    <div class="days">
+                        <span>S</span>
+                        <span>M</span>
+                        <span>T</span>
+                        <span>W</span>
+                        <span>T</span>
+                        <span>F</span>
+                        <span>S</span>
+                    </div>
+                    <div class="dates"></div>
+                </div>
+                <div class="right-calender">
+                    <div class="month">                       
+                        <div class="month-name"></div> 
+                        <button class="next"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                    <div class="days">
+                        <span>S</span>
+                        <span>M</span>
+                        <span>T</span>
+                        <span>W</span>
+                        <span>T</span>
+                        <span>F</span>
+                        <span>S</span>
+                    </div>
+                    <div class="dates"></div>
+                </div>               
+            </div>
+
+            <button class="btn btn-outline-dark btn-sm clear-dates">Clear dates</button>
+        </div>
+        </div>
+        <div id="reserve-dates-box"></div>  
+        <div class="reserve-right" >      
+            <div class="reserve-info">    
+              <form action="/listings/<%= listing._id %>/book" method="get">
+                <h5><%= convertedPrice %> <span>night</span></h5>
+                <h6 class="add-reserve-dates-h6" style="font-size: 1.25rem;">Add dates for prices</h6>
+                <div class="reserve-date-box">  
+                   <div class="dates">
+                        <div><span class="span-headings">check-in</span><input type="date" name="booking[checkIn]" id="check-in" required readonly> </div>                                  
+                        <div><span class="span-headings">check-out</span><input type="date" name="booking[checkOut]" id="check-out" required readonly> </div> 
+                        <input type="number" name="booking[stayDays]" id="form-staydays" required readonly hidden>
+                    </div>    
+                   <div class="guests">
+                    <div class="no-of-guests">
+                        <span class="span-headings">guests</span>
+                        <h6>
+                            <span class="total-guests">1 guest</span>
+                            <% if(listing.aboutPlace.guests.infants) { %>
+                            <span class="total-infants"></span> 
+                            <% } %>
+                            <% if(listing.houseRules.pets) { %>
+                            <span class="total-pets"></span>
+                            <% } %>
+                        </h6>
+                    </div>
+                    <i class="fa-solid fa-angle-down"></i>
+                   </div>    
+                   <div class="guests-options hide">
+                    <div class="add-guest" id="adults">
+                        <div class="add-guest-left">
+                        <h6>Adults</h6>
+                        <span>Age 13+</span>
+                        </div>
+                        <div class="add-guest-right">
+                            <div class="minus-guest"><i class="fa-solid fa-minus"></i></div>
+                            <input class="total-guest" name="booking[guests][adults]" value="1" min="1" max="<%= listing.aboutPlace.guests.adults %>" required>
+                            <div class="plus-guest" id="adult-plus"><i class="fa-solid fa-plus"></i></div>
+                        </div>
+                    </div>
+                    <div class="add-guest" id="childrens">
+                        <div class="add-guest-left">
+                        <h6>Children</h6>
+                        <span>Age 2-12+</span>
+                        </div>
+                        <div class="add-guest-right">
+                            <div class="minus-guest"><i class="fa-solid fa-minus"></i></div>
+                            <input class="total-guest" name="booking[guests][childrens]" value="0" min="0" max="<%= listing.aboutPlace.guests.adults %>" required>
+                            <div class="plus-guest" id="child-plus"><i class="fa-solid fa-plus"></i></div>
+                        </div>
+                    </div>
+                    <div class="add-guest" id="infants">
+                        <div class="add-guest-left">
+                        <h6>Infants</h6>
+                        <span>Under 2</span>
+                        </div>
+                        <div class="add-guest-right">
+                            <div class="minus-guest"><i class="fa-solid fa-minus"></i></div>  
+                            <input class="total-guest" name="booking[infants]" value="0" min="0" max="<%= listing.aboutPlace.guests.infants %>" required>
+                            <div class="plus-guest"><i class="fa-solid fa-plus"></i></div>
+                        </div>
+                    </div>
+                    <div class="add-guest" id="pets">
+                        <div class="add-guest-left">
+                        <h6>Pets</h6>                        
+                        </div>
+                        <div class="add-guest-right">
+                            <div class="minus-guest"><i class="fa-solid fa-minus"></i></div>
+                            <input class="total-guest" name="booking[pets]" value="0" min="0" max="<%= listing.aboutPlace.guests.pets %>" required>
+                            <div class="plus-guest"><i class="fa-solid fa-plus"></i></div>
+                        </div>
+                    </div>
+                    <span class="close-guest">Close</span>
+                    </div>                     
+                </div> 
+
+                <button id="reserve-btn"></button>                
+                <span>You won't be charged yet</span>   
+            </div>               
+        </form>    
+            <div class="guest-calender" hidden>
+                <div class="calender-top">
+                    <div class="top-left">
+                        <h5 style="font-size: 1.35rem;">Select dates</h5>
+                        <h6 class="add-reserve-dates-h6" style="font-size: .85rem; color: #686868;">Add your travel dates for exact pricing</h6>
+                    </div>
+                    <div class="top-right">
+                        <div class="dates"> 
+                            <div><span class="span-headings">check-in</span><input type="date" id="calender-check-in" readonly> </div>     
+                            <div><span class="span-headings">check-out</span><input type="date" id="calender-check-out" readonly> </div>     
+                        </div> 
+                    </div>
+                </div>
+                <div class="calender">
+                    <div class="left-calender">
+                        <div class="month">
+                            <button class="prev"><i class="fa-solid fa-chevron-left"></i></button>
+                            <div class="month-name"></div>
+                            <button class="hidden-next"><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                        <div class="days">
+                            <span>S</span>
+                            <span>M</span>
+                            <span>T</span>
+                            <span>W</span>
+                            <span>T</span>
+                            <span>F</span>
+                            <span>S</span>
+                        </div>
+                        <div class="dates"></div>
+                    </div>
+                    <div class="right-calender">
+                        <div class="month">                       
+                            <div class="month-name"></div> 
+                            <button class="next"><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                        <div class="days">
+                            <span>S</span>
+                            <span>M</span>
+                            <span>T</span>
+                            <span>W</span>
+                            <span>T</span>
+                            <span>F</span>
+                            <span>S</span>
+                        </div>
+                        <div class="dates"></div>
+                    </div>               
+                </div> 
+                <div class="calender-bottom">
+                    <span class="clear-dates">Clear dates</span>
+                    <button class="btn btn-outline-dark btn-sm close-calender">Close</button>
+                </div>
+            </div>   
+            <div class="total-fee-box">
+                    <div class="booking-fees">
+                        <div class="amount-row">
+                            <span><%= convertedPrice %> &nbsp;<i class='fa-solid fa-x' style="font-size: .65rem; color: #696969;"></i>&nbsp; <span class="no-of-nights"></span></span> <span class="staydays-fee"></span>
+                        </div>
+                        <div class="amount-row">                                
+                            <span>Airbnb service fee</span> <span class="airbnb-service-fee"></span>
+                       </div>    
+                    </div>   
+                    <div class="amount-row">                                
+                        <span>Total before taxes </span> <span class="total-fee"></span>
+                   </div>                                 
+            </div>            
+        </div>
+    </div>
+    </div>
+   
+    <!-- REVIEW SECTION -->
+    <!-- <div class="row"> -->
+    <div>
+    <!-- CREATE REVIEWS -->
+    <% if(currUser) { %>   
+    <!-- <div class="col-8 offset-2 mb-4"> -->
+    <div class="mb-1">
+    <h4 class="h4-border">Leave a Reviews</h4>
+    <form action="/listings/<%= listing._id %>/reviews" method="post" novalidate class="needs-validation">
+    
+    <label for="rating" class="form-label">Rating</label>
+    <fieldset class="rating">
+        <input type="radio" id="star5" name="review[rating]" value="5" /><label class = "full" for="star5" title="Awesome - 5 stars"></label>        
+        <input type="radio" id="star4" name="review[rating]" value="4" /><label class = "full" for="star4" title="Pretty good - 4 stars"></label>
+        <input type="radio" id="star3" name="review[rating]" value="3" /><label class = "full" for="star3" title="Average - 3 stars"></label>
+        <input type="radio" id="star2" name="review[rating]" value="2" /><label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
+        <input type="radio" id="star1" name="review[rating]" value="1" /><label class = "full" for="star1" title="Sucks big time - 1 star"></label>
+        <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No review[rating]." />
+    </fieldset>
+      
+        <div class="mb-3">
+            <label for="comment" class="form-label">Comment</label>
+            <textarea name="review[comment]" id="comment" class="form-control" required></textarea>
+            <div class="invalid-feedback">Please add some comments for review</div>
+        </div>
+        <button class="btn btn-outline-dark">Submit</button>
+    </form>
+    </div> 
+    <% } %> 
+    <!-- SHOW REVIEWS -->
+    <!-- style="display: flex;  justify-content: space-between;" -->
+
+    <!-- <div class="row col-8 offset-2 pt-5" id="l-review">       -->
+    <div class="pt-5" id="l-review">      
+        <h4 class="h4-border show-avg-star">
+            <span class="avg-star" style="display: inline-flex; align-items: end;"></span>
+            <%= listing.reviews.length ? `${listing.reviews.length.toLocaleString("en-IN")} reviews` : `No reviews (yet)`%>
+        </h4>               
+        <h6 id="hosts-all-reviews-count-h6"></h6>
+        <div class="show-reviews">
+            <% if(listing.reviews.length) { %>
+            <% reviewCount = 0 %>
+            <% reviewLimit = 0 %>
+            <% for(let review of listing.reviews) { %>
+            <% if(reviewCount <= 5) { %>
+                <% reviewCount++ %>
+                <!-- style="border-radius: 12px; border: 1px solid black !important;" -->
+                <div class="review-card col-5 mt-3 ">
+                    <div class="card-body" style="height:fit-content;">                    
+                        <h6 class="card-title mt-3 mb-1 img-n-name">
+                            <div class="review-profile-img">
+                                <% if (review.author.profileImg) { %> 
+                                    <img src="<%= review.author.profileImg %>" alt="profileImage">           
+                                <% } else { %>                 
+                                    <%= review.author.username.trim().slice(0,1) %>
+                                <% } %>                          
+                            </div>
+                            &nbsp;&nbsp;
+                        <div class="host-review-detail">                        
+                            <span> <%= review.author.username %></span> 
+                            <!-- <p><%= review.author.joinAt.toLocaleString() %></p>                       -->
+                                <%let currentDate = new Date%>
+                                <%let monthOfHosting = currentDate.getMonth()+1 - parseInt(review.author.joinAt.toLocaleString().trim().slice(0,1))%>
+                                <%let yearOfHosting = currentDate.getFullYear() - parseInt(review.author.joinAt.toString().trim().slice(11,15))%>  
+                                <%if (yearOfHosting == 0) {%>
+                                    <% if (monthOfHosting > 1) { %>                                    
+                                    <p> <%= monthOfHosting %> months on Airbnb</p>                                        
+                                    <% } else {%>
+                                    <p>1 month on Airbnb</p>                                  
+                                    <% } %>
+                                <% } else {%>
+                                    <% if(yearOfHosting == 1){%> 
+                                        <p><%= yearOfHosting %> year on Airbnb </p>
+                                    <% } else {%> 
+                                        <p><%= yearOfHosting %> years on Airbnb </p>
+                                    <% }%>                                                                    
+                                <% } %>                           
+                        </div>
+                        </h6>  
+                        <p class="card-title mt-2">
+                    <span>
+                        <% for (let i = 0; i < 5; i++) { %> 
+                            <% if (review.rating > i) { %> 
+                            <i class="fa-solid fa-star result-star"></i>           
+                            <% } else { %>                           
+                            <i class="fa-regular fa-star result-star"></i>
+                            <% } %> 
+                        <% } %> 
+                        </span> &nbsp;∙ &nbsp; 
+                        <span class="date"><%= review.createdAt.toString().split(" ").slice(1,4).join(" ")%>
+                        </span>
+                        </p>
+                        <p class="card-text mb-1"> <%= review.comment.length > 150 ? review.comment.slice(0, 150).concat(" ...") :  review.comment %></p> 
+                        <span class="show-more-reviews">Show more</span>
+                    </div>
+                    <% if(currUser && currUser._id.equals(review.author._id)) { %>
+                        <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="post">
+                            <button class="btn btn-dark btn-sm mt-1 mb-3">Delete</button>
+                        </form> 
+                    <% } %>          
+                </div>
+            <% } else { %>
+                <% reviewLimit++ %>
+                <% if(reviewLimit === 1) { %>                    
+                    <span class="show-more-reviews">Show more</span>
+                <% } %>
+            <% } %>
+            <% } %>
+            <% } %>
+        </div>
+        <% if(listing.reviews.length>1) { %>
+        <div style="padding: 0;"><button class="btn btn-outline-dark mt-5" id="show-all-reviews" style="width: fit-content; font-weight: 600;">Show all <%= listing.reviews.length %> reviews</button></div>
+        <% } %>
+    </div>
+   </div>    
+   </div>  
+
+   <div class="all-reviews-popup-container hide">  
+    <div class="all-popup-reviews">
+        <div class="popup-reviews-header">
+            <i class="fa-solid fa-xmark close-all-reviews"></i> 
+            <div class="sort-reviews-div">
+                <h4><%= listing.reviews.length.toLocaleString("en-IN") %> reviews</h4>   
+                <div class="select-div"> <span class="span-text">Most recent</span> <span class="span-icon"><i class="fa-solid fa-angle-down"></i></span>
+                    <div class="options-div hide">
+                        <div class="options">Most recent</div>
+                        <div class="options">Highest rated</div>
+                        <div class="options">Lowest rated</div>
+                    </div>
+                </div>               
+            </div>          
+        </div>         
+        <div class="search-review-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="search" class="search-review form-control" placeholder="Seacrh reviews">
+        </div>     
+        <div class="popup-reviews">    
+                <% if (listing.reviews.length) { %>                                                              
+                <% for (let review of listing.reviews) { %>                         
+                <div class="popup-review">                       
+                    <p><%= review.comment %></p>  
+                    <p>
+                        <span>
+                         <% for (let i = 0; i < 5; i++) { %> 
+                             <% if (review.rating > i) { %> 
+                              <i class="fa-solid fa-star result-star" style="font-size: .5rem;"></i>           
+                             <% } else { %>                           
+                              <i class="fa-regular fa-star result-star" style="font-size: .5rem;"></i>
+                             <% } %> 
+                         <% } %> 
+                         </span> &nbsp;∙ &nbsp; 
+                         <span class="date" style="font-size: .7rem; font-weight: 600;"><%= review.createdAt.toString().split(" ").slice(1,4).join(" ")%>
+                         </span>
+                    </p>                     
+                    <div class="review-author-info">
+                        <h6 class="card-title img-n-name">
+                        <div class="review-profile-img">
+                                <% if (review.author.profileImg) { %> 
+                                    <img src="<%= review.author.profileImg %>" alt="profileImage">           
+                                   <% } else { %>                 
+                                    <%= review.author.username.trim().slice(0,1) %>                                    
+                                <% } %>             
+                        </div>
+                        &nbsp;&nbsp;
+                        <div class="host-review-detail">                       
+                            <span> <%= review.author.username %> (<%= review.author.statusType %>)</span>                       
+                                <%let currentDate = new Date%>
+                                <%let monthOfHosting = currentDate.getMonth()+1 - parseInt(review.author.joinAt.toLocaleString().trim().slice(0,1))%>
+                                <%let yearOfHosting = currentDate.getFullYear() - parseInt(review.author.joinAt.toString().trim().slice(11,15))%>  
+                                <%if (yearOfHosting == 0) {%>
+                                    <% if (monthOfHosting > 1) { %>                                    
+                                       <p> <%= monthOfHosting %> months on Airbnb</p>                                        
+                                    <% } else {%>
+                                       <p>1 month on Airbnb</p>                                  
+                                    <% } %>
+                                <% } else {%>
+                                    <% if(yearOfHosting == 1){%> 
+                                        <p><%= yearOfHosting %> year on Airbnb </p>
+                                    <% } else {%> 
+                                        <p><%= yearOfHosting %> years on Airbnb </p>
+                                    <% }%>                                                                    
+                                <% } %>                           
+                        </div>
+                        </h6>                        
+                    </div>      
+                </div>  
+                <% } %>   
+                <% } %>                         
+                <% if(!listing.reviews.length>0) {%>
+                    <span class="no-reviews-yet">No Reviews Yet</span>   
+                <% } %>
+        </div>             
+    </div>
+   </div>
+
+   <!-- <div class="row pt-5" id="l-location"> -->
+   <div class="pt-5" id="l-location">
+    <div class="map-page">
+        <h4 class="map-heading">Where you’ll be</h4>  
+        <h6><%= listing.location.replace(listing.location[0], listing.location[0].toUpperCase()) %>, <%= listing.country.replace(listing.country[0], listing.country[0].toUpperCase()) %></h6>   
+        <div id="map"></div>
+       </div>
+   </div>
+   
+   <div class="host-pannel">
+   <div class="host-profile-pannel">
+    <h4>Meet your host</h4>
+    <div class="host-info">  
+    <div>
+        <a class="user-card-link" href="/users/show/<%= listing.owner._id %>">
+        <div class="host-profile">       
+            <div class="host-profile-img">
+                <div class="profile">
+                    <div class="profile-img">
+                    <% if (listing.owner.profileImg) { %> 
+                        <img src="<%= listing.owner.profileImg %>" alt="host-profile">           
+                    <% } else { %>                           
+                        <%= listing.owner.username.trim().slice(0,1) %>
+                    <% } %> 
+                    </div>
+                </div>   
+                <h3><%= listing.owner.username %></h3> 
+                <h6><%= listing.owner.statusType %></h6>
+            </div>
+            <div class="host-reviews-rating-info">
+                <div class="host-reviews">
+                    <h5><b class="reviews-data">0</b></h5>
+                    <p>Reviews</p>
+                </div>
+                <div class="host-rating">
+                    <h5 style="display: inline-flex; align-items: center;"><b class="rating-data">0 </b> <i class="fa-solid fa-star" style="font-size: .8rem;"></i></h5>
+                    <p>Rating</p>
+                </div>
+                <div class="host-years-hosting">
+                    <h5><b class="year-of-hosting-data">0</b></h5>
+                    <p class="hosting-year">Years hosting</p>
+                </div>
+            </div>
+        </div>    
+        </a>
+        <br>
+        <div class="host-info-about">
+            <div class="host-work-n-interest">
+                <% if(listing.owner.about.work) { %>
+                    <h6><i class="fa-solid fa-briefcase"></i> &nbsp;&nbsp; My work : <%= listing.owner.about.work %></h6>
+                <% } %>
+                <% if(listing.owner.about.liveAt) { %>
+                    <h6><i class="fa-solid fa-earth-asia"></i> &nbsp;&nbsp; Lives in <%= listing.owner.about.liveAt %></h6>
+                <% } %>   
+                <% if(listing.owner.about.school) { %>
+                    <h6><i class="fa-solid fa-graduation-cap"></i> &nbsp;&nbsp; Where I went to school : <%= listing.owner.about.school %></h6>
+                <% } %>  
+            </div>
+            <% if(listing.owner.about.intro) { %>
+                <p><%= listing.owner.about.intro %></p>
+            <% } %>
+            <a href="/users/show/<%= listing.owner._id %>">Show more <i class="fa-solid fa-angle-right"></i></a>
+        </div>
+    </div>
+
+     <div class="host-details">
+         <h5>Host details</h5>
+         <p>Response rate: 100% (fake data)</p>
+         <p>Responds within an hour (fake data)</p>
+         <a href="/message-host/<%= listing._id %>" class="btn btn-dark mt-3" style="color: white;">Message Host</a>       
+     </div>
+    </div>
+    <!-- <div class="host-info-about">
+        <div class="host-work-n-interest">
+            <% if(listing.owner.about.work) { %>
+                <h6><i class="fa-solid fa-briefcase"></i> &nbsp;&nbsp; My work : <%= listing.owner.about.work %></h6>
+            <% } %>
+            <% if(listing.owner.about.liveAt) { %>
+                <h6><i class="fa-solid fa-earth-asia"></i> &nbsp;&nbsp; Lives in <%= listing.owner.about.liveAt %></h6>
+            <% } %>   
+            <% if(listing.owner.about.school) { %>
+                <h6><i class="fa-solid fa-graduation-cap"></i> &nbsp;&nbsp; Where I went to school : <%= listing.owner.about.school %></h6>
+            <% } %>  
+        </div>
+        <% if(listing.owner.about.intro) { %>
+            <p><%= listing.owner.about.intro %></p>
+        <% } %>
+        <a href="/users/show/<%= listing.owner._id %>">Show more <i class="fa-solid fa-angle-right"></i></a>
+    </div> -->
+   </div>
+   <div class="host-about">   
+    <h4>Things to know</h4>
+   <div class="host-about-rules">
+        <div class="rules">
+        <h6>House rules</h6>
+        <p>Check-in <%= listing.houseRules.checkIn %></p>
+        <p>Checkout <%= listing.houseRules.checkOut %></p>
+        <p><%= listing.aboutPlace.guests.adults > 1 ? listing.aboutPlace.guests.adults+" guests" : listing.aboutPlace.guests.adults+" guest" %>  maximum</p>
+        <span id="rule-btn" class="rules-btn">Show more <i class="fa-solid fa-angle-right"></i></span>
+        </div>
+       
+        <div class="rules">
+            <h6>Safty & protection</h6>
+            <div class="safty-amenities">
+                <%= listing.amenities ? (listing.amenities.homesafty ? "" : "No safety devices") : "No safety devices" %>
+            </div>
+            <span id="safty-btn" class="rules-btn">Show more <i class="fa-solid fa-angle-right"></i></span>
+        </div>       
+     
+        <div class="rules">
+            <h6>Cancellation policy (<%= listing.housePolicy.cancellationPolicy %>)</h6>
+            <p class="policy-add-dates">Add your trip dates to get the cancellation details for this stay.</p>
+            <div class="policy-refund-dates"></div>
+            <span id="policy-btn" class="rules-btn">Show more <i class="fa-solid fa-angle-right"></i></span>
+            <a href="#reserve-dates-box" id="add-dates-btn">Add dates <i class="fa-solid fa-angle-right"></i></a>
+        </div>
+
+        <div id="safty-popups">
+
+        <div class="detail-div-container hide" id="rules-container">
+            <div class="detail-div rules-div">
+                <div class="detail-div-header rules-div-header">
+                    <i class="fa-solid fa-xmark cross"></i>
+                </div>
+                <h3 class="mb-3">House rules</h3> 
+                <p style="border: none; padding-bottom: .25rem;">You'll be staying in someone's home, so please treat it with care and respect.</p> 
+            </div>
+        </div>    
+
+        <div class="detail-div-container hide" id="safty-container">
+            <div class="detail-div safty-div">
+                <div class="detail-div-header safty-div-header">
+                    <i class="fa-solid fa-xmark cross"></i>
+                </div>
+                <h3 class="mb-3">Safety & property</h3>  
+                <p style="border: none;  padding-bottom: .25rem;">
+                    <%= listing.amenities ? (listing.amenities.homesafty ? "Avoid surprises by looking over these important details about your Host's property." : "No safety device") : "No safety device" %>
+                    <!-- Avoid surprises by looking over these important details about your Host's property. -->
+                </p>
+                <div class="safty-amenities-div">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-div-container hide" id="policy-container">
+            <div class="detail-div policy-div">
+                <div class="detail-div-header policy-div-header">
+                    <i class="fa-solid fa-xmark cross"></i>
+                </div>
+                <h3 class="mb-3">Cancellation policy</h3>  
+                <p style="border: none;  padding-bottom: .25rem;">Make sure you’re comfortable with this Host’s policy. </p>
+                <div class="full-refund">
+                    <div class="full-refund-left">
+                        <h6>Before</h6>
+                        <span class="fr-before-date">Date</span>
+                        <span class="fr-before-time">Time</span>
+                    </div>
+                    <div class="full-refund-right">
+                        <h6>Full refund</h6>
+                        <p>Get back 100% of what you paid.</p>
+                    </div>
+                </div>
+                <br>
+                <div class="partial-refund"> 
+                    <div class="partial-refund-left">
+                        <h6>After</h6>
+                        <span class="pr-before-date">Date</span>
+                        <span class="pr-before-time">Time</span>
+                    </div>
+                    <div class="partial-refund-right">
+                        <h6 class="no-refund-h6">Partial refund</h6>
+                        <p class="no-refund-p">Get back every night but the first one. No refund of the first night or the service fee.</p>
+                    </div>                  
+                </div>
+            </div>
+        </div>
+    </div>
+
+   </div>   
+   </div>
+   </div>
+
+
+
+   </div>
+
+   
+
+
+   <script src="/js/map.js"></script>
+
+   <script>
+    
+    let allListingsImages = document.querySelectorAll("img");    
+    for (const img of allListingsImages) {
+        img.style.filter = 'blur(3px)';
+
+        // If image is already loaded
+        if (img.complete) {
+            img.style.filter = 'blur(0px)';
+        } else {
+            img.addEventListener("load", () => {
+                console.log("img loaded");
+                img.style.filter = 'blur(0px)';
+            });
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+       let scrollpos = localStorage.getItem("scrollpos");
+       if (scrollpos) window.scrollTo(0, scrollpos);
+    });
+    let scrollNav = document.querySelector(".listing-nav");
+    window.onscroll = function (e) {
+       localStorage.setItem("scrollpos", window.scrollY);       
+       if (window.scrollY > 600) {
+            scrollNav.style.display = "flex";
+        } else {
+            scrollNav.style.display = "none";
+       }
+    };
+    
+    let listingAvgstar = document.querySelector(".show-listing-details #show-lisitng-avgstar");
+    let displayAvg = document.querySelector(".avg-star");
+    let navStarSpan = document.querySelector(".nav-star-span");
+    if (avgStars>0) {       
+       displayAvg.innerHTML = `<i class="fa-solid fa-star"></i>&nbsp; ${avgStars}&nbsp; ∙&nbsp;`;
+       navStarSpan.innerHTML = `<i class="fa-solid fa-star"></i>&nbsp; ${avgStars}&nbsp; ∙&nbsp;`;
+       listingAvgstar.innerHTML = `<i class="fa-solid fa-star"></i> ${avgStars}&nbsp; ∙&nbsp;`;
+    }   
+    // ho ske to host data ki date year y sab or ache se likh lena code iska trike s   
+    function hostData() {
+    let yearData = document.querySelector(".host-pannel .year-of-hosting-data");
+    let yearMonthPara = document.querySelector(".host-pannel .hosting-year");
+    let ratingData = document.querySelector(".host-pannel .rating-data");
+    let reviewsData = document.querySelector(".host-pannel .reviews-data");
+    let showLisitngDetailHost = document.querySelector(".show-listing-details #show-listing-host");
+
+    let currentDate = new Date();
+    let monthOfHosting = currentDate.getMonth()+1 - parseInt(listing.owner.joinAt.toString().trim().slice(5,7));
+    let yearOfHosting = currentDate.getFullYear() - parseInt(listing.owner.joinAt.toString().trim().slice(0,4));
+    if (yearOfHosting == 0) {
+        if (monthOfHosting > 1) {
+            yearData.innerHTML = monthOfHosting;
+            yearMonthPara.innerHTML = `Months hosting`; 
+            showLisitngDetailHost.innerHTML = `${monthOfHosting} months hosting`;                 
+        } else {
+            yearData.innerHTML = 1;
+            yearMonthPara.innerHTML = "Month hosting";   
+            showLisitngDetailHost.innerHTML = `${1} month hosting`;         
+        }
+    } else {
+        if (yearOfHosting == 1) {
+            yearData.innerHTML = yearOfHosting;
+            yearMonthPara.innerHTML = `Year hosting`;   
+            showLisitngDetailHost.innerHTML = `${yearOfHosting} year hosting`; 
+       } else {                 
+           yearData.innerHTML = yearOfHosting;
+           yearMonthPara.innerHTML = `Years hosting`;   
+           showLisitngDetailHost.innerHTML = `${yearOfHosting} years hosting`; 
+       }
+    }    
+      
+    let allReviews = 0;
+    let allAvgStars = 0;
+    if(allListings.length){          
+    for (const listings of allListings) {    
+        if (listings.reviews.length) {
+            allReviews += listings.reviews.length;           
+            for (let review of listing.reviews) {    
+                allAvgStars += review.rating; 
+            }
+        }
+    }    
+    allAvgStars = allAvgStars/allReviews; 
+    }
+    ratingData.innerHTML = allAvgStars > 0 ? Number(allAvgStars.toString().trim().slice(0,4)): 0; 
+    reviewsData.innerHTML = allReviews;
+    if (allReviews>0 && !listing.reviews.length) {
+        let allReviewsCount = document.querySelector("#hosts-all-reviews-count-h6");
+        allReviewsCount.innerHTML =         
+        `<i class="fa-solid fa-star" style="font-size: 1rem;"></i> &nbsp;&nbsp;  
+         This host has ${allReviews.toLocaleString("en-IN")} reviews for other places to stay. <a style="color: black;" href="/users/show/<%= listing.owner._id %>">Show other reviews</a>`;
+        allReviewsCount.setAttribute("style", "width: 20rem; padding: 1rem 0 0; line-height: 1.5;");
+    }             
+    }
+    hostData();
+    
+    function showAllReviewsPopup() {
+        let allReviewsContainer = document.querySelector(".all-reviews-popup-container");
+        let closeAllReviews = document.querySelector(".all-reviews-popup-container .close-all-reviews");
+        let showAllReviews = document.querySelector("#show-all-reviews");
+        let showMoreReviews = document.querySelectorAll(".show-more-reviews");
+
+        if (showAllReviews) {
+            showAllReviews.addEventListener("click", ()=>{
+                allReviewsContainer.classList.remove("hide");
+            })
+        }
+
+        if (showMoreReviews) {
+            showMoreReviews.forEach((showMoreReview)=>{
+                showMoreReview.addEventListener("click", ()=>{
+                    allReviewsContainer.classList.remove("hide");
+                });
+            })       
+        }
+
+        // document.addEventListener("click", (e)=>{
+        //     let p = document.querySelector(".show-page .row");
+        //     if(!p.contains(e.target)){
+        //         allReviewsContainer.classList.add("hide");
+        //     }            
+        // }); andr click krne p bhi hide hora h
+
+        closeAllReviews.addEventListener("click", ()=>{
+            allReviewsContainer.classList.add("hide");
+        });
+    }
+    showAllReviewsPopup();
+
+    function showModal() {
+        let images = document.querySelectorAll(".cover-parent");
+        let modalBtn = document.querySelector("#modal-btn");
+        for (const image of images) {
+            image.addEventListener("click", ()=>{
+                modalBtn.click();
+            });
+        }
+    }; showModal();
+
+
+    function showCalender() {
+
+        let todaySpan = document.querySelector(".calender .today");
+        let leftCalender = document.querySelector(".calender .left-calender");
+        let rightCalender = document.querySelector(".calender .right-calender");
+        let prevBtn = document.querySelector(".calender .prev");
+        let nextBtn = document.querySelector(".calender .next");
+        let hiddenNextBtn = document.querySelector(".calender .hidden-next");
+        let dateHeading = document.querySelector(".date-heading");
+        let datePara = document.querySelector(".date-para");        
+        let clearDates = document.querySelectorAll(".clear-dates");      
+        
+        // guests calender
+        let checkIn = document.querySelector(".reserveListingDiv .reserve-right #check-in");
+        let checkOut = document.querySelector(".reserveListingDiv .reserve-right #check-out");
+        let fromStaydays = document.querySelector(".reserveListingDiv .reserve-right #form-staydays");
+        let dates = document.querySelector(".reserveListingDiv .reserve-right .dates");
+        let guestCheckIn = document.querySelector(".reserveListingDiv .reserve-right #calender-check-in");
+        let guestCheckOut = document.querySelector(".reserveListingDiv .reserve-right #calender-check-out");
+        let guestSelectH5 = document.querySelector(".reserve-right .calender-top h5");
+        let guestDateH6 = document.querySelector(".reserve-right .calender-top h6");
+        let guestLeftCalender = document.querySelector(".reserve-right .calender .left-calender");
+        let guestRightCalender = document.querySelector(".reserve-right .calender .right-calender");
+        let guestPrevBtn = document.querySelector(".guest-calender .prev");
+        let guestNextBtn = document.querySelector(".guest-calender .next");
+        let guestHiddenNextBtn = document.querySelector(".guest-calender .hidden-next");
+
+        // datebox and prices                   
+        let totalFeeAmount = document.querySelector(".reserveListingDiv .reserve-right .total-fee-box");
+        let reserveBtn = document.querySelector(".reserveListingDiv .reserve-right #reserve-btn");
+        let navDateH6 = document.querySelector(".listing-nav .add-dates-h6");
+        let navReserveBtn = document.querySelector(".listing-nav #nav-reserve");
+        let navPrice = document.querySelector(".listing-nav .nav-price");
+        let reserveDateH6 = document.querySelector(".reserveListingDiv .reserve-right .add-reserve-dates-h6");
+
+        let numOfNights = document.querySelector(".total-fee-box .no-of-nights");
+        let stayDaysFee = document.querySelector(".total-fee-box .staydays-fee");
+        let airbnbServiceFee = document.querySelector(".total-fee-box .airbnb-service-fee");
+        let totalFee = document.querySelector(".total-fee-box .total-fee");
+
+        let closeCalender = document.querySelector(".reserve-right .close-calender");
+        let guestCalender = document.querySelector(".reserve-right .guest-calender");
+
+        // listing-policy
+        let policyAddDate = document.querySelector(".host-about-rules .policy-add-dates") 
+        let policyRefundDate = document.querySelector(".host-about-rules .policy-refund-dates") 
+
+        let frBeforeDate = document.querySelector("#policy-container .fr-before-date") 
+        let frBeforeTime = document.querySelector("#policy-container .fr-before-time") 
+        let prBeforeTime = document.querySelector("#policy-container .pr-before-time") 
+        let prBeforeDate = document.querySelector("#policy-container .pr-before-date")      
+        let noRefundH6 = document.querySelector("#policy-container .no-refund-h6");
+        let noRefundP = document.querySelector("#policy-container .no-refund-p");          
+        let showAllpolicy = document.querySelector("#policy-btn")
+        let addDatesBtn = document.querySelector("#add-dates-btn");  
+         
+
+        function unavailable(){
+            if(!listing.isAvailable){
+                reserveBtn.innerHTML = "Unavailable";
+                navReserveBtn.innerHTML = "Unavailable";
+                reserveBtn.disabled = true;
+                navReserveBtn.disabled = true;
+            }  
+        }
+        
+        reserveBtn.addEventListener("click", ()=>{
+            if (reserveBtn.innerHTML != "Reserve") {
+                guestCalender.hidden = false;
+                reserveBtn.type = "button";
+            } else {               
+                if(checkIn.value && checkOut.value){                    
+                    reserveBtn.type = "submit";
+                } 
+            }
+            // mhuje btn ka inerhtml cahnge krna h agr dates invalid ho to ya fir guest jyda ho to or usk accoring hi y khulneb hi chiye click p 
+        });
+
+        navReserveBtn.addEventListener("click", ()=>{
+            // if (navReserveBtn.innerHTML != "Reserve" && listing.isAvailable) {
+            if (navReserveBtn.innerHTML != "Reserve") {
+                guestCalender.hidden = false;
+            } else if(checkIn.value && checkOut.value){                    
+                reserveBtn.click();
+            } else {};
+        });              
+
+        dates.addEventListener("click", ()=>{
+            // if (listing.isAvailable) {
+                guestCalender.hidden = false;
+            // }
+        });
+
+        closeCalender.addEventListener("click", ()=>{
+            guestCalender.hidden = true;
+        });
+
+        document.addEventListener("click", (e)=>{
+            let p = document.querySelector(".reserve-right");
+            if(!p.contains(e.target)){
+                guestCalender.hidden = true;
+            }            
+            // if(e.target.id == "nav-reserve" && e.target.innerHTML != "Reserve" && listing.isAvailable){                
+            if(e.target.id == "nav-reserve" && e.target.innerHTML != "Reserve"){                
+                guestCalender.hidden = false;                
+            }
+            if(e.target.id == "add-dates-btn"){
+                guestCalender.hidden = false;
+            }
+        });
+
+        let leftDate = new Date();
+        leftDate.setDate(1);
+        let rightDate = new Date(leftDate);
+        rightDate.setMonth(leftDate.getMonth() + 1);
+
+        let guestLeftDate = new Date();
+        guestLeftDate.setDate(1);
+        let guestRightDate = new Date(guestLeftDate);
+        guestRightDate.setMonth(guestLeftDate.getMonth() + 1);
+
+        let today = new Date();
+
+        let start = null;
+        let end = null;  
+        let currDate = null;                
+        let currMonth = null;        
+        let currStart = null;                
+        let currEnd = null;  
+        let days = null;
+
+        let maxStayDays = Number('<%= listing.housePolicy.maximumDays %>') || 30; //max stay at guest place
+        let calenderMaxMonths = 23; //max months 
+        let maxCalenderDate = new Date(leftDate.getFullYear(), leftDate.getMonth()+calenderMaxMonths); // max two years
+        
+        let refundTime = '<%= listing.housePolicy.cancellationTime %>';
+        frBeforeTime.innerHTML = refundTime;
+        prBeforeTime.innerHTML = refundTime;
+        
+        let checkInDay = 0;
+        let checkOutDay = 0;
+        let checkInDayMonth = 0;
+        let checkInBeforeDay = null;
+        let checkInBeforeDayMonth = null;
+        // mhuje strict,modrate,flexible k hisab s mhuje cancellation date set krni h and y bhi input lena h ki listing refundable h ya nhi
+        
+        function checkInOutDays() {
+            checkInDay = new Date(checkIn.value);
+            checkOutDay = new Date(checkOut.value);
+            checkInBeforeDay = new Date(checkIn.value);
+            checkInBeforeDay.setDate(checkInDay.getDate() - 1);
+            checkInBeforeDayMonth = checkInBeforeDay.toDateString().split(" ").slice(1, 2);
+            checkInDayMonth = checkInDay.toDateString().split(" ").slice(1, 2);
+            frBeforeDate.innerText = `${checkInBeforeDay.getDate()} ${checkInBeforeDayMonth}`;
+            prBeforeDate.innerText = `${checkInDay.getDate()} ${checkInDayMonth}`;
+            // console.log("Full refund -> "+ frBeforeDate.innerText, "partial refund -> "+prBeforeDate.innerText);
+            // console.log(("checkin -> "+checkInDay + " checkout -> "+checkOutDay));             
+        }
+
+        function changeButtonText() {
+            if (checkIn.value == "" || checkOut.value == "") {
+                totalFeeAmount.classList.add("hide");
+                reserveBtn.innerText = "Check Availability";
+                navReserveBtn.innerText = "Check Availability";
+                reserveDateH6.style.display = "Block";
+                navDateH6.classList.remove("price-color");
+                navDateH6.innerHTML= "Add dates for prices";
+                navPrice.innerHTML=`${'<%= convertedPrice %>'}/night`;
+                policyAddDate.classList.remove("hide"); 
+                policyRefundDate.classList.add("hide");
+                policyRefundDate.innerHTML = "";       
+                showAllpolicy.style.display = "none";
+                addDatesBtn.style.display = "Block";                                      
+            }else{         
+                if((checkOutDay.getDate() - checkInDay.getDate() == 1 && checkInDay.getMonth() == checkOutDay.getMonth()) || checkInDay.getMonth() != checkOutDay.getMonth() && (checkOutDay.getDate() != checkInDay.getDate() && (!days > 1 || days == 1))){        
+                    frBeforeDate.innerText = `${checkInDay.getDate()} ${checkInDayMonth}`;
+                    noRefundH6.innerHTML = "No refund";
+                    noRefundP.innerHTML = "This reservation is non-refundable.";
+                    policyRefundDate.innerHTML = `<p> Free cancellation before ${checkInDay.getDate()} ${checkInDayMonth}. After that, the reservation is non-refundable.</p> <p>Review this Host’s full policy for details.</p>`;
+                } else {   
+                    noRefundH6.innerHTML = "Partial refund"; 
+                    noRefundP.innerHTML = "Get back every night but the first one. No refund of the first night or the service fee.";    
+                    policyRefundDate.innerHTML = `<p> Free cancellation before ${checkInBeforeDay.getDate()} ${checkInBeforeDayMonth} Cancel before check-in on ${checkInDay.getDate()} ${checkInDayMonth} for a partial refund.</p> <p> Review this Host’s full policy for details.</p>`;
+                }     
+                
+                let price = ("<%= Number(convertedPrice.replace(/[^\d.]/g, '')) %>" * days);      
+                let serviceAmt = ((price * '<%= svc %>') - (days > 4 ? '<%= discount %>' : 0));   
+                showAllpolicy.style.display = "Block";
+                addDatesBtn.style.display = "none";                  
+                policyAddDate.classList.add("hide");                
+                policyRefundDate.classList.remove("hide");
+                reserveDateH6.style.display = "none";                
+                navDateH6.classList.add("price-color");
+                totalFeeAmount.classList.remove("hide");
+                reserveBtn.innerText = "Reserve";
+                navReserveBtn.innerText = "Reserve";
+                fromStaydays.value = days;
+                numOfNights.innerHTML = days > 1 ? `${days} nights` : `${days} night`;
+                navDateH6.innerHTML = `for ${numOfNights.innerHTML}`;
+                stayDaysFee.innerHTML = `${Number(price.toFixed(2)).toLocaleString(navigator.language || "en-IN", 
+                {style: "currency", currency : guestCurrency})}`;
+                airbnbServiceFee.innerHTML = `${Number(serviceAmt.toFixed(2)).toLocaleString(navigator.language || "en-IN",
+                {style: "currency", currency : guestCurrency})}`;
+                totalFee.innerHTML = `${Number((price + serviceAmt).toFixed(2)).toLocaleString(navigator.language || "en-IN",
+                {style: "currency", currency : guestCurrency})}`;
+                navPrice.innerHTML = totalFee.innerHTML;
+            }          
+            // unavailable();  
+        }
+        changeButtonText();
+
+        let checkPrevBtn = ()=>{
+
+            function notAllowed(btn) {
+                btn.style.cursor = 'not-allowed';
+                btn.disabled = true;   
+            }
+
+            function allowed(btn) {
+                btn.style.cursor = 'pointer';
+                btn.disabled = false;
+            }
+
+            if(leftDate <= new Date()){
+                notAllowed(prevBtn);           
+            } else{
+                allowed(prevBtn); 
+            }
+            if(guestLeftDate <= new Date()){
+                notAllowed(guestPrevBtn);               
+            } else{
+                allowed(guestPrevBtn); 
+            }
+
+
+            if(rightDate >= maxCalenderDate){                               
+                notAllowed(nextBtn); 
+                notAllowed(hiddenNextBtn); 
+            } else{
+                allowed(nextBtn)
+                allowed(hiddenNextBtn)
+            }
+            if(guestRightDate >= maxCalenderDate){
+                notAllowed(guestNextBtn);               
+                notAllowed(guestHiddenNextBtn);               
+            } else{
+                allowed(guestNextBtn)
+                allowed(guestHiddenNextBtn)
+            }
+        };
+        checkPrevBtn();
+                
+        let formatDate = (date)=>{
+            let y = date.getFullYear();
+            let m = String(date.getMonth() + 1).padStart(2, "0");
+            let d = String(date.getDate()).padStart(2, "0");
+            return `${y}-${m}-${d}`;
+        };
+
+        let creatDates = (date, isDisabled, isToday)=>{
+            let dateSpan = document.createElement("span");
+            dateSpan.innerHTML = date.getDate();
+            dateSpan.classList.toggle("disabled", isDisabled);
+            if (!isDisabled) {
+                dateSpan.classList.toggle("today", isToday);
+                dateSpan.setAttribute("data-date", formatDate(date));
+            }
+
+            dateSpan.addEventListener("click",(e)=>{
+                const selectedDate = formatDate(new Date(e.target.dataset.date));
+
+                currDate = new Date(e.target.dataset.date);                
+                currMonth = currDate.getMonth();
+                checkIn.setAttribute("min", formatDate(today));
+
+                if(selectedDate > formatDate(today)){
+                    if (!start || (start && end)) {                    
+
+                        start = selectedDate;
+                        end = null;
+                        currStart = currDate;
+                        currEnd = null;
+                    
+                    } else if(selectedDate < start){
+                        start = selectedDate;
+                        currStart = currDate;
+                        
+                    } else{
+                        end = selectedDate;
+                        currEnd = currDate; 
+                    }
+                    if(end && start && start!=end){
+                        guestCalender.hidden = true;
+                    }
+                    applyHighlight();    
+                    fadeMonths();
+                    showDates();     
+                }        
+            });
+
+            return dateSpan;
+        };
+
+        let fadeMonths = ()=>{ 
+
+            let allSpans = document.querySelectorAll("span[data-date]");
+
+            if (start && !end) {
+
+                if(currDate){
+                    let upTo = new Date(currDate.getFullYear(), currDate.getMonth(), currDate.getDate()+maxStayDays+1);
+                
+                    for (const span of allSpans) {
+
+                        let spanDate = new Date(span.dataset.date);
+
+                        if (spanDate < currStart) {
+                            span.classList.add("fade-date");  
+                            
+                        } else if(spanDate.getMonth() > currMonth || spanDate.getMonth() < currMonth){
+                            span.classList.add("fade-date");
+                        } else{}
+
+                        if(spanDate >= currStart && spanDate < upTo){
+                            if (span.classList.contains("fade-date")) {
+                                span.classList.remove("fade-date");
+                            }             
+                        }
+                    }
+                }
+            } else{
+                for (const span of allSpans) {
+                    span.classList.remove("fade-date");                    
+                }
+            }         
+        }
+
+        let fadeTillDate = ()=>{
+            let allSpans = document.querySelectorAll("span[data-date]");
+
+            for (const span of allSpans){             
+                let spanDate = new Date(span.dataset.date);                
+                if((spanDate < today && !span.classList.contains("unavailable-dates")) && spanDate.getMonth() === today.getMonth()){  
+                    span.classList.add("unavailable-dates");                    
+                }
+            }     
+        }
+
+        function fadeBookedDates() {
+         
+            for (const booking of allBookings) {  
+
+                let spanCheckInDate = new Date(booking.checkIn);   
+                let spanCheckOutDate = new Date(booking.checkOut);   
+                    
+                for (let i = spanCheckInDate.getDate(); i <= spanCheckOutDate.getDate(); i++) {
+
+                    let span = document.querySelector(`span[data-date='${formatDate(spanCheckInDate)}']`);   
+
+                    span?.classList.add("unavailable-dates");  
+                    spanCheckInDate.setDate(spanCheckInDate.getDate()+1);       
+                    // console.log(spanCheckInDate);                    
+                    // console.log(span);
+                }    
+                    
+                    // console.log(formatDate(new Date(booking.checkIn)));
+                    // console.log(formatDate(new Date(booking.checkOut)));  
+            }
+        }
+
+        let showDates = ()=>{
+
+           if (start && end) {    
+                        
+            let checkInStartDate = new Date(start);  
+            // abhi to mne start date se leke end date ko ++ kr diya pr mhuje try krna h ki optimise kr sku month h to sidha 30+
+            for (let i = 1; checkInStartDate < new Date(end); i++) {
+                days = i;
+                checkInStartDate.setDate(checkInStartDate.getDate()+1);              
+            }
+
+            if (start < today || end < today) {
+                console.log("Wrong Dates");
+                reserveBtn.innerHTML = "Change dates";
+                return;
+            }
+          
+            dateHeading.innerText = days > 1 ? `${days} nights in ${listing.location}` : `${days} night in ${listing.location}`;
+            datePara.innerText = `${new Date(start).toDateString().split(" ").slice(1).join(" ")} - ${new Date(end).toDateString().split(" ").slice(1).join(" ")}`;
+            guestSelectH5.innerText = days > 1 ? `${days} nights` : `${days} night`;
+            guestDateH6.innerText = `${new Date(start).toDateString().split(" ").slice(1).join(" ")} - ${new Date(end).toDateString().split(" ").slice(1).join(" ")}`;
+           
+            checkIn.value = start;
+            checkOut.value = end;
+            guestCheckIn.value = start;
+            guestCheckOut.value = end;
+
+           } else if(start && !end){
+                dateHeading.innerText = "Select check-out date";
+                datePara.innerText = "Add your travel dates for exact pricing";
+                guestSelectH5.innerText = "Select dates";
+                guestDateH6.innerText = "Add your travel dates for exact pricing"; 
+                checkIn.value = start;
+                checkOut.value = "";
+                guestCheckIn.value = start;
+                guestCheckOut.value = "";
+           } else {
+                dateHeading.innerText = "Select check-in date";
+                datePara.innerText = "Add your travel dates for exact pricing";
+                guestSelectH5.innerText = "Select dates";
+                guestDateH6.innerText = "Add your travel dates for exact pricing"; 
+                checkIn.value = "";
+                checkOut.value = "";
+                guestCheckIn.value = "";
+                guestCheckOut.value = "";
+           }
+            checkInOutDays();
+            changeButtonText();
+
+            let event = new Event('change');
+            checkOut.dispatchEvent(event);
+        }
+
+        let handleMouseOver = (e)=>{
+            let hoverEl = e.target;
+            if(start && !end){       
+                applyHighlight();
+                let hoverDate = formatDate(new Date(hoverEl.dataset.date));
+                document.querySelectorAll(`span[data-date]`).forEach((span)=>{
+                    let date = formatDate(new Date(span.dataset.date));
+
+                    if (start < date && hoverDate > date && start < hoverDate && !span.classList.contains("unavailable-dates")) {                        
+                        span.classList.add("range-in");
+                    }
+                })     
+                
+                hoverEl.addEventListener("mouseleave",()=>{
+                    hoverEl.classList.remove("range-in");                    
+                    applyHighlight();
+                }) 
+            }
+        }      
+
+        let applyHighlight = ()=>{
+            let spans = document.querySelectorAll("span[data-date]");
+
+            spans.forEach((span)=>{
+                span.classList.remove("range-start", "range-in", "range-end");
+                if (span.title) {                    
+                    span.removeAttribute("title");
+                }
+            });
+
+            spans.forEach((span)=>{           
+                span.addEventListener("mouseover", handleMouseOver);                              
+            });
+           
+            if(start){ 
+               let startEl = document.querySelector(`.calender span[data-date="${start}"]`);
+               let startEl2 = document.querySelector(`.guest-calender span[data-date="${start}"]`);
+           
+                if(startEl) {
+                    startEl.classList.add("range-start");                   
+                    startEl.title = "Check-in-day";  
+
+                    if(end === start) {
+                        start = null;
+                        end = null;
+                        startEl.classList.remove("range-start");
+                    }                    
+                }
+                if(startEl2) {
+                    startEl2.classList.add("range-start");                   
+                    startEl2.title = "Check-in-day";  
+
+                    if(end === start) {
+                        start = null;
+                        end = null;
+                        startEl2.classList.remove("range-start");
+                    }                    
+                }
+            }    
+
+            if(end){       
+                let endEl = document.querySelector(`.calender span[data-date="${end}"]`);
+                if (endEl) {
+                    endEl.classList.add("range-end");                     
+                    endEl.title = "Check-out-day";                
+                }      
+                let endEl2 = document.querySelector(`.guest-calender span[data-date="${end}"]`);
+                if (endEl2) {
+                    endEl2.classList.add("range-end");                     
+                    endEl2.title = "Check-out-day";                
+                }               
+            }          
+
+            if(start && end){                
+                for (const span of spans) {
+                    let spanDate = formatDate(new Date(span.dataset.date));
+
+                    if (spanDate > start && spanDate < end) {
+                        span.classList.add("range-in")
+                    }
+                    
+                    if(span.classList.contains("range-in") && span.classList.contains("unavailable-dates")){                        
+                        span.classList.remove("range-in");
+                        start = null;
+                        end = null;
+                    }
+                }
+            }              
+        }
+
+        let renderCalender = (calender, year, month)=>{            
+            let dates = calender.querySelector(".dates"); 
+            dates.innerHTML = "";
+
+            let label = calender.querySelector(".month-name");
+            label.innerText = new Date(year, month).toLocaleString(
+                navigator.language || "en-IN",{
+                month:"long",
+                year:"numeric",
+            });
+
+            let startDate = new Date(year, month, 1);
+            startDate.setDate(startDate.getDate() - startDate.getDay())
+
+            let endDate = new Date(startDate);
+            endDate.setDate(endDate.getDate() + 38)
+
+            const fragment = document.createDocumentFragment();
+            while (startDate < endDate) {
+            
+            const isDisabled = startDate.getMonth() !== month;
+            const isToday = formatDate(startDate) === formatDate(new Date());
+            let dateEl = creatDates(startDate, isDisabled, isToday);
+            fragment.appendChild(dateEl);
+            startDate.setDate(startDate.getDate() + 1);
+            dates.appendChild(fragment);
+
+            applyHighlight();
+        }
+        }       
+
+        let updateCalender = ()=>{
+            renderCalender(leftCalender, leftDate.getFullYear(), leftDate.getMonth());
+            renderCalender(rightCalender, rightDate.getFullYear(), rightDate.getMonth());  
+            renderCalender(guestLeftCalender, guestLeftDate.getFullYear(), guestLeftDate.getMonth());
+            renderCalender(guestRightCalender, guestRightDate.getFullYear(), guestRightDate.getMonth());    
+            fadeTillDate(); 
+        }
+        updateCalender(); 
+        fadeBookedDates();
+
+        function prevMonths(btn, LDate, RDate) {
+            btn.addEventListener("click", ()=>{
+                LDate.setMonth(LDate.getMonth() - 1); 
+                RDate.setMonth(RDate.getMonth() - 1); 
+                updateCalender()
+                checkPrevBtn()
+                fadeMonths();
+                fadeBookedDates();
+            });
+        }
+
+        function nextMonths(btn, LDate, RDate) {
+            btn.addEventListener("click", ()=>{
+                LDate.setMonth(LDate.getMonth() + 1); 
+                RDate.setMonth(RDate.getMonth() + 1); 
+                updateCalender();
+                checkPrevBtn();
+                fadeMonths(); 
+                fadeBookedDates();
+        });
+        };
+
+        prevMonths(prevBtn, leftDate, rightDate);
+        nextMonths(nextBtn , leftDate, rightDate);
+        prevMonths(guestPrevBtn , guestLeftDate, guestRightDate);
+        nextMonths(guestNextBtn , guestLeftDate, guestRightDate);
+        
+        nextMonths(hiddenNextBtn, leftDate, rightDate);
+        nextMonths(guestHiddenNextBtn, guestLeftDate, guestRightDate);
+
+        clearDates.forEach((clearDate)=>{
+            clearDate.addEventListener("click",()=>{            
+            if(start || end){
+                start = null;
+                end = null;   
+                currStart = null;
+                currEnd = null;
+                applyHighlight();
+                showDates(); 
+                fadeMonths();     
+            }
+        })
+        })
+
+    }
+    showCalender();
+
+    function addGuests(){        
+        let guests = document.querySelector(".reserveListingDiv .reserve-right .guests");
+        let close = document.querySelector(".reserveListingDiv .reserve-right .close-guest");
+        let guestsOptions = document.querySelector(".reserveListingDiv .reserve-right .guests-options");
+        let addGuests = document.querySelectorAll(".reserveListingDiv .reserve-right .add-guest");
+        let adultPlus = document.querySelector(".reserveListingDiv .reserve-right .add-guest-right #adult-plus");
+        let childPlus = document.querySelector(".reserveListingDiv .reserve-right .add-guest-right #child-plus");
+        let totalGuests = document.querySelector(".reserveListingDiv .reserve-right .total-guests");
+        let totalInfants = document.querySelector(".reserveListingDiv .reserve-right .total-infants");
+        let totalPets = document.querySelector(".reserveListingDiv .reserve-right .total-pets"); 
+
+        guests.addEventListener("click", ()=>{
+            guestsOptions.classList.toggle("hide");
+        });
+        document.addEventListener("click", (e)=>{
+            let p = document.querySelector(".reserve-right");
+            if(!p.contains(e.target)){
+                guestsOptions.classList.add("hide");
+            }            
+        });
+        close.addEventListener("click", ()=>{
+            guestsOptions.classList.toggle("hide");
+        });
+
+        let maxTotalGuest = '<%= listing.aboutPlace.guests.adults %>';
+        let adultSum = 1;
+        let adultLimit =  maxTotalGuest;
+        let childrenSum = 0;
+        let childrenLimit = maxTotalGuest;
+        let infantSum = 0;
+        let infantLimit = '<%= listing.aboutPlace.guests.infants %>';
+        let petSum = 0;
+        let petLimit = '<%= listing.aboutPlace.guests.pets %>';
+
+        function changeOpacity(plus, minus, sum, endLimit, startLimit) {
+            
+            if (sum<endLimit) {
+            plus.classList.remove("fade-not-allowed");
+            plus.disabled = false;
+            } else{
+            plus.classList.add("fade-not-allowed");
+            plus.disabled = true;
+            }
+            if(sum==startLimit){
+            minus.classList.add("fade-not-allowed");
+            minus.disabled = true;
+            } else{
+            minus.classList.remove("fade-not-allowed");
+            minus.disabled = false;
+            }
+        }
+
+        function plusFunc(sum, endLimit, displayGuestSpan) {
+            if (sum<endLimit) {
+                sum++;                       
+                // displayGuestSpan.innerText = sum;   
+                displayGuestSpan.value = sum;   
+            }
+            return sum;
+        }
+        function minusFunc(sum, startLimit, displayGuestSpan) {
+            if (sum>startLimit) {
+                sum--;                                  
+                // displayGuestSpan.innerText = sum;
+                displayGuestSpan.value = sum;
+            }
+            return sum;
+        }
+
+        function checkMaxGuest(adults, childrens, maxGuests) {
+            if (adults+childrens < maxGuests) {   
+                return true;
+            } else {
+                // console.log("reach maximum " + `adultSum + childrenSum = ${adultSum + childrenSum} and  maxTotalGuest = ${maxTotalGuest}`);  
+                return false;
+            };
+        }
+
+        function fade() {
+            if (adultSum + childrenSum == maxTotalGuest) {
+                adultPlus.classList.add("fade-not-allowed")
+                childPlus.classList.add("fade-not-allowed")   
+                adultPlus.disabled = true;             
+                childPlus.disabled = true;             
+            } else{
+                adultPlus.classList.remove("fade-not-allowed")
+                childPlus.classList.remove("fade-not-allowed") 
+                adultPlus.disabled = false;             
+                childPlus.disabled = false;             
+            }
+        }
+
+        addGuests.forEach((addGuest)=>{
+
+            addGuest.children[1].children[0].classList.add("fade-not-allowed");  
+
+            addGuest.addEventListener("click",(e)=>{                 
+
+            if (addGuest.id == "adults") {
+                adultSum = logic(adultSum, adultLimit, 1);       
+                fade();    
+            }
+            else if (addGuest.id == "childrens") {
+                childrenSum = logic(childrenSum, childrenLimit);  
+                fade()
+            }
+            else if (addGuest.id == "infants") {
+                infantSum = logic(infantSum, infantLimit);   
+            } 
+            else if (addGuest.id == "pets") {
+
+                petSum = logic(petSum, petLimit);                
+            } 
+            else{}     
+
+            totalGuests.innerText = adultSum+childrenSum > 1 ? `${adultSum+childrenSum} guests` : `${adultSum+childrenSum} guest`;  
+
+            if (infantSum) {
+                totalInfants.innerText = `, ${infantSum} infants`;
+            }else{
+                totalInfants != null ? totalInfants.innerText = "" : '';
+            }
+            if (petSum) {                                           
+                totalPets.innerText = `, ${petSum} pets`; 
+            }else{
+                totalPets != null ? totalPets.innerText = "" : '';
+            }
+            // console.log(`adultSum(${adultSum}) + childrenSum(${childrenSum}) = ${adultSum + childrenSum} and  maxTotalGuest = ${maxTotalGuest}`);  
+
+            function logic(sum, limit, startingLimit = 0) {
+
+            let plusGuest = addGuest.querySelector(".add-guest-right .plus-guest"); 
+            let minusGuest = addGuest.querySelector(".add-guest-right .minus-guest");
+               
+            if (e.target.className == "plus-guest") {  
+            
+                let displayGuestSpan = e.target.nextSibling.parentElement.children[1];
+
+                if (plusGuest.id=="adult-plus" || plusGuest.id=="child-plus") {
+                    if (checkMaxGuest(adultSum, childrenSum, maxTotalGuest)){                        
+                        sum = plusFunc(sum, limit, displayGuestSpan);
+                        changeOpacity(plusGuest, minusGuest, sum, limit, startingLimit);                                      
+                    }  
+                }else{                
+                    sum = plusFunc(sum, limit, displayGuestSpan);
+                    changeOpacity(plusGuest, minusGuest, sum, limit, startingLimit); 
+                }             
+                
+            } else if (e.target.className == "minus-guest") {
+
+                let displayGuestSpan = e.target.nextSibling.parentElement.children[1];
+                sum = minusFunc(sum, startingLimit, displayGuestSpan)
+                changeOpacity(plusGuest, minusGuest, sum, limit, startingLimit)
+
+            } else{}
+
+            //   console.log(`sum is ${sum} and limit is ${limit}`);   
+
+            return sum;              
+            }
+            
+
+            })         
+        })
+
+    }
+    addGuests(); 
+    
+    function amenetiesFunc() {
+
+    let amenDivContainer = document.querySelector(".amen-div-container") 
+    let AmentiyCross = document.querySelector(".amen-div-container .cross") 
+    let amenParent = document.querySelector(".amen-div-amenities") 
+    let showAllAmenities = document.querySelector(".show-all-amenities") 
+    let descDivContainer = document.querySelector(".desc-div-container") 
+    let descCross = document.querySelector(".desc-div-container .cross") 
+    let descParent = document.querySelector(".desc-div")      
+    let showAllDesc = document.querySelector("#show-more-desc") 
+    
+    let saftyAmenitiesPopups = document.querySelector("#safty-popups");
+
+    let rulesCross = document.querySelector("#rules-container .cross") 
+    let rulesParent = document.querySelector("#rules-container .rules-div") 
+    let showAllRules = document.querySelector("#rule-btn");     
+
+    let saftyCross = document.querySelector("#safty-container .cross") 
+    let saftyParent = document.querySelector("#safty-container .safty-amenities-div")
+    let showAllSafty = document.querySelector("#safty-btn")  
+
+    let policyCross = document.querySelector("#policy-container .cross") 
+    let showAllpolicy = document.querySelector("#policy-btn");
+    
+    let checkIn = document.querySelector(".reserveListingDiv .reserve-right #check-in");
+    let checkOut = document.querySelector(".reserveListingDiv .reserve-right #check-out");
+
+    let Totalamenities = document.querySelector(".total-amenities") 
+    let amenitiesLeft = document.querySelector(".amenities-left") 
+    let amenitiesRight = document.querySelector(".amenities-right");
+    
+    let sec3 = document.querySelector(".sec-3"); 
+    let descAmenity = document.querySelector(".desc-amenity");
+    let saftyAmenities = document.querySelector(".safty-amenities");
+
+    if (listing.amenities) {    
+    showAllAmenities.addEventListener("click",(e)=>{
+        amenDivContainer.classList.remove("hide");
+    });   
+    AmentiyCross.addEventListener("click",(e)=>{
+        amenDivContainer.classList.add("hide");      
+    }); 
+    }          
+    showAllDesc.addEventListener("click",()=>{
+        descDivContainer.classList.remove("hide");
+    });  
+    descCross.addEventListener("click",()=>{
+        descDivContainer.classList.add("hide");      
+    }); 
+
+    showAllRules.addEventListener("click",()=>{        
+        saftyAmenitiesPopups.children[0].classList.remove("hide"); 
+    }); 
+    rulesCross.addEventListener("click",()=>{
+        saftyAmenitiesPopups.children[0].classList.add("hide");
+    }); 
+
+    showAllSafty.addEventListener("click",()=>{
+        saftyAmenitiesPopups.children[1].classList.remove("hide");
+    }); 
+    saftyCross.addEventListener("click",()=>{        
+        saftyAmenitiesPopups.children[1].classList.add("hide");
+    });     
+
+    showAllpolicy.addEventListener("click",()=>{         
+        saftyAmenitiesPopups.children[2].classList.remove("hide");      
+    }); 
+    policyCross.addEventListener("click",()=>{
+        saftyAmenitiesPopups.children[2].classList.add("hide");
+    }); 
+         
+    let amenitiesCount = 0; 
+    let checkAmenityCallCount = 0;
+    let callLimit = 3;
+
+    function createParentDiv(p1, p2, spanHTML){  
+        let topParent = document.createElement("div");
+        let parentDiv = document.createElement("div");
+        let span = document.createElement("span");
+
+        topParent.classList.add("listing-about");
+        parentDiv.classList.add("listing-about-info");
+
+        parentDiv.appendChild(p1);
+        parentDiv.appendChild(p2);
+        span.innerHTML = spanHTML;
+        topParent.appendChild(span);
+        topParent.appendChild(parentDiv);
+        checkAmenityCallCount++;
+        return topParent;
+    }
+
+    function createAndExecute(amenityHeading, amenityText, amenityIcon) {
+            let p1 = document.createElement("p");
+            let p2 = document.createElement("p");
+            
+            p1.innerHTML = amenityHeading;
+            p2.innerHTML = amenityText;  
+            
+            sec3.insertAdjacentElement("afterbegin",createParentDiv(p1,p2, amenityIcon));
+    }
+
+    function checkAmenitiesForShow(amenity) {
+        
+        if (amenity && checkAmenityCallCount>= callLimit) {
+            return;
+        }
+
+        if (amenity.toLowerCase().includes("fa-snowflake")) {
+                    
+            createAndExecute("Designed for staying cool", "Beat the heat with the A/C, portable fan and ceiling fan.", "<i class='fa-solid fa-snowflake'></i>");
+            
+        } else if(amenity.toLowerCase().includes("fa-person-swimming")){
+                   
+            createAndExecute("Dive right in", "This is one of the few places in the area with a pool.", "<i class='fa-solid fa-person-swimming'></i>");
+        
+        } else if(amenity.toLowerCase().includes("fa-umbrella-beach")){
+
+            createAndExecute("12-min walk to the beach", `This home is by ${listing.location} Beach.`, "<i class='fa-solid fa-umbrella-beach'></i>");
+
+        } else if (amenity.toLowerCase().includes("fa-dumbbell")) {
+
+            createAndExecute("Outdoor entertainment", "The outdoor exercise and pools area are great for summer trips.", "<i class='fa-solid fa-cloud-sun'></i>");
+
+        } else if(amenity.toLowerCase().includes("fa-water")){  
+
+            createAndExecute("Mountain and valley views", "Guests say the views are gorgeous.", "<i class='fa-solid fa-water'></i>");
+            
+        } else {}
+    }
+   
+    function setStyle(p, value) {
+        p.style.display = "flex";
+        p.style.flexDirection = "row-reverse";
+        p.style.justifyContent = "start";
+        p.style.alignItems = "center";
+        p.style.gap = "8px";
+        p.innerHTML = value; 
+    }
+
+    function showAmeneties(value) {
+        let p1 = document.createElement("p");
+        let p2 = document.createElement("p");
+        setStyle(p1,value);                 
+        setStyle(p2,value);                  
+        if (amenitiesCount < 5) { 
+            amenitiesLeft.appendChild(p1); 
+        }else if(amenitiesCount >= 5 && amenitiesCount < 10){
+            amenitiesRight.appendChild(p1);                
+        } else{}           
+        amenParent.appendChild(p2);             
+        amenitiesCount++;         
+    }
+    
+    function showHouseRulesPopup(){   
+        const rules = listing.houseRules;        
+        let idx = 0;
+
+        for (const name in rules) {
+            let div = document.createElement("div");
+            let p = document.createElement("p");
+            let maxGuests = document.createElement("p");
+            let iconsArr = ['<i class="fa-solid fa-clock"></i> ', '<i class="fa-solid fa-clock"></i> ', '<i class="fa-solid fa-door-open"></i> ', "<i class='fa-solid fa-paw'></i> ", '<i class="fa-solid fa-champagne-glasses"></i> ', '<i class="fa-solid fa-smoking"></i> ', '<i class="fa-solid fa-photo-film"></i> ']
+           
+            // merko during your stay dikhana h max gust k liy pr problem 3 idx tk nhi ata h agr 1 bhi rules na ho to
+
+            function createRulesHeading(headingText) {
+                let h5 = document.createElement("h5");
+                h5.style.padding = "1rem 0";
+                h5.innerText = headingText;
+                div.appendChild(h5);
+            }
+
+            if (idx == 0) {      
+
+                createRulesHeading("Checking in and out");
+            }else if (idx == 3) {
+
+                createRulesHeading("During your stay");
+                setStyle(maxGuests, `${listing.aboutPlace.guests.adults > 1 ? listing.aboutPlace.guests.adults+" guests maximum" : listing.aboutPlace.guests.adults+" guest maximum"} <i class="fa-solid fa-people-roof"></i> `);
+                div.appendChild(maxGuests);   
+            } else {}
+            
+            if (rules[name]) {
+                // console.log(name + "->" + rules[name]);
+                setStyle(p, rules[name] + ` ${iconsArr[idx]}`)
+                idx++;
+            } else {
+                // console.log(name + "-> Not allowed");
+                p.classList.add("line-through");
+                setStyle(p, `${name} is not allowed`+` ${iconsArr[idx]}`);
+                idx++;
+            }                       
+            
+            div.appendChild(p);  
+            rulesParent.insertAdjacentElement("beforeend",div);     
+        }
+    }
+    showHouseRulesPopup();
+
+    if (listing.amenities) {  
+
+    function listAmenites() { 
+
+        for(let key in listing.amenities){ 
+            let div = document.createElement("div");
+            let h5 = document.createElement("h5");
+            div.style.width = "fit-content";
+            h5.innerText = key;
+            div.appendChild(h5);
+            amenParent.appendChild(div);
+            if (typeof listing.amenities[key] == "object") {        
+                for(let value of listing.amenities[key]){                                           
+                    showAmeneties(value);   
+                }  
+            } else if (typeof listing.amenities[key] == "string") {   
+                showAmeneties(listing.amenities[key]);          
+            }
+        } 
+        Totalamenities.innerText = amenitiesCount;      
+    }
+    listAmenites();
+
+    function saftyAmenitiesInsertion () {
+        
+        for(let key in listing.amenities){ 
+            
+        if (typeof listing.amenities[key] == "object") {        
+            for(let value of listing.amenities[key]){   
+                let p = document.createElement("p");
+                setStyle(p,value)                  
+                descAmenity.appendChild(p);
+            }        
+            if (listing.amenities[key] == listing.amenities['homesafty']) {     
+                let div = document.createElement("div");
+                let h5 = document.createElement("h5");
+                h5.innerText = key;
+                div.appendChild(h5);
+                for (let safty of listing.amenities[key]) {
+                    let p1 = document.createElement("p");
+                    let p2 = document.createElement("p"); 
+                    setStyle(p1, safty)
+                    setStyle(p2, safty)                
+                    div.appendChild(p2); 
+                    saftyParent.insertAdjacentElement("beforeend",div);                  
+                    saftyAmenities.appendChild(p1);   
+                }
+            } 
+        } else if (typeof listing.amenities[key] == "string") {   
+            let p = document.createElement("p");
+                setStyle(p,listing.amenities[key])                  
+                descAmenity.appendChild(p)
+            
+            if (listing.amenities[key] == listing.amenities['homesafty']) {  
+                let div = document.createElement("div");
+                let h5 = document.createElement("h5");
+                let p1 = document.createElement("p");
+                let p2 = document.createElement("p");
+                h5.innerText = key;
+                setStyle(p1, listing.amenities[key])
+                setStyle(p2, listing.amenities[key])
+                div.appendChild(h5);
+                div.appendChild(p2);        
+                saftyParent.insertAdjacentElement("beforeend",div);  
+                saftyAmenities.appendChild(p1);   
+            } 
+        }
+    }     
+    } 
+    saftyAmenitiesInsertion();
+
+    }
+
+    function showAmenitiesInSection() { 
+        sec3.innerHTML= "";     
+        checkAmenityCallCount = 0;
+
+        if(checkIn.value && checkOut.value ){
+            createAndExecute(`Free cancellation before ${new Date(checkIn.value).getDate()} ${new Date(checkIn.value).toDateString().split(" ").slice(1,2)}`,"Get a full refund if you change your mind." , '<i class="fa-solid fa-calendar"><i>');   
+        }
+        
+        if (listing.amenities) {  
+            for(let key in listing.amenities){ 
+                if (typeof listing.amenities[key] == "object") {        
+                    for(let value of listing.amenities[key]){  
+                        checkAmenitiesForShow(value); 
+                    }  
+                } else if (typeof listing.amenities[key] == "string") {  
+                    checkAmenitiesForShow(listing.amenities[key]);    
+                }
+            }             
+        }  
+    }
+    showAmenitiesInSection();
+
+    function petAndCheckinAmenity() {
+        if (!(checkAmenityCallCount >= callLimit)) {
+            if(listing.houseRules.selfCheckIn){
+                createAndExecute("Self check-in", `${listing.houseRules.selfCheckIn}`, '<i class="fa-solid fa-door-open"></i>');   
+            }
+        }
+        if (!(checkAmenityCallCount >= callLimit)) {
+            if(listing.houseRules.pets){
+                createAndExecute("Furry friends welcome", "Bring your pets along for the stay.", '<i class="fa-solid fa-paw"></i>');               
+            }     
+        }
+    }
+    petAndCheckinAmenity();
+
+    checkOut.addEventListener("change", ()=>{
+        showAmenitiesInSection();
+        if(checkAmenityCallCount<3){ 
+            petAndCheckinAmenity();
+        }
+    });
+
+    }    
+    amenetiesFunc()
+
+    // sort baki h abhi kyuki shi nhi hua h
+    function sortReviews(){
+        let popupReviews= document.querySelector(".all-popup-reviews .popup-reviews");
+        let selectDiv = document.querySelector(".all-popup-reviews .select-div");
+        let optionsDiv = document.querySelector(".select-div .options-div");
+        let options = document.querySelectorAll(".select-div .options-div .options");
+        let sortIcon = document.querySelector(".all-popup-reviews .select-div .span-icon i");
+        let spanText = document.querySelector(".all-popup-reviews .select-div .span-text");
+
+        selectDiv.addEventListener("click",()=>{
+            selectDiv.classList.toggle("border");
+            optionsDiv.classList.toggle("hide");
+            sortIcon.classList.toggle("rotate");
+        });      
+
+       function sortByOptions(spanText) {
+        if (spanText.innerText.toLowerCase() == "highest rated") {
+            // alert(spanText.innerText.toLowerCase());
+            popupReviews.innerHTML = ""; 
+            let max = 5;                
+            function run() {
+            for (let i = 5 - max; i < listing.reviews.length; i++) {
+                if (listing.reviews[i].rating === max) {
+                //   popupReviews.innerHTML += listing.reviews[i].rating;       
+                popupReviews.innerHTML += `<div class="popup-review">                       
+                    <p>${listing.reviews[i].comment}</p>  
+                    <p>                      
+                         <span class="date" style="font-size: .7rem; font-weight: 600;"> ${listing.reviews[i].createdAt.toString().split(" ").slice(1,4).join(" ")}
+                         </span>
+                    </p>                     
+                    <div class="review-author-info">
+                        <h6 class="card-title img-n-name">
+                        <div class="review-profile-img">
+                                ${listing.reviews[i].author.username.trim().slice(0,1)}            
+                        </div>
+                        &nbsp;&nbsp;
+                        <div class="host-review-detail">                       
+                            <span> ${listing.reviews[i].author.username} (${listing.reviews[i].author.statusType})</span>                       
+                                                     
+                        </div>
+                        </h6>                        
+                    </div>      
+                </div> `;             
+                } else continue;              
+            }
+
+            if (max > 0) {
+                max--;
+                run();
+                console.log('come');
+                
+            } else{
+                return;
+            }            
+            }run();
+
+            
+        } else if (spanText.innerText.toLowerCase() == "lowest rated") {
+            // alert(spanText.innerText.toLowerCase());
+            popupReviews.innerHTML = "";            
+            let max = 0;  
+
+            function run() {
+            for (let i = 0; i < listing.reviews.length; i++) {
+                if (listing.reviews[i].rating === max) {
+                //   popupReviews.innerHTML += listing.reviews[i].rating;  
+                popupReviews.innerHTML += `<div class="popup-review">                       
+                    <p>${listing.reviews[i].comment}</p>  
+                    <p>   
+                         <span class="date" style="font-size: .7rem; font-weight: 600;"> ${listing.reviews[i].createdAt.toString().split(" ").slice(1,4).join(" ")}
+                         </span>
+                    </p>                     
+                    <div class="review-author-info">
+                        <h6 class="card-title img-n-name">
+                        <div class="review-profile-img">
+                            ${listing.reviews[i].author.username.trim().slice(0,1)}            
+                        </div>
+                        &nbsp;&nbsp;
+                        <div class="host-review-detail">                       
+                            <span> ${listing.reviews[i].author.username} (${listing.reviews[i].author.statusType})</span>                       
+                                                     
+                        </div>
+                        </h6>                        
+                    </div>      
+                </div> `;    
+                } else continue;              
+            }
+
+            if (max <= 5) {
+                max++;
+                run();
+                console.log('come');
+                
+            } else{
+                return;
+            }            
+            }run();
+        } else if (spanText.innerText.toLowerCase() == "most recent") {
+            // alert(spanText.innerText.toLowerCase());
+        } else {
+            alert("nothing");
+        }
+       }
+
+       options.forEach((option)=>{
+            option.addEventListener("click",()=>{
+                spanText.innerText = option.innerText;
+                sortByOptions(spanText)          
+            });
+        }); 
+
+    }
+    sortReviews()
+   </script>
+</body>
+
+
+<!-- let sum;
+let limit;
+
+addGuests.forEach((addGuest)=>{
+    if (addGuest.id == "adults") {
+        sum = 1;
+        limit = 4;
+    } else if(addGuest.id == "childrens"){
+        sum = 0;
+        limit = 5;
+    } else if(addGuest.id == "infants"){
+        sum = 0;
+        limit = 2;
+    } else if(addGuest.id == "pets"){
+        sum = 0;
+        limit = 3;
+    }else{}   
+
+addGuest.addEventListener("click",(e)=>{
+    let totalGuestSpan = addGuest.querySelector(".total-guest");   
+
+    
+
+    function changeOpacity(minus) {
+    if (sum>1) {
+          minus.style.opacity = 1;
+     }else{
+          minus.style.opacity = 0.3;
+    }
+    }   
+       
+    if (e.target.className == "minus-guest") {
+    let minus = addGuest.querySelector(".minus-guest");    
+    minus.addEventListener("click", ()=>{                
+    console.log(sum);
+    if (sum>=1) {
+        sum--;        
+        totalGuestSpan.innerText = sum;
+        if (addGuest.id == "adults") {
+        totalGuest.innerText = sum;
+        } 
+        changeOpacity(minus)
+    }
+    });               
+ }
+
+ if (e.target.className == "plus-guest") {
+    let plus = addGuest.querySelector(".plus-guest"); 
+    
+    plus.addEventListener("click", ()=>{            
+        sum++;
+        console.log(sum);            
+
+        totalGuestSpan.innerText = sum;
+        if (addGuest.id == "adults") {
+        totalGuest.innerText = sum;                
+        } 
+        if (!sum> 2) {
+            changeOpacity(minus)
+        }
+    });             
+ }        
+})    
+})       -->

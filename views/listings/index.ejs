@@ -1,0 +1,946 @@
+<% layout('/layouts/boilerplate.ejs') -%>
+
+<link rel="stylesheet" href="/css/index.css">
+
+<style>
+ 
+
+
+  /* .skeleton {
+        height: 20px;
+        width: 100%;
+        background: linear-gradient(-90deg, #eee 0%, #f5f5f5 50%, #eee 100%);
+        background-size: 200% 100%;
+        animation: shimmer 1.2s infinite;
+        margin-bottom: 10px;
+      }
+      
+      .skeleton.short {
+        width: 60%;
+      }
+      
+      @keyframes shimmer {
+        100% {
+          background-position: -200% 0;
+        }
+      } */
+
+  /* .currency-div{
+    width: 60vw;
+  }
+  .currency-div-body{
+    width: 100%;
+    padding: 2.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  .currencyCodes{
+    width: 10.75rem;    
+    min-width: fit-content;
+    flex-grow: 1;
+    padding: .45rem .65rem;
+    border-radius: 8px;
+    margin: .5px;
+    cursor: pointer;
+    transition: all cubic-bezier(0.19, 1, 0.22, 1) .3s;
+  }
+  .currencyCodes:hover{
+    background-color: #F7F7F7;
+  }
+  .currencyCodes form{
+    display: none;
+  }
+  .currencyCodes span{
+    display: block;
+    font-size: .89rem;
+    font-weight: 400;
+    color: #252525;
+  }
+  .currencyCodes .curr-code{    
+    color: #666565;
+    font-weight: 500;
+    font-size: .79rem;
+  }
+  .black-border{
+    border: .5px solid rgb(15, 15, 15);
+  } */
+
+  /* Shimmer base */
+.shimmer {
+  background: linear-gradient(100deg, #eee 30%, #f5f5f5 50%, #eee 70%);
+  background-size: 400% 100%;
+  animation: shimmerMove 1.2s infinite linear;
+  border-radius: 4px;
+}
+
+/* Layout matchers */
+.shimmer-img {
+  height: 180px;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.shimmer-title {
+  width: 70%;
+  height: 18px;
+  margin: 10px 0;
+}
+
+.shimmer-text {
+  width: 50%;
+  height: 14px;
+  margin-bottom: 6px;
+}
+
+.shimmer-rating {
+  width: 30%;
+  height: 14px;
+}
+
+@keyframes shimmerMove {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Optional: Match real card spacing */
+.card.shimmer-card {
+  border: 1px solid #ddd;
+  padding: 12px;
+  width: 250px;
+  margin: 10px;
+}
+
+#shimmer-container.loaded {
+  display: none;
+}
+  
+</style>
+
+<body>  
+  <!-- <div id="content-box">
+    <div class="skeleton"></div>
+    <div class="skeleton short"></div>
+  </div> -->
+  <!-- <div class="row row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-xs-1 offset-1"> -->
+  <div class="allListings">
+    <div id="listingOptions" class="border-bottom">
+      <div id="options-div">
+        <!-- <div class="icons-text">
+          <i class="fa-solid fa-map"></i>
+          <p>map</p>
+        </div>  -->
+        <div class="icons-text">            
+            <!-- <i class="fa-solid fa-person-booth"></i>
+            <p>rooms</p>  -->
+            <i class="fa-solid fa-bed"></i>
+            <p>room</p>
+            <form action="/listings" method="get">
+            <input type="text" value="room" name="propertyType" hidden>
+          </form>
+        </div>
+        <div class="icons-text">
+          <i class="fa-solid fa-city"></i>
+          <p>city</p>
+            <form action="/listings" method="get">             
+              <input type="text" value="city house" name="propertyType" hidden>
+          </form>        
+        </div>
+        <div class="icons-text">
+          <i class="fa-solid fa-house"></i>
+          <p>house</p>
+          <form action="/listings" method="get">            
+            <input type="text" value="house" name="propertyType" hidden>
+         </form> 
+        </div>
+        <div class="icons-text">
+          <i class="fa-solid fa-tree"></i>
+          <p>nature</p>
+          <form action="/listings" method="get">           
+            <input type="text" value="nature house" name="propertyType" hidden>
+         </form>    
+        </div>
+        <div class="icons-text">
+          <i class="fa-solid fa-umbrella-beach"></i>
+          <p>beach</p>
+          <form action="/listings" method="get">            
+            <input type="text" value="beach house" name="propertyType" hidden>
+         </form>   
+        </div>
+        <div class="icons-text">
+          <i class="fa-solid fa-house-laptop"></i>
+          <p>office</p>
+          <form action="/listings" method="get">            
+            <input type="text" value="cabin" name="propertyType" hidden>
+         </form>   
+        </div>
+        <div class="icons-text">
+          <i class="fa-solid fa-building"></i>
+          <p>flats</p>
+          <form action="/listings" method="get">            
+            <input type="text" value="flat" name="propertyType" hidden>
+         </form>   
+        </div>
+        <div class="icons-text">
+          <i class="fa-solid fa-hotel"></i>
+          <p>hotels</p>
+          <form action="/listings" method="get">            
+            <input type="text" value="hotel" name="propertyType" hidden>
+         </form>   
+        </div>
+        <div class="icons-text">
+          <i class="fa-solid fa-building"></i>
+          <p>buildings</p>
+          <form action="/listings" method="get">            
+            <input type="text" value="building" name="propertyType" hidden>
+         </form>   
+        </div>
+        <!-- <div class="icons-text">
+          <i class="fa-solid fa-mountain-city"></i>
+          <p>mountain cities</p>
+          <form action="/listings" method="get">            
+            <input type="text" value="mountain cities" name="propertyType" hidden>
+         </form>  
+        </div> -->
+        <!-- <div class="icons-text">
+          <i class="fa-solid fa-tree-city"></i>
+          <p>beach city</p>
+          <form action="/listings" method="get">            
+            <input type="text" value="beach city" name="propertyType" hidden>
+         </form> 
+        </div> -->
+        <div class="icons-text">
+          <i class="fa-solid fa-tractor"></i>
+          <p>farms</p>
+          <form action="/listings" method="get">            
+            <input type="text" value="farm" name="propertyType" hidden>
+         </form> 
+        </div>
+        <div class="icons-text">
+          <i class="fa-solid fa-person-swimming"></i>
+          <p>pools</p>
+          <form action="/listings" method="get">            
+            <input type="text" value="pool" name="propertyType" hidden>
+         </form> 
+        </div>        
+        <!-- <div class="icons-text">         
+          <i class="fa-solid fa-fire"></i>
+          <p>Trending</p>  
+          <form action="/listings" method="get">            
+            <input type="text" value="trending" name="propertyType" hidden>
+         </form>       
+        </div>               -->
+        <div class="icons-text">
+          <i class="fa-solid fa-person-hiking"></i>
+          <p>hiking</p>
+          <form action="/listings" method="get">            
+            <input type="text" value="tent" name="propertyType" hidden>
+         </form> 
+        </div>
+        <div class="icons-text">
+          <i class="fa-solid fa-igloo"></i>
+          <p>igloo</p>
+          <form action="/listings" method="get">            
+            <input type="text" value="igloo" name="propertyType" hidden>
+         </form> 
+        </div>
+        <!-- <div class="icons-text">
+          <i class="fa-solid fa-water"></i>
+          <p>lake</p>
+          <form action="/listings" method="get">            
+            <input type="text" value="lake" name="propertyType" hidden>
+         </form> 
+        </div> -->
+        <!-- <div class="icons-text">
+          <i class="fa-regular fa-snowflake"></i>
+          <p>snowflake</p>
+          <form action="/listings" method="get">            
+            <input type="text" value="snowflake" name="propertyType" hidden>
+         </form> 
+        </div> -->
+        <div class="icons-text">
+          <i class="fa-solid fa-mountain-sun"></i>
+          <p>mountains</p>
+          <form action="/listings" method="get">            
+            <input type="text" value="mountain house" name="propertyType" hidden>
+         </form> 
+        </div>
+        <div class="icons-text">
+          <i class="fa-solid fa-landmark-dome"></i>
+          <p>dome</p>
+          <form action="/listings" method="get">            
+            <input type="text" value="dome" name="propertyType" hidden>
+         </form> 
+        </div>        
+        <div class="icons-text">
+          <i class="fa-solid fa-ship"></i>
+          <p>ships</p>
+          <form action="/listings" method="get">            
+            <input type="text" value="ship" name="propertyType" hidden>
+         </form> 
+        </div>
+        <div class="icons-text">
+          <i class="fa-solid fa-cloud-sun"></i>
+          <p>sunny town</p>
+          <form action="/listings" method="get">            
+            <input type="text" value="sunnyTown house" name="propertyType" hidden>
+         </form> 
+        </div>
+        <!-- <div class="icons-text">
+          <i class="fa-solid fa-golf-ball-tee"></i>
+          <p>golfs</p>
+          <form action="/listings" method="get">            
+            <input type="text" value="golfs" name="propertyType" hidden>
+         </form> 
+        </div> -->
+        <!-- <div class="icons-text">
+          <i class="fa-solid fa-wind"></i>
+          <p>tropical</p>
+          <form action="/listings" method="get">            
+            <input type="text" value="tropical" name="propertyType" hidden>
+         </form> 
+        </div> -->
+        <div class="icons-text">
+          <i class="fa-solid fa-tower-observation"></i>
+          <p>tower</p>
+          <form action="/listings" method="get">            
+            <input type="text" value="tower house" name="propertyType" hidden>
+         </form> 
+        </div>
+        <div class="icons-text">
+          <i class="fa-solid fa-house-chimney-window"></i>
+          <p>tiny home</p>
+          <form action="/listings" method="get">            
+            <input type="text" value="tiny home" name="propertyType" hidden>
+         </form> 
+        </div>
+        <!-- <div class="icons-text">
+          <i class="fa-solid fa-champagne-glasses"></i>
+          <p>party</p>
+          <form action="/listings" method="get">            
+            <input type="text" value="party" name="propertyType" hidden>
+         </form> 
+        </div> -->
+        <div class="icons-text">
+          <i class="fa-solid fa-sailboat"></i>
+          <p>boat</p>
+          <form action="/listings" method="get">            
+            <input type="text" value="boat" name="propertyType" hidden>
+         </form> 
+        </div>     
+      </div>
+    
+      <div id="filter-taxs">
+        <div id="filter" class="filter-taxs-hover">
+          <i class="fa-solid fa-sort"></i>
+          <p>Filters</p>
+        </div>
+        <div id="taxs" class="filter-taxs-hover">
+          <p>Display total before taxes</p>
+          <div class="toggle" id="toggle-bar">
+            <div class="toggle-circle"></div>
+          </div>
+        </div>
+        <div id="filter-form-div" hidden>
+          <form action="/listings" method="get" id="filter-form">            
+            
+            <label for="price" class="form-label">Price <span class="selected-price"></span></label>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <% let v = 0; %>
+              <% let v2 = 0; %>
+              <% let maxV = 0; %>
+              <span><%= v = currencyConverter(1000, "INR", currUser ? currUser.countryInfo.currency || "INR" : "INR") %></span>
+              <input type="range" class="form-range" name="price" id="price" 
+              min="<%= v2 = v.replace(/[^\d.]/g, '') %>" 
+              max="<%= maxV = currencyConverter(25000, "INR", currUser ? currUser.countryInfo.currency || "INR" : "INR").replace(/[^\d.]/g, '') %>" 
+              step="<%= currencyConverter(100, "INR", currUser ? currUser.countryInfo.currency || "INR" : "INR").replace(/[^\d.]/g, '') %>" 
+              value="<%= v2 %>">
+              <span><%= Number(maxV).toLocaleString(navigator.language || "en-IN", {style : "currency", currency : currUser ? currUser.countryInfo.currency : "INR"}); %></span>
+            </div>
+            <br>
+            <label class="form-label" for="Property-type">Property type</label>
+            <select name="propertyType" id="Property-type" class="form-select form-select-sm"> 
+              <option selected disabled value="">Property type</option>
+              <option value="house">House</option>
+              <option value="hotel">Hotel</option>
+              <option value="flat">Flat</option>
+              <option value="room">Room</option>
+              <option value="nature">Nature</option>
+              <option value="beach">Beach</option>
+              <option value="mountains">Mountains</option>
+              <option value="cabin">Office/Cabin</option>
+            </select>
+
+            <hr>
+            <div class="d-flex justify-content-between">
+              <div>
+                <button class="btn btn-sm btn-dark search">Search</button>
+                <button class="btn btn-sm btn-outline-dark clear" type="reset">Clear</button>
+              </div>
+              <button class="btn btn-sm btn-outline-dark close" type="button">Close</button>
+            </div>
+          </form>
+        </div>        
+      </div>
+    </div>
+
+  
+
+    <!-- <div class="currency-container detail-div-container hide">
+      <div class="currency-div detail-div">
+          <div class="currency-div-header detail-div-header">
+              <i class="fa-solid fa-xmark cross"></i>
+          </div>
+          <h4>Choose a currency</h4>     
+          <br>  
+          <div class="currency-div-body"></div>          
+      </div>
+    </div> -->
+
+   
+    <!-- <div id="shimmer-container">  -->
+
+    <div class="center"> 
+      <% if(!errMsg) { %>
+      <% if(allListings?.length > 0) { %>   
+      <% for(let listing of allListings) { %>
+              
+            <!-- <div class="card shimmer-card">
+              <div class="img-div shimmer shimmer-img"></div>
+              <div class="card-body">
+                <div class="shimmer shimmer-title"></div>
+                <div class="shimmer shimmer-text"></div>
+                <div class="shimmer shimmer-rating"></div>
+              </div>
+            </div> -->
+       
+      <% if(!(currUser?._id.equals(listing.owner._id))) { %>
+      <% if(listing.isAvailable) { %>
+      <div class="card">
+        <div class="favorite-option">
+          <form action="/listings/add-to-wishlists/<%= listing._id %>" method="POST">  
+              <% if(listing.inWishlist) { %>              
+                  <button type="submit"><i class="fa-solid fa-heart wishlist-heart"></i></button>
+              <% } else { %>              
+                  <button type="submit"><i class="fa-regular fa-heart" style="font-weight: 400; color: white;"></i></button>
+              <% } %>              
+         </form>
+      </div>
+        <a class="listing-a" href="/listings/<%= listing._id %>">          
+          <div class="img-div">
+            <img src="<%= listing.images[0].path %>" class="card-img-top" alt="listing-image"/>
+          </div>
+          <div class="card-img-overlay"></div>
+          <div class="card-body">
+            <p class="card-text">
+              <b><%= listing.title %></b> 
+              <br />
+              <span>
+                
+              <% let conPrice = 0; %>
+              <span class="index-price">
+                <% if("INR" != (currUser ? currUser.countryInfo.currency || "INR" : "INR")) { %>
+                <%= conPrice = currencyConverter(listing.price, "INR", currUser ? currUser.countryInfo.currency || "INR" : "INR") %> / night
+                <% } else { %>
+                 <%= Number(listing.price).toLocaleString(
+                    navigator.language || "en-IN", {style : "currency", currency : currUser ? currUser.countryInfo.currency || "INR" : "INR"}) %> / night
+                <% } %>
+              </span>  
+
+             
+              <span class="index-price-before-tax" hidden> 
+                <% if("INR" != (currUser ? currUser.countryInfo.currency || "INR" : "INR")) { %>
+                  <%= (Number(conPrice.replace(/[^\d.]/g, '')) + Number(conPrice.replace(/[^\d.]/g, '')) * svc).toLocaleString(
+                    navigator.language || "en-IN", {style : "currency", currency : currUser ? currUser.countryInfo.currency || "INR" : "INR"}) %> / night
+                <% } else { %>
+                  <%= (Number(listing.price) + Number(listing.price) * svc).toLocaleString(
+                    navigator.language || "en-IN", {style : "currency", currency : currUser ? currUser.countryInfo.currency || "INR" : "INR"}) %> / night
+                <% } %>
+              </span>
+              <span style="font-size: .8rem; float: right;"><i class="fa-solid fa-star"></i> <b><%= calculateAvgRating(listing) %></b></span>
+              
+            </span>
+            </p>            
+          </div>
+        </a>
+      </div>     
+      <% } %>    
+      <% } %>  
+
+      <% } %>      
+      <% } else { %>
+        <h5>Listings Not Available</h5>
+      <% } %>
+      <% } else {%> 
+        <p style="padding: 0 1.5vw;"><%= errMsg %></p>
+      <% } %>
+    </div>
+    
+  <!-- </div> -->
+
+    <div style="margin-top: 1rem; padding: 0 4.5vw;">
+      <% if(filtered) { %>
+      <p><small><a href="/listings" style="color: black;">Back to all listings</a></small></p> 
+    <% } %>  
+  </div>
+  </div>
+  <script>   
+
+  // document.addEventListener("DOMContentLoaded", function () {
+  //   document.getElementById("shimmer-container")?.classList.add("loaded");
+  // });
+
+    currUser = currUser ? JSON.parse('<%- JSON.stringify(currUser) %>') : currUser; 
+    
+    function getPrice(price) {
+      return Number(price).toLocaleString(navigator.language || "en-IN", {style : "currency", currency : currUser ? currUser.countryInfo.currency : "INR"});
+    }
+
+    
+    function showFilterPrice() {      
+      let selectedPrice = document.querySelector("#filter-form-div .selected-price");
+      let filterPrice = document.querySelector("#filter-form-div input[type=range]");
+    
+      filterPrice.addEventListener("input",(e)=>{
+        selectedPrice.innerHTML = getPrice(filterPrice.value);
+      });
+    
+      selectedPrice.innerHTML = getPrice(filterPrice.value);
+    
+      document.querySelector("#filter-form-div .clear").addEventListener("click",()=>{       
+        selectedPrice.innerHTML = getPrice(filterPrice.getAttribute("min"));
+      });
+    }    
+    showFilterPrice();
+
+   
+    function filterNavOptions() {      
+      let filterOptions = document.querySelectorAll("#options-div .icons-text");
+      filterOptions.forEach((option)=>{
+      option.addEventListener("click",(e)=>{
+        option.querySelector("form").submit();
+        })
+      });
+    }
+    filterNavOptions();
+
+    
+    // function showCurrencyGlobe() {    
+    //   let globe = document.querySelector("#nav-links-div .fa-globe");
+    //   let currencyContainer = document.querySelector(".currency-container");
+    //   if(globe){
+    //   globe.addEventListener("click",()=>{
+    //     currencyContainer.classList.remove("hide");
+    //   });
+    //   }
+    //   document.querySelector(".currency-container .cross").addEventListener("click",()=>{
+    //     currencyContainer.classList.add("hide");
+    //   });
+
+    //   // document.addEventListener("click", (e)=>{
+    //   //   let p = document.querySelector(".allListings");
+    //   //   if (!p.contains(e.target)) {
+    //   //     currencyContainer.classList.add("hide")
+    //   //   }
+    //   // })
+    // }
+    // showCurrencyGlobe();
+    
+   
+    function showFilter() {    
+        let filter = document.querySelector("#filter");
+        let filterForm = document.querySelector("#filter-form-div");
+        let show = true;
+        filter.addEventListener("click",()=>{
+          filterForm.hidden = !show;
+          show = !show;
+        });
+        document.querySelector("#filter-form-div .close").addEventListener("click",()=>{   
+          filterForm.hidden = !show;
+          show = !show;
+        })
+    }
+    showFilter()
+
+    
+    function displayTotalBeforeTax() {
+      let toggleBtn = document.querySelector("#toggle-bar");   
+      let indexPrices = document.querySelectorAll(".index-price");
+      let indexPriceBeforeTax = document.querySelectorAll(".index-price-before-tax");
+      let isVisible = false;
+
+      toggleBtn.addEventListener("click", ()=>{
+        toggleBtn.classList.toggle("toggle-move");
+        // console.log(isVisible);
+        indexPriceBeforeTax.forEach((taxPrice)=>{
+          taxPrice.hidden = isVisible;
+        });      
+        indexPrices.forEach((price)=>{
+          price.hidden = !isVisible;
+        });  
+        isVisible = !isVisible;
+      });
+    }
+    displayTotalBeforeTax();
+  
+  
+  
+  
+    // let currencyAndCurrencyCodes = {
+    //   data : {
+    //       AED : {
+    //       symbol: "AED",
+    //       name : "United Arab Emirates Dirham",
+    //       symbol_native: "د.إ",
+    //       code : "AED",
+    //       name_plural: "UAE dirhams",
+    //       },
+    //       AUD : {
+    //       symbol: "AU$",
+    //       name : "Australian Dollar",
+    //       symbol_native: "$",
+    //       code : "AUD",
+    //       name_plural: "Australian dollars",
+          
+    //       },
+    //       BGN : {
+    //       symbol: "BGN",
+    //       name : "Bulgarian Lev",
+    //       symbol_native: "лв.",
+    //       code : "BGN",
+    //       name_plural: "Bulgarian leva",
+    //       },
+    //       BRL : {
+    //       symbol: "R$",
+    //       name : "Brazilian Real",
+    //       symbol_native: "R$",
+    //       code : "BRL",
+    //       name_plural: "Brazilian reals",
+    //       },
+    //       CAD : {
+    //       symbol: "CA$",
+    //       name : "Canadian Dollar",
+    //       symbol_native: "$",
+    //       code : "CAD",
+    //       name_plural: "Canadian dollars",
+    //       },
+    //       CHF : {
+    //       symbol: "CHF",
+    //       name : "Swiss Franc",
+    //       symbol_native: "CHF",
+    //       code : "CHF",
+    //       name_plural: "Swiss francs",
+          
+    //       },
+    //       CLP : {
+    //       symbol: "CL$",
+    //       name : "Chilean Peso",
+    //       symbol_native: "$",
+    //       code : "CLP",
+    //       name_plural: "Chilean pesos",
+    //       },
+    //       CNY : {
+    //       symbol: "CN¥",
+    //       name : "Chinese Yuan",
+    //       symbol_native: "CN¥",
+    //       code : "CNY",
+    //       name_plural: "Chinese yuan",
+    //       },
+    //       COP : {
+    //       symbol: "CO$",
+    //       name : "Coombian Peso",
+    //       symbol_native: "$",
+    //       code : "COP",
+    //       name_plural: "Colombian pesos",
+    //       },
+    //       CRC : {
+    //       symbol: "₡",
+    //       name : "Costa Rican Colón",
+    //       symbol_native: "₡",
+    //       code : "CRC",
+    //       name_plural: "Costa Rican colóns",
+    //       },
+    //       CZK : {
+    //       symbol: "Kč",
+    //       name : "Czech Republic Koruna",
+    //       symbol_native: "Kč",
+    //       code : "CZK",
+    //       name_plural: "Czech Republic korunas",
+    //       },
+    //       EGP : {
+    //       symbol: "EGP",
+    //       name : "Egyptian Pound",
+    //       symbol_native: "ج.م.‏",
+    //       code : "EGP",
+    //       name_plural: "Egyptian pounds",
+          
+    //       },
+    //       EUR : {
+    //       symbol: "€",
+    //       name : "Euro",
+    //       symbol_native: "€",
+    //       code : "EUR",
+    //       name_plural: "Euros",
+    //       },
+    //       GBP : {
+    //       symbol: "£",
+    //       name : "British Pound Sterling",
+    //       symbol_native: "£",
+    //       code : "GBP",
+    //       name_plural: "British pounds sterling",
+          
+    //       },
+    //       HKD : {
+    //       symbol: "HK$",
+    //       name : "Hong Kong Dollar",
+    //       symbol_native: "$",
+    //       code : "HKD",
+    //       name_plural: "Hong Kong dollars",
+    //       },
+    //       HUF : {
+    //       symbol: "Ft",
+    //       name : "Hungarian Forint",
+    //       symbol_native: "Ft",
+    //       code : "HUF",
+    //       name_plural: "Hungarian forints",
+    //       },
+    //       IDR : {
+    //       symbol: "Rp",
+    //       name : "Indonesian Rupiah",
+    //       symbol_native: "Rp",
+    //       code : "IDR",
+    //       name_plural: "Indonesian rupiahs",
+    //       },
+    //       INR : {
+    //       symbol: "Rs",
+    //       name : "Indian Rupee",
+    //       symbol_native: "টকা",
+    //       code : "INR",
+    //       name_plural: "Indian rupees",
+          
+    //       },
+    //       JPY : {
+    //       symbol: "¥",
+    //       name : "Japanese Yen",
+    //       symbol_native: "￥",
+    //       code : "JPY",
+    //       name_plural: "Japanese yen",
+    //       },
+    //       KRW : {
+    //       symbol: "₩",
+    //       name : "South Korean Won",
+    //       symbol_native: "₩",
+    //       code : "KRW",
+    //       name_plural: "South Korean won",
+    //       },
+    //       MAD : {
+    //       symbol: "MAD",
+    //       name : "Moroccan Dirham",
+    //       symbol_native: "د.م.‏",
+    //       code : "MAD",
+    //       name_plural: "Moroccan dirhams",
+          
+    //       },
+    //       MXN : {
+    //       symbol: "MX$",
+    //       name : "Mexican Peso",
+    //       symbol_native: "$",
+    //       code : "MXN",
+    //       name_plural: "Mexican pesos",
+    //       },
+    //       NOK : {
+    //       symbol: "Nkr",
+    //       name : "Norwegian Krone",
+    //       symbol_native: "kr",
+    //       code : "NOK",
+    //       name_plural: "Norwegian kroner",
+          
+    //       },
+    //       NZD : {
+    //       symbol: "NZ$",
+    //       name : "New Zealand Dollar",
+    //       symbol_native: "$",
+    //       code : "NZD",
+    //       name_plural: "New Zealand dollars",      
+    //       },
+    //       PEN : {
+    //       symbol: "S/.",
+    //       name : "Peruvian Nuevo Sol",
+    //       symbol_native: "S/.",
+    //       code : "PEN",
+    //       name_plural: "Peruvian nuevos soles",
+    //       },
+    //       PHP : {
+    //       symbol: "₱",
+    //       name : "Philippine Peso",
+    //       symbol_native: "₱",
+    //       code : "PHP",
+    //       name_plural: "Philippine pesos",
+    //       },
+    //       QAR : {
+    //       symbol: "QR",
+    //       name : "Qatari Rial",
+    //       symbol_native: "ر.ق.‏",
+    //       code : "QAR",
+    //       name_plural: "Qatari rials",
+    //       },
+    //       RON : {
+    //       symbol: "RON",
+    //       name : "Romanian Leu",
+    //       symbol_native: "RON",
+    //       code : "RON",
+    //       name_plural: "Romanian lei",
+    //       },
+    //       SAR : {
+    //       symbol: "SR",
+    //       name : "Saudi Riyal",
+    //       symbol_native: "ر.س.‏",
+    //       code : "SAR",
+    //       name_plural: "Saudi riyals",
+    //       },
+    //       SEK : {
+    //       symbol: "Skr",
+    //       name : "Swedish Krona",
+    //       symbol_native: "kr",
+    //       code : "SEK",
+    //       name_plural: "Swedish kronor",
+    //       },
+    //       SGD : {
+    //       symbol: "S$",
+    //       name : "Singapore Dollar",
+    //       symbol_native: "$",
+    //       code : "SGD",
+    //       name_plural: "Singapore dollars",
+    //       },
+    //       THB : {
+    //       symbol: "฿",
+    //       name : "Thai Baht",
+    //       symbol_native: "฿",
+    //       code : "THB",
+    //       name_plural: "Thai baht",
+    //       },
+    //       TRY : {
+    //       symbol: "TL",
+    //       name : "Turkish Lira",
+    //       symbol_native: "TL",
+    //       code : "TRY",
+    //       name_plural: "Turkish Lira",
+    //       },
+    //       TWD : {
+    //       symbol: "NT$",
+    //       name : "New Taiwan Dollar",
+    //       symbol_native: "NT$",
+    //       code : "TWD",
+    //       name_plural: "New Taiwan dollars",
+    //       },
+    //       UAH : {
+    //       symbol: "₴",
+    //       name : "Ukrainian Hryvnia",
+    //       symbol_native: "₴",
+    //       code : "UAH",
+    //       name_plural: "Ukrainian hryvnias",
+    //       },
+    //       UGX : {
+    //       symbol: "USh",
+    //       name : "Ugandan Shilling",
+    //       symbol_native: "USh",
+    //       code : "UGX",
+    //       name_plural: "Ugandan shillings",
+    //       },
+    //       USD : {
+    //       symbol: "$",
+    //       name : "US Dollar",
+    //       symbol_native: "$",
+    //       code : "USD",
+    //       name_plural: "US dollars",
+    //       },
+    //       UYU : {
+    //       symbol: "$U",
+    //       name : "Uruguayan Peso",
+    //       symbol_native: "$",
+    //       code : "UYU",
+    //       name_plural: "Uruguayan pesos",
+    //       },
+    //       VND : {
+    //       symbol: "₫",
+    //       name : "Vietnamese Dong",
+    //       symbol_native: "₫",
+    //       code : "VND",
+    //       name_plural: "Vietnamese dong",
+    //       },
+    //       ZAR : {
+    //       symbol: "R",
+    //       name : "South African Rand",
+    //       symbol_native: "R",
+    //       code : "ZAR",
+    //       name_plural: "South African rand",      
+    //       }
+    //   }
+    //  }
+  
+    // let user = JSON.parse('<%- JSON.stringify(currUser || null) %>');
+
+    // // console.log(user.countryInfo.currency);  
+
+    // function genratesCurrencyCodes() {
+    //   let currencyBox = document.querySelector(".currency-div-body");
+    //   currencyBox.innerHTML = "";
+    //   for (const curr in currencyAndCurrencyCodes.data) {
+    //     if (Object.prototype.hasOwnProperty.call(currencyAndCurrencyCodes.data, curr)) {
+    //       const element = currencyAndCurrencyCodes.data[curr];
+    //       // console.log(element);
+    //       currencyBox.innerHTML += 
+    //       `<div class="currencyCodes">
+    //           <span class="curr-name">${(element.name_plural).toString().slice((element.name_plural).toString().length-1) == "s"? (element.name_plural).toString().slice(0,(element.name_plural).toString().length-1): element.name_plural}</span>
+    //           <span class="curr-code">${element.code} – ${element.symbol_native == "টকা" ? "\u20B9" : element.symbol_native}</span>
+    //           <form action="/account/profile/${user._id}/edit" method="post">          
+    //             <input type="text" name="about[currency]" value="${element.code}">
+    //           </form>
+    //         </div>`;   
+    //     }      
+    //   }
+
+    //   let currencyCodes = document.querySelectorAll(".currency-div-body .currencyCodes");
+
+    //   for (const codeBox of currencyCodes) {
+    //     const form = codeBox.querySelector("form");
+    //     const code = codeBox.querySelector(".curr-code");
+    //     codeBox.addEventListener("click",()=>{
+    //       form.submit();
+    //       // alert(code.innerHTML)
+    //     })
+    //     if (user.countryInfo.currency == code.innerHTML.split("–").slice(0,1).join("").trim()) {
+    //       codeBox.classList.add("black-border");
+    //     }
+    //   }
+    // }      
+    
+    
+    // if(user){
+    //   function moveKeyToFirst(obj, keyToMove) {
+    //     if (!(keyToMove in obj)) return obj;
+
+    //     const {[keyToMove]: value, ...rest} = obj;
+    //     return { [keyToMove]: value, ...rest };
+    //   }
+
+    //   // Usage
+    //   currencyAndCurrencyCodes.data = moveKeyToFirst(currencyAndCurrencyCodes.data, user.countryInfo.currency);  
+    //   genratesCurrencyCodes();
+    // }
+
+    
+  
+  
+  
+  
+  
+  </script>
+</body>
+
+

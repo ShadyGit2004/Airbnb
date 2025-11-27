@@ -1,0 +1,3220 @@
+<% layout("./layouts/boilerplate.ejs") %>
+
+<style>
+    #nav-search-box, input{
+        display: none;
+    }
+    #nav-div{
+        height: fit-content;
+    }
+    .listing-booking-page{
+        padding: 3.5rem 14vw;
+        display: flex;
+        gap: 90px;
+    }  
+    
+    .listing-booking-page h4{
+        font-weight: 600;
+        font-size: 1.37rem;
+        margin-bottom: 0;
+        margin-bottom: 1.5rem;
+    }
+
+    .book-request{
+        width: fit-content;
+        max-width: 40rem;
+        padding: 0 1.65rem;
+    }
+  
+    .book-request .request-heading{
+        display: flex;
+        align-items: center;
+        color: #222222;
+        gap: 18px;
+        margin-bottom: 1rem;
+    }
+    .book-request .request-heading a{
+        color: #222222;
+        margin-left: -30px;
+    }
+    .book-request .request-heading h2{
+        font-weight: 600;
+    }
+    .book-request .request{ 
+        padding: 2rem 0;
+        border-bottom: 1px solid gainsboro;
+    }
+    .book-request .request p{
+        color: #141414;
+        margin-bottom: 0;
+    }
+    .book-request .request-sec1 .dates, .book-request .request-sec1 .guests{
+        margin-top: 1.35rem;
+    }
+    .book-request .request-sec1 .dates-top, .book-request .request-sec1 .guests-top{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .book-request .request-sec1 .dates h6, .book-request .request-sec1 .guests h6{
+        font-weight: 600;
+    }
+    .book-request .request-sec1 .dates span, .book-request .request-sec1 .guests span{
+        font-weight: 600;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    .book-request .request-sec1 .dates p, .book-request .request-sec1 .guests p{
+       
+    }
+
+    /* .book-request .request-sec2 .opt{
+        padding: 1.5rem 0;
+        border-radius: 12px;
+        border: 1px solid black;
+        margin-top: 1rem;
+    } */
+
+    .book-request .request-sec3 .require-no{
+        margin-top: 1.5rem;
+    }
+    .book-request .request-sec3 .add-msg,  .book-request .request-sec3 .add-no{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .book-request .request-sec3 h6{
+        font-weight: 600;
+        margin-bottom: -.25rem;
+    }
+    .book-request .request-sec3 p{
+        line-height: 1.27;
+        font-size: .87rem;
+        width: 80%;
+    }
+    .book-request .request-sec3 button{
+        font-weight: 600;
+        padding: .35rem .85rem;
+        border-radius: 8px;
+    }
+    .book-request .request-sec4 p, .request-sec5 p, .request-sec6 p{  
+        font-size: .97rem;              
+        line-height: 1.27;
+    } 
+
+    .book-request .request-sec6{
+        display: flex;
+        gap: 25px;
+    }
+    .book-request .request-sec6 i{
+        margin-top: .25rem;
+        font-size: 1.65rem;
+    }
+
+    .book-request button.book-btn{
+        margin-top: 3.5rem;
+        padding: 1rem 2.25rem;
+        font-size: 1.05rem;
+        font-weight: 600;
+        border-radius: 8px;  
+        border: none;
+        outline: none;  
+        color: #fff;
+        background: linear-gradient(to right, #f33155,  rgb(192, 30, 92));
+    }
+
+    .booking-card{
+        width: 29rem;
+        min-width: 28rem;
+        height: fit-content;
+        position: sticky;
+        top: 8.5rem;
+        border: 1px solid #dbdbdb;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-top: 5rem;
+        color: #0e0e0e;
+    }
+    .booking-card p{
+        margin-bottom: 0;
+    }
+    .booking-card .card-top{
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #e7e7e7;
+    }
+    .booking-card .card-top .card-img{
+        height: 6.25rem;
+        width: 6.5rem;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    .booking-card .card-top img{
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+    .booking-card .card-details i{
+        font-size: .68rem;
+    } 
+    .booking-card .card-top h6{
+        font-weight: 600;
+    }
+    .booking-card .card-top p{
+        font-size: .85rem;
+    }
+    .booking-card .card-top p span{
+        font-weight: 600;
+    }
+
+    .error{
+        font-size: .83rem;
+        font-weight: 500;
+        line-height: 1.25;
+        color: #b62424 !important;
+    }
+
+    .card-bottom{
+        padding-top: 1.5rem;
+    }
+    .card-error{
+        padding: 3rem 0 1.65rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .card-error P{        
+        font-size: .9rem;
+        color: #808080 !important;
+    }
+    .card-bottom .avg-price i{
+        font-size: .63rem;
+    }
+    .card-bottom .avg-price, .taxes, .total{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: .65rem;
+    }
+    .card-bottom h6{
+        font-weight: 600;
+        color: #1f1f1f;
+        font-size: .85rem;
+        line-height: 1;
+    }
+    .card-bottom p{
+    }
+    .card-bottom .total{
+        font-weight: 600;
+        padding-top: 1.25rem;
+        margin-top: 1.25rem;
+        border-top: 1px solid #d1d1d1;
+    }
+    .card-bottom span{
+        color: #020202;
+    }
+    .price-breakdown{
+        text-decoration: underline;
+        font-weight: 600;
+        cursor: pointer;        
+        width: fit-content;
+        float: right;
+    }
+
+    .popup-container{
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100vw;        
+        z-index: 5;        
+        background-color: #20202065;
+    }
+   
+    .popup-div{
+        position: fixed;
+        overflow-y: scroll;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        max-height: 90vh;   
+        height: auto;     
+        width: 33rem;
+        padding-top: 0;
+        border-radius: 20px;
+        background-color: #fff;
+        animation: translateY .65s cubic-bezier(0.19, 1, 0.22, 1) 1;  
+        box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.150),
+        -1px -1px 25px rgba(0, 0, 0, 0.150);
+    }
+    .popup-div::-webkit-scrollbar{
+        display: none;
+    }
+    .popup-div .body{  
+        padding-top: 0;      
+        padding: 0 25px 15px;
+    }
+
+    .popup-div .body p{
+        padding: .15rem 0;
+        margin: 0;
+        color: #1f1f1f;
+    }
+
+    .popup-div .header{
+        background-color: #ffffff;
+        height: 4.75rem;
+        position: sticky;
+        top: 0;
+        left: 0;
+        display: flex;
+        padding: 0 25px;
+        align-items: center;
+        position: relative;
+        border-bottom: .5px solid rgba(206, 205, 205, 0.918);
+    }
+    .popup-div .header span{
+        font-weight: 600;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+    }
+    .popup-div .cross{         
+        height: 32px;
+        width: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translate(-28%,0);
+        border-radius: 50%;
+        font-size: 1.05rem;
+        cursor: pointer;
+        color: rgb(58, 58, 58);
+        transition: all cubic-bezier(0.19, 1, 0.22, 1) .25s; 
+    }    
+    .popup-div .cross:hover{
+        background-color: rgb(245, 253, 255);
+    }
+
+    @media screen and (max-width : 1350px) {
+        .listing-booking-page{
+            padding: 3.5rem 10vw;
+            flex-wrap: wrap;
+            justify-items: center;
+            /* flex-direction: column-reverse; */
+            gap: 50px;
+        } 
+        .book-request{
+            width: 100%;
+            max-width: 100%;
+        }
+        .booking-card{
+            position: static;
+            margin-top: 1.5rem;
+        }
+    }
+
+    @media screen and (max-width : 850px) {
+        .listing-booking-page{
+            padding: 1.75rem 3.5vw;
+        } 
+       
+        .booking-card{
+            width: 100%;
+            min-width: 100%;
+        }
+    }
+    @media screen and (max-width : 650px) {       
+        .book-request{
+            padding: 0;
+        }
+        .book-request .request-heading a{
+            margin-left: 0px;
+        }
+        .book-request .request-heading{
+            margin-bottom: 0;
+        }
+        .popup-div{
+            width: 95%;
+        }
+    }
+
+    
+</style>
+
+<body>
+
+    <div class="listing-booking-page">
+
+    <!-- mhuje edit, add btn ka chose krna h du ya n du -->
+    
+    <div class="book-request"> 
+        <div class="request-heading">
+            <a href="/listings/<%= id %>"><i class="fa-solid fa-chevron-left"></i></a> 
+            <h2>Request to book</h2>            
+        </div>   
+    <form action="/listings/<%= id %>/book" method="post" id="booking-form">  
+        <div class="request request-sec1">
+                <h4>Your trip</h4>
+                <div class="dates">
+                    <div class="dates-top">
+                        <h6>Dates</h6>
+                        <!-- <span class="edit-dates">Edit</span> -->
+                    </div>
+                    <p class="booked-dates"></p>
+                    <input type="date" name="booked[checkIn]" value="<%= checkIn %>" min="<% new Date() %>" class="booked-check-in-date" readonly required>
+                    <input type="date" name="booked[checkOut]" value="<%= checkOut %>" min="<% new Date().setDate(new Date().getDate()+1) %>" class="booked-check-out-date" readonly required>
+                    <input type="number" name="booked[stayDays]" value="<%= stayDays %>" min="0" max="730" class="booked-staydays" readonly required>
+                    <p class="check-in-date-error error mt-2"></p>
+                    <p class="check-out-date-error error"></p>
+                </div>
+                <div class="guests">
+                    <div class="guests-top">
+                        <h6>Guests</h6>
+                        <!-- <span class="edit-guests">Edit</span> -->
+                    </div> 
+                    <p class="total-guests"></p>
+                    <!-- <input type="text" name="booked[guests]" value="<%= Number(guests.adults)+Number(guests.childrens) %>" class="book-total-guests" readonly required> -->
+                    <input type="number" name="booked[guests][adults]" value="<%= Number(guests.adults)%>" class="book-total-guests" min="1" max="<%= bookedListing.aboutPlace.guests.adults %>" readonly required>
+                    <input type="number" name="booked[guests][childrens]" value="<%= Number(guests.childrens) %>" class="book-total-guests" min="0" max="<%= bookedListing.aboutPlace.guests.adults %>" readonly required>
+                    <input type="number" name="booked[infants]" value="<%= Number(infants)%>" class="book-total-infants" min="0" max="<%= bookedListing.aboutPlace.guests.infants %>" readonly required>
+                    <input type="number" name="booked[pets]" value="<%= Number(pets) %>" class="book-total-pets" min="0" max="<%= bookedListing.aboutPlace.guests.pets %>" readonly required>
+                    <p class="guests-error error mt-2"></p>
+                    <p class="infants-error error"></p>
+                    <p class="pets-error error"></p>
+                </div>
+        </div>
+        <!-- <div class="request request-sec2 payment error-hide hide">
+            <h4>Pay with</h4>
+            <div class="opt"></div>
+            <div class="opt"></div>
+        </div> -->
+        <div class="request request-sec3 error-hide">
+            <h4>Required for your trip</h4>
+            <div class="require-message">
+                <div class="add-msg">                    
+                    <h6>Message the host</h6>
+                    <button class="btn btn-outline-dark btn-sm" type="button">Add</button>
+                </div>
+                <p class="msg-host"></p>
+            </div>
+            <div class="require-no">
+                <div class="add-no">
+                    <h6>Phone number</h6>
+                    <button class="btn btn-outline-dark btn-sm" type="button">Add</button>
+                </div>
+                <p>Add and confirm your phone number to get trip updates.</p>
+            </div>
+        </div>
+        <div class="request request-sec4 error-hide">
+            <h4>Cancellation policy</h4>
+            <p class="booked-cancellation-policy"></p>
+        </div>
+        <div class="request request-sec5 error-hide">
+            <h4>Ground rules</h4>
+            <p class="mb-3">We ask every guest to remember a few simple things about what makes a great guest.</p>
+            <p class="mb-2">· &nbsp; Follow the house rules</p>
+            <p class="mt-1">· &nbsp; Treat your Host’s home like your own</p>
+        </div>
+        <div class="request request-sec6 error-hide">
+           <i class="fa-solid fa-calendar-check"></i>
+           <p><b>The Host will need to accept this request.</b> You’ll pay now, but will get a full refund if your reservation isn’t confirmed within 24 hours.</p>
+        </div>
+
+        <button class="book-btn error-hide submitBtn" onclick="makePayment()" type="button">
+            <span class="submitBtn-text">Request to book</span>
+            <div class="spinner" style="display: none;">
+                <span class="dot dot-1"></span>
+                <span class="dot dot-2"></span>
+                <span class="dot dot-3"></span>
+            </div>
+        </button>  
+    </div>
+
+    <div class="booking-card">
+        <div class="card-top">
+            <div class="card-img">
+                <img src="<%= bookedListing.images[0].path %>" alt="listing-img">
+            </div>
+           <div class="card-details">
+                <h6 class="listing-title"><%= bookedListing.title %></h6>
+                <p class="listing-type"><%= bookedListing.privacyType %> <%= bookedListing.houseType %></p>
+                <p class="listing-ratings"></p>
+           </div>
+        </div>
+        <div class="card-bottom error-hide">
+            <h4>Your total</h4>
+            <h6>Price details</h6>
+            <div class="avg-price">
+                <p class="nights-price"></p>
+                <span class="total-price"></span>
+            </div>
+            <div class="taxes">                    
+                <p>Taxes</p>
+                <span class="tax-amount"></span>
+            </div>
+            <div class="total">
+                <p>Total <span class="price-currency"></span></p>
+                <span class="total-amount"></span> 
+                <input type="number" name="booked[totalAmount]" class="booked-total-amount" id="booked-amount" required readonly>
+            </div>
+            <span class="price-breakdown">Price breakdown</span>
+        </div>
+        <div class="card-error" hidden>
+            <p class="card-error-text error"></p>
+        </div>
+    </div>
+    </form> 
+ 
+    <div class="popup-container price-breakdown-container" hidden>
+        <div class="popup-div">
+             <div class="header">
+                 <i class="fa-solid fa-xmark cross"></i>
+                 <span>Price breakdown</span>
+             </div>
+             <div class="body">                    
+             <div class="card-bottom">
+                 <div class="avg-price">
+                     <p class="night-dates"></p>
+                     <span class="total-price-breakdown"></span>
+                 </div>
+                 <div class="taxes">                    
+                     <p>Airbnb service fee</p>
+                     <span class="service-amount"></span>
+                 </div>
+                 <div class="taxes">                    
+                     <p>Taxes</p>
+                     <span class="tax-amount"></span>
+                 </div>
+                 <div class="total">
+                     <p>Total <span class="price-currency"></span></p>
+                     <span class="total-amount"></span> 
+                 </div>               
+             </div>
+         </div>
+        </div>
+     </div>
+
+     <!-- <div class="popup-container" >
+        <div class="popup-div">
+             <div class="header">
+                 <i class="fa-solid fa-xmark cross"></i>
+                 <span>Message the host</span>
+             </div>
+             <div class="body">
+                <div class="msg-body-top">
+                    <p>Before you can continue, let Palak know a little about your trip and why their place is a good fit.</p>
+                </div>
+                <textarea name="" id="" rows="5" cols="50"></textarea>
+                <div class="msg-body-bottom">
+                    <button class="btn btn-dark">Save</button>
+                </div>
+             </div>
+        </div>
+     </div> -->
+
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>  
+    let keyId = '<%= process.env.RZR_KEY_ID %>';  
+    let id = '<%= id %>';  
+    let bookListing = <%- JSON.stringify(bookedListing) %>;    
+    // let bookListing = JSON.parse('<%- JSON.stringify(bookedListing) %>'); 
+    let currGuest = JSON.parse('<%- JSON.stringify(currUser) %>');    
+    let days = JSON.parse('<%- JSON.stringify(stayDays) %>');   
+    let isSuccess = "";
+    let defaultImg = "https://images.unsplash.com/photo-1749253851355-3529792f0d34?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDQ2fHRvd0paRnNrcEdnfHxlbnwwfHx8fHw%3D";
+
+    async function makePayment() {
+
+        const amount = document.getElementById('booked-amount').value;  
+
+        if (amount === '' || amount <= 0) {
+            alert('Please enter a valid amount');
+            return;
+        };
+        
+        const response = await fetch(`/listings/${id}/book/create-order`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ amount })
+        })  
+        const order = await response.json();
+                    
+        const options = {
+            key: keyId, 
+            amount : amount, 
+            currency : currGuest.countryInfo ? currGuest.countryInfo.currency : "INR",
+            name: 'Airbnb',
+            image: currGuest.profileImg ? currGuest.profileImg : defaultImg,
+            description: bookListing.title,
+            order_id: order.id,
+            // callback_url: `/listings/${id}`, // Your success URL
+            handler: async function (response) {
+                // Verify payment here
+                let res = await fetch(`/listings/${id}/book/verify-payment`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    razorpay_order_id: response.razorpay_order_id,
+                    razorpay_payment_id: response.razorpay_payment_id,
+                    razorpay_signature: response.razorpay_signature
+                })
+                })
+                let result = await res.json();
+                isSuccess = result.status;  
+                // alert (result.message);
+                submitForm();
+            },
+            prefill: {
+                name: currGuest.username,
+                email: currGuest.email,
+                contact: currGuest.phoneNo || "0000000000", // mhuje user ka no bhi add krwana hoga
+            },
+            theme: {
+            color: '#FF385C'
+            },
+        };
+            
+        const rzp1 = new Razorpay(options);
+        rzp1.open();
+    }
+    
+    function submitForm() {     
+        if (isSuccess == "success") {
+            document.querySelector("#booking-form").submit();
+        }
+    };    
+    
+    let editDates = document.querySelector(".edit-dates"); 
+    let editGuests = document.querySelector(".edit-guests");
+
+    let formatDate = (date)=>{
+        let y = date.getFullYear();
+        let m = String(date.getMonth() + 1).padStart(2, "0");
+        let d = String(date.getDate()).padStart(2, "0");
+        return `${y}-${m}-${d}`;
+    };
+
+    function displayDates() {
+        let bookedDates = document.querySelector(".booked-dates");
+        // let bookedCheckInDates = document.querySelector(".booked-check-in-date");
+        // let bookedCheckOutDates = document.querySelector(".booked-check-out-date");
+
+        let checkInFrom = new Date('<%- JSON.stringify(checkIn) %>');
+        let checkOutTo = new Date('<%- JSON.stringify(checkOut) %>');        
+
+        if(checkInFrom.getFullYear() == checkOutTo.getFullYear() && checkInFrom.getMonth() == checkOutTo.getMonth()){
+            bookedDates.innerHTML = `${checkInFrom.toDateString().split(" ").reverse().slice(1,2).join(" ")} - ${checkOutTo.toDateString().split(" ").reverse().slice(1,3).join(" ")}`;
+        }else if(checkInFrom.getFullYear() == checkOutTo.getFullYear() && checkInFrom.getMonth() != checkOutTo.getMonth()){            
+            bookedDates.innerHTML = `${checkInFrom.toDateString().split(" ").reverse().slice(1,3).join(" ")} - ${checkOutTo.toDateString().split(" ").reverse().slice(1,3).join(" ")}`;
+        } else{
+            bookedDates.innerHTML = `${checkInFrom.toDateString().split(" ").slice(1,4).join(" ")} - ${checkOutTo.toDateString().split(" ").slice(1,4).join(" ")}`;
+        }
+
+        // bookedCheckInDates.value = `${formatDate(checkInFrom)}`;
+        // bookedCheckOutDates.value = `${formatDate(checkOutTo)}`;
+        
+    }
+    displayDates();
+
+    function displayGuests() {        
+        let totalGuests = document.querySelector(".total-guests");
+        let bookTotalGuests = document.querySelector(".book-total-guests");
+
+        let guestsError = document.querySelector(".guests-error");
+        let infantsError = document.querySelector(".infants-error");
+        let petsError = document.querySelector(".pets-error");
+        let checkInError = document.querySelector(".check-in-date-error");
+        let checkOutError = document.querySelector(".check-out-date-error");
+        
+        let bookedStaydays = document.querySelector(".booked-staydays");
+        
+        let cardBottomError = document.querySelector(".card-error");
+        let cardErrorText = document.querySelector(".card-error-text");
+        let errorHide = document.querySelectorAll(".error-hide");
+
+        let g = JSON.parse('<%- JSON.stringify(guests) %>')
+        let infants = Number(JSON.parse('<%- JSON.stringify(infants) %>'));
+        let pets = Number(JSON.parse('<%- JSON.stringify(pets) %>'));
+        let allGuests = Number(g.adults) + Number(g.childrens);
+
+        let chkIn = JSON.parse('<%- JSON.stringify(checkIn) %>');
+        let chkOut = JSON.parse('<%- JSON.stringify(checkOut) %>');
+        let stayDays = JSON.parse('<%- JSON.stringify(stayDays) %>');
+
+        // let d = new Date(chkIn);
+        // let dayCount = 0;
+        // for (let i = 1; d < new Date(chkOut); i++) {
+        //     d.setDate(d.getDate()+1);
+        //     dayCount = i;
+        // };
+        
+        // days = dayCount;
+        // bookedStaydays.value = dayCount;
+
+        let infantStr = infants > 1 ? `, ${infants} infants` : infants == 1 ? `, ${infants} infant` : '';
+        let petStr = pets > 1 ? `, ${pets} pets` : pets == 1 ? `, ${pets} pet` : '';
+        let guestStr = allGuests > 1 ? `${allGuests} guests` : allGuests == 1 ? `${allGuests} guest` : '';        
+        
+        totalGuests.innerHTML = `${guestStr}${infantStr}${petStr}`;
+        // bookTotalGuests.innerHTML = `${guestStr}${infantStr}${petStr}`;
+
+        // Error texts and card error
+
+        let guestErr = "";
+        let infantErr ="";
+        let petErr ="";
+        let checkInErr ="";
+        let checkOutErr ="";
+
+        if(allGuests <= 0 ){
+            guestErr = "Guest number should be valid";
+        }else if(Number(g.adults) <= 0 ){
+            guestErr = "Adult should be valid (minimum 1 adult)";
+        }else if (allGuests > bookListing.aboutPlace.guests.adults) {
+            guestErr = "Reduce the guest count to continue";
+        }else{};
+        
+        if (infants > bookListing.aboutPlace.guests.infants || infants < 0) {
+            if(bookListing.aboutPlace.guests.infants == 0){               
+                infantErr = "This place does not allow infants";
+            }else if(infants < 0){               
+                infantErr = "Infants number should be valid";
+            }else { 
+                infantErr = "Reduce the infants count to continue";
+            }           
+        }
+
+        if (pets > bookListing.aboutPlace.guests.pets || pets < 0) {           
+            if(bookListing.aboutPlace.guests.pets == 0){
+                petErr = "This place does not allow pets";
+            }else if(pets < 0){
+                petErr = "Pets number should be valid";
+            } else {
+                petErr = "Reduce the pets count to continue";
+            }
+        }
+
+        // infantErr = infants > bookListing.aboutPlace.guests.infants ? bookListing.aboutPlace.guests.infants ==0 ? `This place does not allow infants.` : `Reduce the guest count to continue` : "";
+        // let petErr = pets > bookListing.aboutPlace.guests.pets ? bookListing.aboutPlace.guests.pets==0 ? `This place does not allow pets.` : `Reduce the pets count to continue` : "";
+             
+        if (chkIn >= chkOut) {
+            checkInErr = "Check in check out dates should be valid";
+        }else if(chkIn < formatDate(new Date())){
+            checkInErr = "Check in dates should be valid";
+        }else{};
+
+        if(chkOut <= formatDate(new Date())){
+            checkOutErr = "Check out dates should be valid";
+        }  
+        
+
+        guestsError.innerHTML = guestErr;
+        infantsError.innerHTML = infantErr;
+        petsError.innerHTML = petErr;
+        checkInError.innerHTML = checkInErr;
+        checkOutError.innerHTML = checkOutErr;
+
+        if(guestErr || infantErr || petErr || checkInErr || checkOutErr){
+            if( guestErr || infantErr ){
+                cardErrorText.innerHTML = `This place only allows up to ${bookListing.aboutPlace.guests.adults} guests.`;            
+            }else if(petErr){
+                if(bookListing.aboutPlace.guests.pets==0){
+                    cardErrorText.innerHTML = `This place does not allow pets.`;
+                } else{
+                    cardErrorText.innerHTML = `This place only allows up to ${bookListing.aboutPlace.guests.pets} pets.`;
+                }                
+            }else if(checkInErr || checkOutErr){
+                cardErrorText.innerHTML =  "Check in check out dates should be valid";
+            }else {}
+           
+            cardBottomError.hidden = false;
+            errorHide.forEach((el)=>{
+                el.hidden = true;
+            });
+        }
+        // else{
+        //     errorHide.forEach((el)=>{
+        //         el.hidden = false;
+        //     });
+        // }
+    }
+    displayGuests();
+
+    function cancellationPolicy() {
+        let bookedCancellationPolicy = document.querySelector(".booked-cancellation-policy");
+        let checkInDay = new Date('<%- JSON.stringify(checkIn) %>');
+        let checkOutDay = new Date('<%- JSON.stringify(checkOut) %>');
+        let checkInBeforeDay = new Date(checkInDay);        
+        checkInBeforeDay.setDate(checkInDay.getDate()-1);
+        let checkInBeforeDayMonth = checkInBeforeDay.toDateString().split(" ").slice(1,2);
+        let checkInDayMonth = checkInDay.toDateString().split(" ").slice(1,2);
+
+        if((checkOutDay.getDate() - checkInDay.getDate() == 1 && checkInDay.getMonth() == checkOutDay.getMonth()) || checkInDay.getMonth() != checkOutDay.getMonth() && (checkOutDay.getDate() != checkInDay.getDate() && (!days > 1 || days ==1))){       
+            bookedCancellationPolicy.innerHTML = `<b> Free cancellation before ${checkInDay.getDate()} ${checkInDayMonth} </b>. After that, the reservation is non-refundable.`;
+        } else {   
+            if(checkInBeforeDay.getDate() == new Date().getDate() && checkInBeforeDay.getMonth() == new Date().getMonth()){
+                bookedCancellationPolicy.innerHTML = `<b>Free cancellation today.</b> After that, the reservation is non-refundable.`;
+            }else {
+                bookedCancellationPolicy.innerHTML = `<b>Free cancellation before ${checkInBeforeDay.getDate()} ${checkInBeforeDayMonth}.</b> Cancel before check-in on ${checkInDay.getDate()} ${checkInDayMonth} for a partial refund.`;
+            }
+        }  
+    }
+    cancellationPolicy(); 
+
+    function displayAmounts() {
+
+        let nightsPrice = document.querySelector(".nights-price");
+        let nightsDates = document.querySelector(".night-dates");
+        let servicePrice = document.querySelector(".service-amount");
+        let totalPrice = document.querySelector(".total-price");
+        let totalPriceBreakdown = document.querySelector(".total-price-breakdown");
+        let taxAmounts = document.querySelectorAll(".tax-amount");
+        let totalAmounts = document.querySelectorAll(".total-amount");
+        let bookedTotalAmounts = document.querySelector(".booked-total-amount");
+        let priceCurrency = document.querySelectorAll(".price-currency");
+        let priceBreakdown = document.querySelector(".price-breakdown");
+        let closePriceBreakdown = document.querySelector(".price-breakdown-container .cross");
+        let priceBreakdownContainer = document.querySelector(".price-breakdown-container");
+        
+        let bookedDates = document.querySelector(".booked-dates");
+        
+        let msgHost = document.querySelector(".request-sec3 .msg-host");
+        let listingReviewAndRating = document.querySelector(".card-top .listing-ratings");       
+       
+        msgHost.innerHTML = `Before you can continue, let ${bookListing.owner.username} know a little about your trip and why their place is a good fit.`;
+        
+        listingReviewAndRating.innerHTML = bookListing.reviews.length-1 > 0 ?
+        `<i class="fa-solid fa-star"></i> <span class="avg-rating">${'<%= avgRating %>'}</span> &nbsp; (${Number(bookListing.reviews.length).toLocaleString(navigator.language || "en-IN")} ${bookListing.reviews.length > 1 ? "reviews" : "review"})` : "<small>No reviews</small>"; 
+
+        priceCurrency.forEach((priceCurr)=>{
+            priceCurr.innerHTML = `(${currGuest.countryInfo ? currGuest.countryInfo.currency || "INR" : "INR"})`;
+        })
+
+        // card price * nights
+        if(days>27){
+            nightsPrice.innerHTML = `Average monthly price`;
+        } else{       
+            nightsPrice.innerHTML = `<%= convertedObj.listingPrice %> &nbsp;<i class="fa-solid fa-x"></i>&nbsp; ${days > 1 ? days+" nights" : days+" night"}`;
+        }
+
+        // price-break-down div's days & dates
+        nightsDates.innerHTML = `${days > 1 ? days+" nights" : days+" night"} · ${bookedDates.innerHTML}`;
+        
+        // price-break-down div's price        
+        totalPriceBreakdown.innerHTML = '<%= convertedObj.price %>';      
+
+        // price-break-down div's service       
+        servicePrice.innerHTML = '<%= convertedObj.svc %>';  
+
+        // card-bottom div's price + service       
+        totalPrice.innerHTML = '<%= convertedObj.priceAndSvc %>';    
+
+        // card-bottom div's tax        
+        taxAmounts.forEach((taxAmount)=>{
+            taxAmount.innerHTML = '<%= convertedObj.tax %>';
+        });
+
+        // card-bottom div's total amount       
+        totalAmounts.forEach((totalAmount)=>{
+            totalAmount.innerHTML = '<%= convertedObj.finalAmount %>';  
+        });
+
+        bookedTotalAmounts.value = '<%= convertedObj.finalAmount.replace(/[^\d.]/g, "") %>'; 
+
+        // bookedTotalAmounts.value = `${finalAmount.toLocaleString(
+        //     navigator.language || "en-IN", 
+        //     {style: "currency", currency : currGuest.countryInfo ? currGuest.countryInfo.currency || "INR" : "INR",}
+        // )}`;           
+
+        // price-break-down div open & close
+        priceBreakdown.addEventListener("click", (e)=>{
+            e.stopPropagation()
+            priceBreakdownContainer.hidden = false;
+        });
+
+        closePriceBreakdown.addEventListener("click", (e)=>{
+            e.stopPropagation()
+            priceBreakdownContainer.hidden = true;
+        });
+        // popup p clik krne p bhi y hidden ho ra h
+        document.addEventListener("click",(e)=>{
+            let p = document.querySelector(".card-bottom");
+            if(!p.contains(e.target)){
+                priceBreakdownContainer.hidden = true;
+            }
+        })
+
+    }
+    displayAmounts();
+    
+
+
+    // ---------------------
+    let curr_name = "INR";
+    let data_obj = {};
+
+    async function get40CurrencyRates(curr_name) {
+        // let currencyUrl = `https://api.currencyapi.com/v3/latest?apikey=cur_live_9XDyyncygC1ipCU0uSJ4tEGSUrbJ9TPHxgOpG9i3&currencies=INR%2CAUD%2CBRL%2CBGN%2CCAD%2CCLP%2CCNY%2CCOP%2CCRC%2CCZK%2CAED%2CEUR%2CEGP%2CHKD%2CHUF%2CIDR%2CJPY%2CMXN%2CMAD%2CTWD%2CNZD%2CNOK%2CPEN%2CPHP%2CGBP%2CQAR%2CRON%2CSAR%2CSGD%2CZAR%2CKRW%2CSEK%2CCHF%2CTHB%2CTRY%2CUGX%2CUAH%2CUSD%2CUYU%2CVND&base_currency=${curr_name}`;
+
+
+        if (!curr_name) {
+            alert("base currency is requierd")
+            return;
+        }
+
+        let response = await fetch(currencyUrl);
+        let data = await response.json();
+        data_obj = {...data};
+        console.log(data);  
+    }
+
+    // get40CurrencyRates(curr_name);
+
+    // ---------------------
+
+
+    // let currencyName = ["INR","AUD", "BRL", "BGN", "CAD", "CLP", "CNY", "COP", "CRC", "CZK", "AED", "EUR", "EGP", "HKD", "HUF", "IDR", "JPY", "MXN", "MAD", "TWD","NZD", "NOK", "PEN", "PHP", "GBP", "QAR", "RON", "SAR", "SGD", "ZAR", "KRW", "SEK", "CHF", "THB", "TRY", "UGX", "UAH", "USD", "UYU", "VND"].sort();
+   
+
+    // INR, AUD, BRL, BGN, CAD, CLP, CNY, COP, CRC, CZK, AED, EUR, EGP, HKD, HUF, IDR, JPY, MXN, MAD, TWD, NZD, NOK, PEN, PHP, GBP, QAR, RON, SAR, SGD, ZAR, KRW, SEK, CHF, THB, TRY, UGX, UAH, USD, UYU, VND
+
+
+//  let allCurrencyRates = {
+
+// INR_Rates : {         
+//     AED: {code: 'AED', value: 0.0427762049},
+//     AUD: {code: 'AUD', value: 0.0177025551},
+//     BGN: {code: 'BGN', value: 0.0194602299},
+//     BRL: {code: 'BRL', value: 0.0647785824},
+//     CAD: {code: 'CAD', value: 0.0159425508},
+//     CHF: {code: 'CHF', value: 0.0092752025},
+//     CLP: {code: 'CLP', value: 11.1385959547},
+//     CNY: {code: 'CNY', value: 0.0835625585},
+//     COP: {code: 'COP', value: 46.608295887},
+//     CRC: {code: 'CRC', value: 5.8801154012},
+//     CZK: {code: 'CZK', value: 0.245565408},
+//     EGP: {code: 'EGP', value: 0.5771400067},
+//     EUR: {code: 'EUR', value: 0.0099606585},
+//     GBP: {code: 'GBP', value: 0.0086342478},
+//     HKD: {code: 'HKD', value: 0.091423633},
+//     HUF: {code: 'HUF', value: 3.9789753561},
+//     IDR: {code: 'IDR', value: 188.9179428756},
+//     INR: {code: 'INR', value: 1},
+//     JPY: {code: 'JPY', value: 1.7169350534},
+//     KRW: {code: 'KRW', value: 16.0450874528},
+//     MAD: {code: 'MAD', value: 0.1046771376},
+//     MXN: {code: 'MXN', value: 0.2170862662},
+//     NOK: {code: 'NOK', value: 0.1179644203},
+//     NZD: {code: 'NZD', value: 0.0193846249},
+//     PEN: {code: 'PEN', value: 0.0414412906},
+//     PHP: {code: 'PHP', value: 0.6580280981},
+//     QAR: {code: 'QAR', value: 0.0424386016},
+//     RON: {code: 'RON', value: 0.050610016},
+//     SAR: {code: 'SAR', value: 0.0436444431},
+//     SEK: {code: 'SEK', value: 0.111358351},
+//     SGD: {code: 'SGD', value: 0.0149013206},
+//     THB: {code: 'THB', value: 0.3773299063},
+//     TRY: {code: 'TRY', value: 0.4679436837},
+//     TWD: {code: 'TWD', value: 0.3408174047},
+//     UAH: {code: 'UAH', value: 0.4890983097},
+//     UGX: {code: 'UGX', value: 41.7723472361},
+//     USD: {code: 'USD', value: 0.011649482},
+//     UYU: {code: 'UYU', value: 0.4741663722},
+//     VND: {code: 'VND', value: 304.3447381205},
+//     ZAR: {code: 'ZAR', value: 0.208477071},
+// },    
+
+// USD_Rates : {
+//         AED : {
+//             code : "AED",
+//             value : 3.6719405127
+//         },
+//         AUD : {
+//             code : "AUD",
+//             value : 1.5196001936
+//         },
+//         BGN : {
+//             code : "BGN",
+//             value : 1.6704802767
+//         },
+//         BRL : {
+//             code : "BRL",
+//             value : 5.5606405901
+//         },
+//         CAD : {
+//             code : "CAD",
+//             value : 1.3685201485
+//         },
+//         CHF : {
+//             code : "CHF",
+//             value : 0.7961901201
+//         },
+//         CLP : {
+//             code : "CLP",
+//             value : 956.1451710974
+//         },
+//         CNY : {
+//             code : "CNY",
+//             value : 7.1730707459
+//         },
+//         COP : {
+//             code : "COP",
+//             value : 4000.8899889005
+//         },
+//         CRC : {
+//             code : "CRC",
+//             value : 504.7533790837
+//         },
+//         CZK : {
+//             code : "CZK",
+//             value : 21.0795130774
+//         },
+//         EGP : {
+//             code : "EGP",
+//             value : 49.5421175784
+//         },
+//         EUR : {
+//             code : "EUR",
+//             value : 0.855030161
+//         },
+//         GBP : {
+//             code : "GBP",
+//             value : 0.7411701097
+//         },
+//         HKD : {
+//             code : "HKD",
+//             value : 7.8478710951
+//         },
+//         HUF : {
+//             code : "HUF",
+//             value : 341.5581360627
+//         },
+//         IDR : {
+//             code : "IDR",
+//             value : 16216.853501941
+//         },
+//         INR : {
+//             code : "INR",
+//             value : 85.8407266938
+//         },
+//         JPY : {
+//             code : "JPY",
+//             value : 147.382952674
+//         },
+//         KRW : {
+//             code : "KRW",
+//             value : 1377.3219668139
+//         },
+//         MAD : {
+//             code : "MAD",
+//             value : 8.985561562
+//         },
+//         MXN : {
+//             code : "MXN",
+//             value : 18.6348428438
+//         },
+//         NOK : {
+//             code : "NOK",
+//             value : 10.1261515656
+//         },
+//         NZD : {
+//             code : "NZD",
+//             value : 1.6639902907
+//         },
+//         PEN : {
+//             code : "PEN",
+//             value : 3.5573505011
+//         },
+//         PHP : {
+//             code : "PHP",
+//             value : 56.4856101298
+//         },
+//         QAR : {
+//             code : "QAR",
+//             value : 3.6429604003
+//         },
+//         RON : {
+//             code : "RON",
+//             value : 4.3444005485
+//         },
+//         SAR : {
+//             code : "SAR",
+//             value : 3.7464707105
+//         },
+//         SEK : {
+//             code : "SEK",
+//             value : 9.5590817754
+//         },
+//         SGD : {
+//             code : "SGD",
+//             value : 1.2791401883
+//         },
+//         THB : {
+//             code : "THB",
+//             value : 32.3902733578
+//         },
+//         TRY : {
+//             code : "TRY",
+//             value : 40.1686258624
+//         },
+//         TWD : {
+//             code : "TWD",
+//             value : 29.2560136879
+//         },
+//         UAH : {
+//             code : "UAH",
+//             value : 41.9845543334
+//         },
+//         UGX : {
+//             code : "UGX",
+//             value : 3585.7686424501
+//         },
+//         USD : {
+//             code : "USD",
+//             value : 1
+//         },
+//         UYU : {
+//             code : "UYU",
+//             value : 40.7027859656
+//         },
+//         VND : {
+//             code : "VND",
+//             value : 26125.173485695
+//         },
+//         ZAR : {
+//             code : "ZAR",
+//             value : 17.8958232697
+//         }
+// },
+
+// EUR_Rates : {
+//         AED : {
+//             code : "AED",
+//             value : 4.3274717587
+//         },
+//         AUD : {
+//             code : "AUD",
+//             value : 1.7979114954
+//         },
+//         BGN : {
+//             code : "BGN",
+//             value : 1.9551530955
+//         },
+//         BRL : {
+//             code : "BRL",
+//             value : 6.3881357788
+//         },
+//         CAD : {
+//             code : "CAD",
+//             value : 1.6026471993
+//         },
+//         CHF : {
+//             code : "CHF",
+//             value : 0.9354344598
+//         },
+//         CLP : {
+//             code : "CLP",
+//             value : 1096.2834177701
+//         },
+//         CNY : {
+//             code : "CNY",
+//             value : 8.4392301079
+//         },
+//         COP : {
+//             code : "COP",
+//             value : 4711.4343951323
+//         },
+//         CRC : {
+//             code : "CRC",
+//             value : 595.2511954542
+//         },
+//         CZK : {
+//             code : "CZK",
+//             value : 24.6380060166
+//         },
+//         EGP : {
+//             code : "EGP",
+//             value : 58.2032696312
+//         },
+//         EUR : {
+//             code : "EUR",
+//             value : 1
+//         },
+//         GBP : {
+//             code : "GBP",
+//             value : 0.8636674311
+//         },
+//         HKD : {
+//             code : "HKD",
+//             value : 9.2469948325
+//         },
+//         HUF : {
+//             code : "HUF",
+//             value : 399.0672310445
+//         },
+//         IDR : {
+//             code : "IDR",
+//             value : 19061.7573588083
+//         },
+//         INR : {
+//             code : "INR",
+//             value : 100.6833758385
+//         },
+//         JPY : {
+//             code : "JPY",
+//             value : 170.2566988791
+//         },
+//         KRW : {
+//             code : "KRW",
+//             value : 1603.6427949054
+//         },
+//         MAD : {
+//             code : "MAD",
+//             value : 10.5574349262
+//         },
+//         MXN : {
+//             code : "MXN",
+//             value : 21.9296351774
+//         },
+//         NOK : {
+//             code : "NOK",
+//             value : 11.8762433083
+//         },
+//         NZD : {
+//             code : "NZD",
+//             value : 1.9427301952
+//         },
+//         PEN : {
+//             code : "PEN",
+//             value : 4.1846093487
+//         },
+//         PHP : {
+//             code : "PHP",
+//             value : 66.5264033535
+//         },
+//         QAR : {
+//             code : "QAR",
+//             value : 4.293538768
+//         },
+//         RON : {
+//             code : "RON",
+//             value : 5.0582008277
+//         },
+//         SAR : {
+//             code : "SAR",
+//             value : 4.415621792
+//         },
+//         SEK : {
+//             code : "SEK",
+//             value : 11.2573435997
+//         },
+//         SGD : {
+//             code : "SGD",
+//             value : 1.5004125274
+//         },
+//         THB : {
+//             code : "THB",
+//             value : 38.0710017388
+//         },
+//         TRY : {
+//             code : "TRY",
+//             value : 46.9863550522
+//         },
+//         TWD : {
+//             code : "TWD",
+//             value : 34.0997021072
+//         },
+//         UAH : {
+//             code : "UAH",
+//             value : 49.4657638918
+//         },
+//         UGX : {
+//             code : "UGX",
+//             value : 4228.9829205813
+//         },
+//         USD : {
+//             code : "USD",
+//             value : 1.178633585
+//         },
+//         UYU : {
+//             code : "UYU",
+//             value : 47.3720596376
+//         },
+//         VND : {
+//             code : "VND",
+//             value : 30870.9808743637
+//         },
+//         ZAR : {
+//             code : "ZAR",
+//             value : 20.678539607
+//         }
+// },
+
+// CAD_Rates : {
+//         AED : {
+//             code : "AED",
+//             value : 2.7002023656
+//         },
+//         AUD : {
+//             code : "AUD",
+//             value : 1.1218386032
+//         },
+//         BGN : {
+//             code : "BGN",
+//             value : 1.2199522742
+//         },
+//         BRL : {
+//             code : "BRL",
+//             value : 3.9859900431
+//         },
+//         CAD : {
+//             code : "CAD",
+//             value : 1
+//         },
+//         CHF : {
+//             code : "CHF",
+//             value : 0.5836808377
+//         },
+//         CLP : {
+//             code : "CLP",
+//             value : 684.0453833321
+//         },
+//         CNY : {
+//             code : "CNY",
+//             value : 5.2658065429
+//         },
+//         COP : {
+//             code : "COP",
+//             value : 2939.7826279427
+//         },
+//         CRC : {
+//             code : "CRC",
+//             value : 371.4174870962
+//         },
+//         CZK : {
+//             code : "CZK",
+//             value : 15.3733186117
+//         },
+//         EGP : {
+//             code : "EGP",
+//             value : 36.3169571305
+//         },
+//         EUR : {
+//             code : "EUR",
+//             value : 0.6239676458
+//         },
+//         GBP : {
+//             code : "GBP",
+//             value : 0.5389005337
+//         },
+//         HKD : {
+//             code : "HKD",
+//             value : 5.7698255965
+//         },
+//         HUF : {
+//             code : "HUF",
+//             value : 249.0050406768
+//         },
+//         IDR : {
+//             code : "IDR",
+//             value : 11893.9198642731
+//         },
+//         INR : {
+//             code : "INR",
+//             value : 62.8231689947
+//         },
+//         JPY : {
+//             code : "JPY",
+//             value : 106.2346715839
+//         },
+//         KRW : {
+//             code : "KRW",
+//             value : 1000.6212194654
+//         },
+//         MAD : {
+//             code : "MAD",
+//             value : 6.5874978168
+//         },
+//         MXN : {
+//             code : "MXN",
+//             value : 13.6833828352
+//         },
+//         NOK : {
+//             code : "NOK",
+//             value : 7.4103915782
+//         },
+//         NZD : {
+//             code : "NZD",
+//             value : 1.2122007863
+//         },
+//         PEN : {
+//             code : "PEN",
+//             value : 2.611060844
+//         },
+//         PHP : {
+//             code : "PHP",
+//             value : 41.5103232851
+//         },
+//         QAR : {
+//             code : "QAR",
+//             value : 2.6790292773
+//         },
+//         RON : {
+//             code : "RON",
+//             value : 3.1561536625
+//         },
+//         SAR : {
+//             code : "SAR",
+//             value : 2.7552051343
+//         },
+//         SEK : {
+//             code : "SEK",
+//             value : 7.024218184
+//         },
+//         SGD : {
+//             code : "SGD",
+//             value : 0.9362088725
+//         },
+//         THB : {
+//             code : "THB",
+//             value : 23.7550733288
+//         },
+//         TRY : {
+//             code : "TRY",
+//             value : 29.3179653474
+//         },
+//         TWD : {
+//             code : "TWD",
+//             value : 21.2771108468
+//         },
+//         UAH : {
+//             code : "UAH",
+//             value : 30.865036244
+//         },
+//         UGX : {
+//             code : "UGX",
+//             value : 2638.7485171471
+//         },
+//         USD : {
+//             code : "USD",
+//             value : 0.7354292233
+//         },
+//         UYU : {
+//             code : "UYU",
+//             value : 29.5586325295
+//         },
+//         VND : {
+//             code : "VND",
+//             value : 19262.4932601778
+//         },
+//         ZAR : {
+//             code : "ZAR",
+//             value : 12.9027396775
+//         }
+// },
+
+// HKD_Rates : {
+//     AED : {
+//         code : "AED",
+//         value : 0.4679868257
+//     },
+//     AUD : {
+//         code : "AUD",
+//         value : 0.194431978
+//     },
+//     BGN : {
+//         code : "BGN",
+//         value : 0.2114365944
+//     },
+//     BRL : {
+//         code : "BRL",
+//         value : 0.6908337135
+//     },
+//     CAD : {
+//         code : "CAD",
+//         value : 0.1733154639
+//     },
+//     CHF : {
+//         code : "CHF",
+//         value : 0.1011609152
+//     },
+//     CLP : {
+//         code : "CLP",
+//         value : 118.5556429548
+//     },
+//     CNY : {
+//         code : "CNY",
+//         value : 0.9126457039
+//     },
+//     COP : {
+//         code : "COP",
+//         value : 509.5097899871
+//     },
+//     CRC : {
+//         code : "CRC",
+//         value : 64.3723940842
+//     },
+//     CZK : {
+//         code : "CZK",
+//         value : 2.6644338472
+//     },
+//     EGP : {
+//         code : "EGP",
+//         value : 6.2942902733
+//     },
+//     EUR : {
+//         code : "EUR",
+//         value : 0.108143242
+//     },
+//     GBP : {
+//         code : "GBP",
+//         value : 0.093399796
+//     },
+//     HKD : {
+//         code : "HKD",
+//         value : 1
+//     },
+//     HUF : {
+//         code : "HUF",
+//         value : 43.1564241434
+//     },
+//     IDR : {
+//         code : "IDR",
+//         value : 2061.4002391088
+//     },
+//     INR : {
+//         code : "INR",
+//         value : 10.8882266793
+//     },
+//     JPY : {
+//         code : "JPY",
+//         value : 18.41211139
+//     },
+//     KRW : {
+//         code : "KRW",
+//         value : 173.4231308603
+//     },
+//     MAD : {
+//         code : "MAD",
+//         value : 1.1417152402
+//     },
+//     MXN : {
+//         code : "MXN",
+//         value : 2.3715418441
+//     },
+//     NOK : {
+//         code : "NOK",
+//         value : 1.2843354542
+//     },
+//     NZD : {
+//         code : "NZD",
+//         value : 0.2100931416
+//     },
+//     PEN : {
+//         code : "PEN",
+//         value : 0.4525372215
+//     },
+//     PHP : {
+//         code : "PHP",
+//         value : 7.1943809376
+//     },
+//     QAR : {
+//         code : "QAR",
+//         value : 0.464317202
+//     },
+//     RON : {
+//         code : "RON",
+//         value : 0.5470102362
+//     },
+//     SAR : {
+//         code : "SAR",
+//         value : 0.4775196561
+//     },
+//     SEK : {
+//         code : "SEK",
+//         value : 1.2174056332
+//     },
+//     SGD : {
+//         code : "SGD",
+//         value : 0.1622594751
+//     },
+//     THB : {
+//         code : "THB",
+//         value : 4.1171215544
+//     },
+//     TRY : {
+//         code : "TRY",
+//         value : 5.0812567654
+//     },
+//     TWD : {
+//         code : "TWD",
+//         value : 3.6876523373
+//     },
+//     UAH : {
+//         code : "UAH",
+//         value : 5.3493880755
+//     },
+//     UGX : {
+//         code : "UGX",
+//         value : 457.3359234187
+//     },
+//     USD : {
+//         code : "USD",
+//         value : 0.127461257
+//     },
+//     UYU : {
+//         code : "UYU",
+//         value : 5.1229681097
+//     },
+//     VND : {
+//         code : "VND",
+//         value : 3338.4879556517
+//     },
+//     ZAR : {
+//         code : "ZAR",
+//         value : 2.236244313
+//     }
+// },
+
+// AUD_Rates : {
+//         AED : {
+//             code : "AED",
+//             value : 2.4163859206
+//         },
+//         AUD : {
+//             code : "AUD",
+//             value : 1
+//         },
+//         BGN : {
+//             code : "BGN",
+//             value : 1.0992893287
+//         },
+//         BRL : {
+//             code : "BRL",
+//             value : 3.6592786797
+//         },
+//         CAD : {
+//             code : "CAD",
+//             value : 0.9005790828
+//         },
+//         CHF : {
+//             code : "CHF",
+//             value : 0.5239471036
+//         },
+//         CLP : {
+//             code : "CLP",
+//             value : 629.2083767325
+//         },
+//         CNY : {
+//             code : "CNY",
+//             value : 4.7203670914
+//         },
+//         COP : {
+//             code : "COP",
+//             value : 2632.8569881412
+//         },
+//         CRC : {
+//             code : "CRC",
+//             value : 332.1619602377
+//         },
+//         CZK : {
+//             code : "CZK",
+//             value : 13.8717494024
+//         },
+//         EGP : {
+//             code : "EGP",
+//             value : 32.6020737475
+//         },
+//         EUR : {
+//             code : "EUR",
+//             value : 0.5626678416
+//         },
+//         GBP : {
+//             code : "GBP",
+//             value : 0.4877402048
+//         },
+//         HKD : {
+//             code : "HKD",
+//             value : 5.164431492
+//         },
+//         HUF : {
+//             code : "HUF",
+//             value : 224.7684209973
+//         },
+//         IDR : {
+//             code : "IDR",
+//             value : 10671.7895734947
+//         },
+//         INR : {
+//             code : "INR",
+//             value : 56.4890206354
+//         },
+//         JPY : {
+//             code : "JPY",
+//             value : 96.9879796638
+//         },
+//         KRW : {
+//             code : "KRW",
+//             value : 906.3712762177
+//         },
+//         MAD : {
+//             code : "MAD",
+//             value : 5.9131089874
+//         },
+//         MXN : {
+//             code : "MXN",
+//             value : 12.2629905697
+//         },
+//         NOK : {
+//             code : "NOK",
+//             value : 6.6636945746
+//         },
+//         NZD : {
+//             code : "NZD",
+//             value : 1.0950184777
+//         },
+//         PEN : {
+//             code : "PEN",
+//             value : 2.3409779204
+//         },
+//         PHP : {
+//             code : "PHP",
+//             value : 37.1713628148
+//         },
+//         QAR : {
+//             code : "QAR",
+//             value : 2.3973150409
+//         },
+//         RON : {
+//             code : "RON",
+//             value : 2.8589102363
+//         },
+//         SAR : {
+//             code : "SAR",
+//             value : 2.465431846
+//         },
+//         SEK : {
+//             code : "SEK",
+//             value : 6.290524189
+//         },
+//         SGD : {
+//             code : "SGD",
+//             value : 0.8417610064
+//         },
+//         THB : {
+//             code : "THB",
+//             value : 21.3149968618
+//         },
+//         TRY : {
+//             code : "TRY",
+//             value : 26.4336804059
+//         },
+//         TWD : {
+//             code : "TWD",
+//             value : 19.252441406
+//         },
+//         UAH : {
+//             code : "UAH",
+//             value : 27.628684512
+//         },
+//         UGX : {
+//             code : "UGX",
+//             value : 2359.6789850067
+//         },
+//         USD : {
+//             code : "USD",
+//             value : 0.6580678288
+//         },
+//         UYU : {
+//             code : "UYU",
+//             value : 26.7851939853
+//         },
+//         VND : {
+//             code : "VND",
+//             value : 17192.1361919567
+//         },
+//         ZAR : {
+//             code : "ZAR",
+//             value : 11.7766655631
+//         }
+// },
+
+// VND_Rates : {
+//     AED: { code: "AED", value: 0.0001405518 },
+//     AUD: { code: "AUD", value: 0.0000581661 },
+//     BGN: { code: "BGN", value: 0.0000639414 },
+//     BRL: { code: "BRL", value: 0.0002128461 },
+//     CAD: { code: "CAD", value: 0.0000523832 },
+//     CHF: { code: "CHF", value: 0.000030476 },
+//     CLP: { code: "CLP", value: 0.0365986152 },
+//     CNY: { code: "CNY", value: 0.0002745655 },
+//     COP: { code: "COP", value: 0.1531430974 },
+//     CRC: { code: "CRC", value: 0.0193205752 },
+//     CZK: { code: "CZK", value: 0.000806866 },
+//     EGP: { code: "EGP", value: 0.0018963364 },
+//     EUR: { code: "EUR", value: 0.0000327282 },
+//     GBP: { code: "GBP", value: 0.00002837 },
+//     HKD: { code: "HKD", value: 0.000300395 },
+//     HUF: { code: "HUF", value: 0.0130739088 },
+//     IDR: { code: "IDR", value: 0.6207366818 },
+//     INR: { code: "INR", value: 0.0032857476 },
+//     JPY: { code: "JPY", value: 0.0056414153 },
+//     KRW: { code: "KRW", value: 0.052720108 },
+//     MAD: { code: "MAD", value: 0.0003439427 },
+//     MXN: { code: "MXN", value: 0.0007132907 },
+//     NOK: { code: "NOK", value: 0.0003876013 },
+//     NZD: { code: "NZD", value: 0.000063693 },
+//     PEN: { code: "PEN", value: 0.0001361656 },
+//     PHP: { code: "PHP", value: 0.0021621143 },
+//     QAR: { code: "QAR", value: 0.0001394425 },
+//     RON: { code: "RON", value: 0.0001662917 },
+//     SAR: { code: "SAR", value: 0.0001434046 },
+//     SEK: { code: "SEK", value: 0.0003658954 },
+//     SGD: { code: "SGD", value: 0.000048962 },
+//     THB: { code: "THB", value: 0.0012398108 },
+//     TRY: { code: "TRY", value: 0.0015375448 },
+//     TWD: { code: "TWD", value: 0.00111984 },
+//     UAH: { code: "UAH", value: 0.0016070536 },
+//     UGX: { code: "UGX", value: 0.1372533907 },
+//     USD: { code: "USD", value: 0.0000382773 },
+//     UYU: { code: "UYU", value: 0.001557991 },
+//     VND: { code: "VND", value: 1 },
+//     ZAR: { code: "ZAR", value: 0.000685003 }
+// },
+
+// AED_Rates : {
+//   AED: { code: "AED", value: 1 },
+//   AUD: { code: "AUD", value: 0.4138411797 },
+//   BGN: { code: "BGN", value: 0.4549311926 },
+//   BRL: { code: "BRL", value: 1.5143602057 },
+//   CAD: { code: "CAD", value: 0.37269671 },
+//   CHF: { code: "CHF", value: 0.2168308875 },
+//   CLP: { code: "CLP", value: 260.3923369103 },
+//   CNY: { code: "CNY", value: 1.9534822858 },
+//   COP: { code: "COP", value: 1089.5846419796 },
+//   CRC: { code: "CRC", value: 137.4622974795 },
+//   CZK: { code: "CZK", value: 5.7407011373 },
+//   EGP: { code: "EGP", value: 13.4920806606 },
+//   EUR: { code: "EUR", value: 0.2328551233 },
+//   GBP: { code: "GBP", value: 0.2018469818 },
+//   HKD: { code: "HKD", value: 2.1372544212 },
+//   HUF: { code: "HUF", value: 93.018428507 },
+//   IDR: { code: "IDR", value: 4416.4259867099 },
+//   INR: { code: "INR", value: 23.3774829404 },
+//   JPY: { code: "JPY", value: 40.1376199217 },
+//   KRW: { code: "KRW", value: 375.093758205 },
+//   MAD: { code: "MAD", value: 2.4470879991 },
+//   MXN: { code: "MXN", value: 5.0749304841 },
+//   NOK: { code: "NOK", value: 2.757711224 },
+//   NZD: { code: "NZD", value: 0.4531637386 },
+//   PEN: { code: "PEN", value: 0.9687930643 },
+//   PHP: { code: "PHP", value: 15.3830406387 },
+//   QAR: { code: "QAR", value: 0.9921076847 },
+//   RON: { code: "RON", value: 1.1831347849 },
+//   SAR: { code: "SAR", value: 1.0202972236 },
+//   SEK: { code: "SEK", value: 2.6032779514 },
+//   SGD: { code: "SGD", value: 0.3483553679 },
+//   THB: { code: "THB", value: 8.8210234468 },
+//   TRY: { code: "TRY", value: 10.9393454833 },
+//   TWD: { code: "TWD", value: 7.9674530638 },
+//   UAH: { code: "UAH", value: 11.4338873923 },
+//   UGX: { code: "UGX", value: 976.5323348916 },
+//   USD: { code: "USD", value: 0.2723355666 },
+//   UYU: { code: "UYU", value: 11.0848162776 },
+//   VND: { code: "VND", value: 7114.813923411 },
+//   ZAR: { code: "ZAR", value: 4.8736691697 }
+// },
+
+// BRL_Rates : {
+//   AED: { code: "AED", value: 0.6603448745 },
+//   AUD: { code: "AUD", value: 0.2732779019 },
+//   BGN: { code: "BGN", value: 0.3004114813 },
+//   BRL: { code: "BRL", value: 1 },
+//   CAD: { code: "CAD", value: 0.2461083622 },
+//   CHF: { code: "CHF", value: 0.1431831652 },
+//   CLP: { code: "CLP", value: 171.948745042 },
+//   CNY: { code: "CNY", value: 1.2899720149 },
+//   COP: { code: "COP", value: 719.5016336829 },
+//   CRC: { code: "CRC", value: 90.7725235798 },
+//   CZK: { code: "CZK", value: 3.7908425722 },
+//   EGP: { code: "EGP", value: 8.9094263108 },
+//   EUR: { code: "EUR", value: 0.1537646872 },
+//   GBP: { code: "GBP", value: 0.1332886198 },
+//   HKD: { code: "HKD", value: 1.4113250026 },
+//   HUF: { code: "HUF", value: 61.4242425002 },
+//   IDR: { code: "IDR", value: 2916.3642640046 },
+//   INR: { code: "INR", value: 15.4372010388 },
+//   JPY: { code: "JPY", value: 26.5046715906 },
+//   KRW: { code: "KRW", value: 247.6912406938 },
+//   MAD: { code: "MAD", value: 1.6159220177 },
+//   MXN: { code: "MXN", value: 3.3512043337 },
+//   NOK: { code: "NOK", value: 1.8210404721 },
+//   NZD: { code: "NZD", value: 0.2992443521 },
+//   PEN: { code: "PEN", value: 0.6397375345 },
+//   PHP: { code: "PHP", value: 10.1581120403 },
+//   QAR: { code: "QAR", value: 0.6551332245 },
+//   RON: { code: "RON", value: 0.781276991 },
+//   SAR: { code: "SAR", value: 0.6737480421 },
+//   SEK: { code: "SEK", value: 1.7190612521 },
+//   SGD: { code: "SGD", value: 0.2300346817 },
+//   THB: { code: "THB", value: 5.8249176211 },
+//   TRY: { code: "TRY", value: 7.2237407204 },
+//   TWD: { code: "TWD", value: 5.2612667936 },
+//   UAH: { code: "UAH", value: 7.5503089353 },
+//   UGX: { code: "UGX", value: 644.8481221452 },
+//   USD: { code: "USD", value: 0.1798353955 },
+//   UYU: { code: "UYU", value: 7.3198016139 },
+//   VND: { code: "VND", value: 4698.2309074619 },
+//   ZAR: { code: "ZAR", value: 3.2183024563 }
+// },
+
+// BGN_Rates : {
+//   AED: { code: "AED", value: 2.1981346107 },
+//   AUD: { code: "AUD", value: 0.9096786205 },
+//   BGN: { code: "BGN", value: 1 },
+//   BRL: { code: "BRL", value: 3.3287675812 },
+//   CAD: { code: "CAD", value: 0.8192375376 },
+//   CHF: { code: "CHF", value: 0.4766234784 },
+//   CLP: { code: "CLP", value: 572.3774081226 },
+//   CNY: { code: "CNY", value: 4.2940170237 },
+//   COP: { code: "COP", value: 2395.0537128186 },
+//   CRC: { code: "CRC", value: 302.1606337555 },
+//   CZK: { code: "CZK", value: 12.6188338596 },
+//   EGP: { code: "EGP", value: 29.6574094704 },
+//   EUR: { code: "EUR", value: 0.5118469059 },
+//   GBP: { code: "GBP", value: 0.4436868367 },
+//   HKD: { code: "HKD", value: 4.6979729151 },
+//   HUF: { code: "HUF", value: 204.4670271339 },
+//   IDR: { code: "IDR", value: 9707.898816966 },
+//   INR: { code: "INR", value: 51.3868543623 },
+//   JPY: { code: "JPY", value: 88.227891541 },
+//   KRW: { code: "KRW", value: 824.5065721666 },
+//   MAD: { code: "MAD", value: 5.3790288262 },
+//   MXN: { code: "MXN", value: 11.155380344 },
+//   NOK: { code: "NOK", value: 6.0618204877 },
+//   NZD: { code: "NZD", value: 0.9961148982 },
+//   PEN: { code: "PEN", value: 2.1295375652 },
+//   PHP: { code: "PHP", value: 33.8139940457 },
+//   QAR: { code: "QAR", value: 2.1807862392 },
+//   RON: { code: "RON", value: 2.6006895197 },
+//   SAR: { code: "SAR", value: 2.2427506405 },
+//   SEK: { code: "SEK", value: 5.7223553661 },
+//   SGD: { code: "SGD", value: 0.7657319911 },
+//   THB: { code: "THB", value: 19.3897969402 },
+//   TRY: { code: "TRY", value: 24.0461539251 },
+//   TWD: { code: "TWD", value: 17.5135343386 },
+//   UAH: { code: "UAH", value: 25.1332236118 },
+//   UGX: { code: "UGX", value: 2146.5495237895 },
+//   USD: { code: "USD", value: 0.5986302346 },
+//   UYU: { code: "UYU", value: 24.365918313 },
+//   VND: { code: "VND", value: 15639.3187337146 },
+//   ZAR: { code: "ZAR", value: 10.712980883 }
+// },
+
+// CLP_Rates : {
+//   AED: { code: "AED", value: 0.0038403588 },
+//   AUD: { code: "AUD", value: 0.0015892986 },
+//   BGN: { code: "BGN", value: 0.001747099 },
+//   BRL: { code: "BRL", value: 0.0058156865 },
+//   CAD: { code: "CAD", value: 0.0014312891 },
+//   CHF: { code: "CHF", value: 0.0008327084 },
+//   CLP: { code: "CLP", value: 1 },
+//   CNY: { code: "CNY", value: 0.0075020729 },
+//   COP: { code: "COP", value: 4.1843959577 },
+//   CRC: { code: "CRC", value: 0.5279045425 },
+//   CZK: { code: "CZK", value: 0.0220463521 },
+//   EGP: { code: "EGP", value: 0.0518144306 },
+//   EUR: { code: "EUR", value: 0.0008942472 },
+//   GBP: { code: "GBP", value: 0.0007751648 },
+//   HKD: { code: "HKD", value: 0.0082078238 },
+//   HUF: { code: "HUF", value: 0.3572241396 },
+//   IDR: { code: "IDR", value: 16.9606603601 },
+//   INR: { code: "INR", value: 0.0897779221 },
+//   JPY: { code: "JPY", value: 0.1541428615 },
+//   KRW: { code: "KRW", value: 1.4404946115 },
+//   MAD: { code: "MAD", value: 0.0093976959 },
+//   MXN: { code: "MXN", value: 0.0194895539 },
+//   NOK: { code: "NOK", value: 0.0105906005 },
+//   NZD: { code: "NZD", value: 0.0017403113 },
+//   PEN: { code: "PEN", value: 0.003720513 },
+//   PHP: { code: "PHP", value: 0.0590763953 },
+//   QAR: { code: "QAR", value: 0.0038100495 },
+//   RON: { code: "RON", value: 0.0045436621 },
+//   SAR: { code: "SAR", value: 0.0039183074 },
+//   SEK: { code: "SEK", value: 0.0099975214 },
+//   SGD: { code: "SGD", value: 0.0013378096 },
+//   THB: { code: "THB", value: 0.0338758949 },
+//   TRY: { code: "TRY", value: 0.0420110116 },
+//   TWD: { code: "TWD", value: 0.0305978784 },
+//   UAH: { code: "UAH", value: 0.04391023 },
+//   UGX: { code: "UGX", value: 3.7502345364 },
+//   USD: { code: "USD", value: 0.0010458663 },
+//   UYU: { code: "UYU", value: 0.0425696716 },
+//   VND: { code: "VND", value: 27.3234381927 },
+//   ZAR: { code: "ZAR", value: 0.0187166382 }
+// },
+
+// QAR_Rates : {
+//   AED: { code: "AED", value: 1.0079550995 },
+//   AUD: { code: "AUD", value: 0.4171333275 },
+//   BGN: { code: "BGN", value: 0.4585502155 },
+//   BRL: { code: "BRL", value: 1.5264070918 },
+//   CAD: { code: "CAD", value: 0.3756615494 },
+//   CHF: { code: "CHF", value: 0.2185557987 },
+//   CLP: { code: "CLP", value: 262.4637838552 },
+//   CNY: { code: "CNY", value: 1.9690224317 },
+//   COP: { code: "COP", value: 1098.2523962026 },
+//   CRC: { code: "CRC", value: 138.5558237312 },
+//   CZK: { code: "CZK", value: 5.786368986 },
+//   EGP: { code: "EGP", value: 13.5994115045 },
+//   EUR: { code: "EUR", value: 0.234707509 },
+//   GBP: { code: "GBP", value: 0.2034526946 },
+//   HKD: { code: "HKD", value: 2.1542564927 },
+//   HUF: { code: "HUF", value: 93.7583993596 },
+//   IDR: { code: "IDR", value: 4451.5590947971 },
+//   INR: { code: "INR", value: 23.5634531429 },
+//   JPY: { code: "JPY", value: 40.4569186813 },
+//   KRW: { code: "KRW", value: 378.0776663673 },
+//   MAD: { code: "MAD", value: 2.4665548276 },
+//   MXN: { code: "MXN", value: 5.115302061 },
+//   NOK: { code: "NOK", value: 2.7796490911 },
+//   NZD: { code: "NZD", value: 0.4567687012 },
+//   PEN: { code: "PEN", value: 0.9764999095 },
+//   PHP: { code: "PHP", value: 15.5054142574 },
+//   QAR: { code: "QAR", value: 1 },
+//   RON: { code: "RON", value: 1.1925467398 },
+//   SAR: { code: "SAR", value: 1.0284137896 },
+//   SEK: { code: "SEK", value: 2.6239872864 },
+//   SGD: { code: "SGD", value: 0.3511265695 },
+//   THB: { code: "THB", value: 8.8911955659 },
+//   TRY: { code: "TRY", value: 11.0263690649 },
+//   TWD: { code: "TWD", value: 8.0308349455 },
+//   UAH: { code: "UAH", value: 11.524845104 },
+//   UGX: { code: "UGX", value: 984.3007467649 },
+//   USD: { code: "USD", value: 0.2745020231 },
+//   UYU: { code: "UYU", value: 11.1729970939 },
+//   VND: { code: "VND", value: 7171.4129759806 },
+//   ZAR: { code: "ZAR", value: 4.9124396928 }
+// },
+
+// NZD_Rates : {
+//   AED: { code: "AED", value: 2.2067078956 },
+//   AUD: { code: "AUD", value: 0.9132265988 },
+//   BGN: { code: "BGN", value: 1.0039002547 },
+//   BRL: { code: "BRL", value: 3.3417506227 },
+//   CAD: { code: "CAD", value: 0.8224327727 },
+//   CHF: { code: "CHF", value: 0.4784824314 },
+//   CLP: { code: "CLP", value: 574.6098258153 },
+//   CNY: { code: "CNY", value: 4.3107647839 },
+//   COP: { code: "COP", value: 2404.3950323877 },
+//   CRC: { code: "CRC", value: 303.3391371961 },
+//   CZK: { code: "CZK", value: 12.668050526 },
+//   EGP: { code: "EGP", value: 29.773080922 },
+//   EUR: { code: "EUR", value: 0.5138432392 },
+//   GBP: { code: "GBP", value: 0.4454173284 },
+//   HKD: { code: "HKD", value: 4.7162962062 },
+//   HUF: { code: "HUF", value: 205.2645006234 },
+//   IDR: { code: "IDR", value: 9745.7620952337 },
+//   INR: { code: "INR", value: 51.587276184 },
+//   JPY: { code: "JPY", value: 88.5720027922 },
+//   KRW: { code: "KRW", value: 827.7223578237 },
+//   MAD: { code: "MAD", value: 5.4000084088 },
+//   MXN: { code: "MXN", value: 11.198889169 },
+//   NOK: { code: "NOK", value: 6.0854631317 },
+//   NZD: { code: "NZD", value: 1 },
+//   PEN: { code: "PEN", value: 2.1378433041 },
+//   PHP: { code: "PHP", value: 33.9458772359 },
+//   QAR: { code: "QAR", value: 2.1892918611 },
+//   RON: { code: "RON", value: 2.6108328713 },
+//   SAR: { code: "SAR", value: 2.2514979393 },
+//   SEK: { code: "SEK", value: 5.7446740097 },
+//   SGD: { code: "SGD", value: 0.7687185409 },
+//   THB: { code: "THB", value: 19.4654220874 },
+//   TRY: { code: "TRY", value: 24.1399400507 },
+//   TWD: { code: "TWD", value: 17.5818415837 },
+//   UAH: { code: "UAH", value: 25.231249586 },
+//   UGX: { code: "UGX", value: 2154.9216137203 },
+//   USD: { code: "USD", value: 0.600965045 },
+//   UYU: { code: "UYU", value: 24.4609516012 },
+//   VND: { code: "VND", value: 15700.3160605611 },
+//   ZAR: { code: "ZAR", value: 10.7547642373 }
+// },
+
+// SAR_Rates : {
+//   AED: { code: "AED", value: 0.980106558 },
+//   AUD: { code: "AUD", value: 0.4056084542 },
+//   BGN: { code: "BGN", value: 0.4458810453 },
+//   BRL: { code: "BRL", value: 1.4842343688 },
+//   CAD: { code: "CAD", value: 0.3652824896 },
+//   CHF: { code: "CHF", value: 0.2125173748 },
+//   CLP: { code: "CLP", value: 255.2122370576 },
+//   CNY: { code: "CNY", value: 1.9146207992 },
+//   COP: { code: "COP", value: 1067.9090530956 },
+//   CRC: { code: "CRC", value: 134.7276992368 },
+//   CZK: { code: "CZK", value: 5.6264988322 },
+//   EGP: { code: "EGP", value: 13.2236767365 },
+//   EUR: { code: "EUR", value: 0.2282228335 },
+//   GBP: { code: "GBP", value: 0.1978315505 },
+//   HKD: { code: "HKD", value: 2.0947370743 },
+//   HUF: { code: "HUF", value: 91.1679717942 },
+//   IDR: { code: "IDR", value: 4328.5680724771 },
+//   INR: { code: "INR", value: 22.9124243393 },
+//   JPY: { code: "JPY", value: 39.3391445076 },
+//   KRW: { code: "KRW", value: 367.63185228 },
+//   MAD: { code: "MAD", value: 2.3984069959 },
+//   MXN: { code: "MXN", value: 4.9739726489 },
+//   NOK: { code: "NOK", value: 2.7028508557 },
+//   NZD: { code: "NZD", value: 0.4441487521 },
+//   PEN: { code: "PEN", value: 0.9495204356 },
+//   PHP: { code: "PHP", value: 15.0770190119 },
+//   QAR: { code: "QAR", value: 0.972371248 },
+//   RON: { code: "RON", value: 1.1595981616 },
+//   SAR: { code: "SAR", value: 1 },
+//   SEK: { code: "SEK", value: 2.5514897924 },
+//   SGD: { code: "SGD", value: 0.3414253806 },
+//   THB: { code: "THB", value: 8.6455429284 },
+//   TRY: { code: "TRY", value: 10.7217242483 },
+//   TWD: { code: "TWD", value: 7.8089529983 },
+//   UAH: { code: "UAH", value: 11.2064280166 },
+//   UGX: { code: "UGX", value: 957.1057455222 },
+//   USD: { code: "USD", value: 0.2669178748 },
+//   UYU: { code: "UYU", value: 10.8643011279 },
+//   VND: { code: "VND", value: 6973.2757852545 },
+//   ZAR: { code: "ZAR", value: 4.7767151147 }
+// },
+
+// CNY_Rates : {
+//   AED: { code: "AED", value: 0.5119063568 },
+//   AUD: { code: "AUD", value: 0.2118479306 },
+//   BGN: { code: "BGN", value: 0.2328821694 },
+//   BRL: { code: "BRL", value: 0.7752106158 },
+//   CAD: { code: "CAD", value: 0.190785815 },
+//   CHF: { code: "CHF", value: 0.1109971096 },
+//   CLP: { code: "CLP", value: 133.2964925299 },
+//   CNY: { code: "CNY", value: 1 },
+//   COP: { code: "COP", value: 557.7653045158 },
+//   CRC: { code: "CRC", value: 70.3678239019 },
+//   CZK: { code: "CZK", value: 2.9387014048 },
+//   EGP: { code: "EGP", value: 6.9066818568 },
+//   EUR: { code: "EUR", value: 0.1192000179 },
+//   GBP: { code: "GBP", value: 0.1033267531 },
+//   HKD: { code: "HKD", value: 1.0940741243 },
+//   HUF: { code: "HUF", value: 47.6167248536 },
+//   IDR: { code: "IDR", value: 2260.7965369936 },
+//   INR: { code: "INR", value: 11.9670821235 },
+//   JPY: { code: "JPY", value: 20.5467027853 },
+//   KRW: { code: "KRW", value: 192.0128792263 },
+//   MAD: { code: "MAD", value: 1.2526799024 },
+//   MXN: { code: "MXN", value: 2.5978891752 },
+//   NOK: { code: "NOK", value: 1.4116899058 },
+//   NZD: { code: "NZD", value: 0.2319773985 },
+//   PEN: { code: "PEN", value: 0.495931328 },
+//   PHP: { code: "PHP", value: 7.8746762901 },
+//   QAR: { code: "QAR", value: 0.5078662304 },
+//   RON: { code: "RON", value: 0.6056542173 },
+//   SAR: { code: "SAR", value: 0.5222966346 },
+//   SEK: { code: "SEK", value: 1.3326345319 },
+//   SGD: { code: "SGD", value: 0.1783253273 },
+//   THB: { code: "THB", value: 4.515537976 },
+//   TRY: { code: "TRY", value: 5.5999204923 },
+//   TWD: { code: "TWD", value: 4.078589871 },
+//   UAH: { code: "UAH", value: 5.8530796392 },
+//   UGX: { code: "UGX", value: 499.8931098651 },
+//   USD: { code: "USD", value: 0.1394103077 },
+//   UYU: { code: "UYU", value: 5.6743879166 },
+//   VND: { code: "VND", value: 3642.1184749401 },
+//   ZAR: { code: "ZAR", value: 2.494862229 }
+// },
+
+// COP_Rates : {
+//   AED: { code: "AED", value: 0.0009177809 },
+//   AUD: { code: "AUD", value: 0.0003798155 },
+//   BGN: { code: "BGN", value: 0.0004175272 },
+//   BRL: { code: "BRL", value: 0.0013898509 },
+//   CAD: { code: "CAD", value: 0.0003420539 },
+//   CHF: { code: "CHF", value: 0.0001990033 },
+//   CLP: { code: "CLP", value: 0.2389831197 },
+//   CNY: { code: "CNY", value: 0.0017928688 },
+//   COP: { code: "COP", value: 1 },
+//   CRC: { code: "CRC", value: 0.1261602745 },
+//   CZK: { code: "CZK", value: 0.005268706 },
+//   EGP: { code: "EGP", value: 0.0123827743 },
+//   EUR: { code: "EUR", value: 0.00021371 },
+//   GBP: { code: "GBP", value: 0.0001852513 },
+//   HKD: { code: "HKD", value: 0.0019615313 },
+//   HUF: { code: "HUF", value: 0.0853705393 },
+//   IDR: { code: "IDR", value: 4.0533115249 },
+//   INR: { code: "INR", value: 0.0214554079 },
+//   JPY: { code: "JPY", value: 0.0368375419 },
+//   KRW: { code: "KRW", value: 0.3442538962 },
+//   MAD: { code: "MAD", value: 0.0022458907 },
+//   MXN: { code: "MXN", value: 0.0046576744 },
+//   NOK: { code: "NOK", value: 0.0025309748 },
+//   NZD: { code: "NZD", value: 0.000415905 },
+//   PEN: { code: "PEN", value: 0.0008891398 },
+//   PHP: { code: "PHP", value: 0.0141182613 },
+//   QAR: { code: "QAR", value: 0.0009105375 },
+//   RON: { code: "RON", value: 0.0010858585 },
+//   SAR: { code: "SAR", value: 0.0009364093 },
+//   SEK: { code: "SEK", value: 0.0023892388 },
+//   SGD: { code: "SGD", value: 0.0003197139 },
+//   THB: { code: "THB", value: 0.0080957671 },
+//   TRY: { code: "TRY", value: 0.0100399226 },
+//   TWD: { code: "TWD", value: 0.0073123764 },
+//   UAH: { code: "UAH", value: 0.0104938037 },
+//   UGX: { code: "UGX", value: 0.8962427491 },
+//   USD: { code: "USD", value: 0.0002499444 },
+//   UYU: { code: "UYU", value: 0.0101734329 },
+//   VND: { code: "VND", value: 6.5298405 },
+//   ZAR: { code: "ZAR", value: 0.0044729606 }
+// },
+
+// CRC_Rates : {
+//   AED: { code: "AED", value: 0.007274722 },
+//   AUD: { code: "AUD", value: 0.0030105795 },
+//   BGN: { code: "BGN", value: 0.003309498 },
+//   BRL: { code: "BRL", value: 0.0110165495 },
+//   CAD: { code: "CAD", value: 0.002711265 },
+//   CHF: { code: "CHF", value: 0.0015773844 },
+//   CLP: { code: "CLP", value: 1.8942818626 },
+//   CNY: { code: "CNY", value: 0.0142110406 },
+//   COP: { code: "COP", value: 7.9264253687 },
+//   CRC: { code: "CRC", value: 1 },
+//   CZK: { code: "CZK", value: 0.0417620049 },
+//   EGP: { code: "EGP", value: 0.098151136 },
+//   EUR: { code: "EUR", value: 0.0016939563 },
+//   GBP: { code: "GBP", value: 0.0014683807 },
+//   HKD: { code: "HKD", value: 0.0155479318 },
+//   HUF: { code: "HUF", value: 0.6766832085 },
+//   IDR: { code: "IDR", value: 32.1282712983 },
+//   INR: { code: "INR", value: 0.1700646895 },
+//   JPY: { code: "JPY", value: 0.2919900268 },
+//   KRW: { code: "KRW", value: 2.7287028158 },
+//   MAD: { code: "MAD", value: 0.0178018849 },
+//   MXN: { code: "MXN", value: 0.0369187085 },
+//   NOK: { code: "NOK", value: 0.0200615825 },
+//   NZD: { code: "NZD", value: 0.0032966402 },
+//   PEN: { code: "PEN", value: 0.0070477002 },
+//   PHP: { code: "PHP", value: 0.1119073442 },
+//   QAR: { code: "QAR", value: 0.0072173076 },
+//   RON: { code: "RON", value: 0.0086069767 },
+//   SAR: { code: "SAR", value: 0.0074223787 },
+//   SEK: { code: "SEK", value: 0.0189381234 },
+//   SGD: { code: "SGD", value: 0.0025341885 },
+//   THB: { code: "THB", value: 0.0641704934 },
+//   TRY: { code: "TRY", value: 0.0795806973 },
+//   TWD: { code: "TWD", value: 0.0579610061 },
+//   UAH: { code: "UAH", value: 0.0831783522 },
+//   UGX: { code: "UGX", value: 7.1040012629 },
+//   USD: { code: "USD", value: 0.0019811655 },
+//   UYU: { code: "UYU", value: 0.0806389569 },
+//   VND: { code: "VND", value: 51.7582933929 },
+//   ZAR: { code: "ZAR", value: 0.0354545883 }
+// },
+
+// CZK_rates : {
+//   AED:{ code: "AED", value: 0.1741947501 },
+//   AUD:{ code: "AUD", value: 0.0720889609 },
+//   BGN:{ code: "BGN", value: 0.0792466254 },
+//   BRL:{ code: "BRL", value: 0.2637935976 },
+//   CAD:{ code: "CAD", value: 0.0649218103 },
+//   CHF:{ code: "CHF", value: 0.0377708023 },
+//   CLP:{ code: "CLP", value: 45.3589780555 },
+//   CNY:{ code: "CNY", value: 0.3402863586 },
+//   COP:{ code: "COP", value: 189.79992442 },
+//   CRC:{ code: "CRC", value: 23.9452105573 },
+//   CZK:{ code: "CZK", value: 1 },
+//   EGP:{ code: "EGP", value: 2.350249619 },
+//   EUR:{ code: "EUR", value: 0.04056214 },
+//   GBP:{ code: "GBP", value: 0.0351606845 },
+//   HKD:{ code: "HKD", value: 0.3722984998 },
+//   HUF:{ code: "HUF", value: 16.2033219083 },
+//   IDR:{ code: "IDR", value: 769.3182210801 },
+//   INR:{ code: "INR", value: 4.0722347987 },
+//   JPY:{ code: "JPY", value: 6.9917626718 },
+//   KRW:{ code: "KRW", value: 65.3393634737 },
+//   MAD:{ code: "MAD", value: 0.4262698825 },
+//   MXN:{ code: "MXN", value: 0.8840262474 },
+//   NOK:{ code: "NOK", value: 0.4803788175 },
+//   NZD:{ code: "NZD", value: 0.0789387442 },
+//   PEN:{ code: "PEN", value: 0.1687586657 },
+//   PHP:{ code: "PHP", value: 2.6796449198 },
+//   QAR:{ code: "QAR", value: 0.1728199502 },
+//   RON:{ code: "RON", value: 0.2060958682 },
+//   SAR:{ code: "SAR", value: 0.1777304199 },
+//   SEK:{ code: "SEK", value: 0.4534773522 },
+//   SGD:{ code: "SGD", value: 0.0606816763 },
+//   THB:{ code: "THB", value: 1.5365759749 },
+//   TRY:{ code: "TRY", value: 1.9055765527 },
+//   TWD:{ code: "TWD", value: 1.3878884954 },
+//   UAH:{ code: "UAH", value: 1.9917231569 },
+//   UGX:{ code: "UGX", value: 170.1068060388 },
+//   USD:{ code: "USD", value: 0.047439426 },
+//   UYU:{ code: "UYU", value: 1.9309168014 },
+//   VND:{ code: "VND", value: 1239.3632333806 },
+//   ZAR:{ code: "ZAR", value: 0.8489675831 },
+// },
+
+// EGP_Rates : {
+//   AED:{ code: "AED", value: 0.0741175527 },
+//   AUD:{ code: "AUD", value: 0.0306728955 },
+//   BGN:{ code: "BGN", value: 0.0337183867 },
+//   BRL:{ code: "BRL", value: 0.1122406724 },
+//   CAD:{ code: "CAD", value: 0.0276233681 },
+//   CHF:{ code: "CHF", value: 0.0160709747 },
+//   CLP:{ code: "CLP", value: 19.2996427653 },
+//   CNY:{ code: "CNY", value: 0.1447873264 },
+//   COP:{ code: "COP", value: 80.7573471717 },
+//   CRC:{ code: "CRC", value: 10.1883690838 },
+//   CZK:{ code: "CZK", value: 0.4254867193 },
+//   EGP:{ code: "EGP", value: 1 },
+//   EUR:{ code: "EUR", value: 0.0172586519 },
+//   GBP:{ code: "GBP", value: 0.0149604043 },
+//   HKD:{ code: "HKD", value: 0.1584080673 },
+//   HUF:{ code: "HUF", value: 6.8942982811 },
+//   IDR:{ code: "IDR", value: 327.3346860129 },
+//   INR:{ code: "INR", value: 1.7326818249 },
+//   JPY:{ code: "JPY", value: 2.9749021616 },
+//   KRW:{ code: "KRW", value: 27.801031408 },
+//   MAD:{ code: "MAD", value: 0.1813721738 },
+//   MXN:{ code: "MXN", value: 0.3761414278 },
+//   NOK:{ code: "NOK", value: 0.2043948071 },
+//   NZD:{ code: "NZD", value: 0.0335873873 },
+//   PEN:{ code: "PEN", value: 0.071804571 },
+//   PHP:{ code: "PHP", value: 1.1401533259 },
+//   QAR:{ code: "QAR", value: 0.0735325936 },
+//   RON:{ code: "RON", value: 0.0876910548 },
+//   SAR:{ code: "SAR", value: 0.0756219333 },
+//   SEK:{ code: "SEK", value: 0.1929485909 },
+//   SGD:{ code: "SGD", value: 0.0258192474 },
+//   THB:{ code: "THB", value: 0.6537926706 },
+//   TRY:{ code: "TRY", value: 0.8107975158 },
+//   TWD:{ code: "TWD", value: 0.5905281227 },
+//   UAH:{ code: "UAH", value: 0.8474517519 },
+//   UGX:{ code: "UGX", value: 72.3781868382 },
+//   USD:{ code: "USD", value: 0.0201848457 },
+//   UYU:{ code: "UYU", value: 0.8215794551 },
+//   VND:{ code: "VND", value: 527.332596237 },
+//   ZAR:{ code: "ZAR", value: 0.3612244317 },
+// },
+
+// HUF_Rates : {
+//   AED:{ code: "AED", value: 0.0107505579 },
+//   AUD:{ code: "AUD", value: 0.0044490236 },
+//   BGN:{ code: "BGN", value: 0.0048907641 },
+//   BRL:{ code: "BRL", value: 0.016280217 },
+//   CAD:{ code: "CAD", value: 0.0040066976 },
+//   CHF:{ code: "CHF", value: 0.002331053 },
+//   CLP:{ code: "CLP", value: 2.7993628907 },
+//   CNY:{ code: "CNY", value: 0.0210010244 },
+//   COP:{ code: "COP", value: 11.7136427638 },
+//   CRC:{ code: "CRC", value: 1.477796386 },
+//   CZK:{ code: "CZK", value: 0.0617157399 },
+//   EGP:{ code: "EGP", value: 0.1450473941 },
+//   EUR:{ code: "EUR", value: 0.0025033225 },
+//   GBP:{ code: "GBP", value: 0.0021699677 },
+//   HKD:{ code: "HKD", value: 0.0229766774 },
+//   HUF:{ code: "HUF", value: 1 },
+//   IDR:{ code: "IDR", value: 47.4790432132 },
+//   INR:{ code: "INR", value: 0.2513209835 },
+//   JPY:{ code: "JPY", value: 0.4315018063 },
+//   KRW:{ code: "KRW", value: 4.0324671597 },
+//   MAD:{ code: "MAD", value: 0.0263075612 },
+//   MXN:{ code: "MXN", value: 0.0545583339 },
+//   NOK:{ code: "NOK", value: 0.0296469341 },
+//   NZD:{ code: "NZD", value: 0.004871763 },
+//   PEN:{ code: "PEN", value: 0.0104150659 },
+//   PHP:{ code: "PHP", value: 0.1653762688 },
+//   QAR:{ code: "QAR", value: 0.0106657111 },
+//   RON:{ code: "RON", value: 0.012719359 },
+//   SAR:{ code: "SAR", value: 0.0109687644 },
+//   SEK:{ code: "SEK", value: 0.0279866903 },
+//   SGD:{ code: "SGD", value: 0.0037450145 },
+//   THB:{ code: "THB", value: 0.0948309232 },
+//   TRY:{ code: "TRY", value: 0.1176040668 },
+//   TWD:{ code: "TWD", value: 0.0856545654 },
+//   UAH:{ code: "UAH", value: 0.1229206683 },
+//   UGX:{ code: "UGX", value: 10.4982673924 },
+//   USD:{ code: "USD", value: 0.0029277593 },
+//   UYU:{ code: "UYU", value: 0.119167959 },
+//   VND:{ code: "VND", value: 76.4882189218 },
+//   ZAR:{ code: "ZAR", value: 0.0523946625 },
+// },
+
+// IDR_Rates : {
+//   AED:{ code: "AED", value: 0.0002264274 },
+//   AUD:{ code: "AUD", value: 9.3705e-5 },
+//   BGN:{ code: "BGN", value: 0.0001030089 },
+//   BRL:{ code: "BRL", value: 0.0003428927 },
+//   CAD:{ code: "CAD", value: 8.43888e-5 },
+//   CHF:{ code: "CHF", value: 4.90965e-5 },
+//   CLP:{ code: "CLP", value: 0.0589599685 },
+//   CNY:{ code: "CNY", value: 0.000442322 },
+//   COP:{ code: "COP", value: 0.2467118537 },
+//   CRC:{ code: "CRC", value: 0.0311252352 },
+//   CZK:{ code: "CZK", value: 0.0012998522 },
+//   EGP:{ code: "EGP", value: 0.0030549772 },
+//   EUR:{ code: "EUR", value: 5.27248e-5 },
+//   GBP:{ code: "GBP", value: 4.57037e-5 },
+//   HKD:{ code: "HKD", value: 0.000483933 },
+//   HUF:{ code: "HUF", value: 0.021061924 },
+//   IDR:{ code: "IDR", value: 1 },
+//   INR:{ code: "INR", value: 0.0052933035 },
+//   JPY:{ code: "JPY", value: 0.0090882583 },
+//   KRW:{ code: "KRW", value: 0.0849315169 },
+//   MAD:{ code: "MAD", value: 0.0005540879 },
+//   MXN:{ code: "MXN", value: 0.0011491035 },
+//   NOK:{ code: "NOK", value: 0.0006244215 },
+//   NZD:{ code: "NZD", value: 0.0001026087 },
+//   PEN:{ code: "PEN", value: 0.0002193613 },
+//   PHP:{ code: "PHP", value: 0.0034831424 },
+//   QAR:{ code: "QAR", value: 0.0002246404 },
+//   RON:{ code: "RON", value: 0.0002678942 },
+//   SAR:{ code: "SAR", value: 0.0002310233 },
+//   SEK:{ code: "SEK", value: 0.0005894535 },
+//   SGD:{ code: "SGD", value: 7.88772e-5 },
+//   THB:{ code: "THB", value: 0.0019973217 },
+//   TRY:{ code: "TRY", value: 0.0024769679 },
+//   TWD:{ code: "TWD", value: 0.0018040499 },
+//   UAH:{ code: "UAH", value: 0.0025889458 },
+//   UGX:{ code: "UGX", value: 0.22111371 },
+//   USD:{ code: "USD", value: 6.16642e-5 },
+//   UYU:{ code: "UYU", value: 0.0025099065 },
+//   VND:{ code: "VND", value: 1.6109890542 },
+//   ZAR:{ code: "ZAR", value: 0.0011035324 },
+// },
+
+// JPY_Rates : {
+//   AED:{ code: "AED", value: 0.0249142825 },
+//   AUD:{ code: "AUD", value: 0.010310556 },
+//   BGN:{ code: "BGN", value: 0.0113342842 },
+//   BRL:{ code: "BRL", value: 0.0377291979 },
+//   CAD:{ code: "CAD", value: 0.0092854711 },
+//   CHF:{ code: "CHF", value: 0.005402186 },
+//   CLP:{ code: "CLP", value: 6.4874882322 },
+//   CNY:{ code: "CNY", value: 0.0486696094 },
+//   COP:{ code: "COP", value: 27.1462195343 },
+//   CRC:{ code: "CRC", value: 3.424774507 },
+//   CZK:{ code: "CZK", value: 0.1430254497 },
+//   EGP:{ code: "EGP", value: 0.3361455086 },
+//   EUR:{ code: "EUR", value: 0.0058014183 },
+//   GBP:{ code: "GBP", value: 0.0050288727 },
+//   HKD:{ code: "HKD", value: 0.0532481603 },
+//   HUF:{ code: "HUF", value: 2.3174874018 },
+//   IDR:{ code: "IDR", value: 110.0320844963 },
+//   INR:{ code: "INR", value: 0.5824332132 },
+//   JPY:{ code: "JPY", value: 1 },
+//   KRW:{ code: "KRW", value: 9.3451918409 },
+//   MAD:{ code: "MAD", value: 0.0609674416 },
+//   MXN:{ code: "MXN", value: 0.1264382515 },
+//   NOK:{ code: "NOK", value: 0.0687063964 },
+//   NZD:{ code: "NZD", value: 0.0112902494 },
+//   PEN:{ code: "PEN", value: 0.024136784 },
+//   PHP:{ code: "PHP", value: 0.3832574196 },
+//   QAR:{ code: "QAR", value: 0.0247176511 },
+//   RON:{ code: "RON", value: 0.0294769542 },
+//   SAR:{ code: "SAR", value: 0.0254199732 },
+//   SEK:{ code: "SEK", value: 0.0648588022 },
+//   SGD:{ code: "SGD", value: 0.008679024 },
+//   THB:{ code: "THB", value: 0.2197694697 },
+//   TRY:{ code: "TRY", value: 0.2725459433 },
+//   TWD:{ code: "TWD", value: 0.1985033761 },
+//   UAH:{ code: "UAH", value: 0.2848671001 },
+//   UGX:{ code: "UGX", value: 24.3296024228 },
+//   USD:{ code: "USD", value: 0.0067850452 },
+//   UYU:{ code: "UYU", value: 0.2761702438 },
+//   VND:{ code: "VND", value: 177.2604837378 },
+//   ZAR:{ code: "ZAR", value: 0.1214239703 },
+// },
+
+// MXN_Rates : {
+//   AED: { code: "AED", value: 0.1970470341 },
+//   AUD: { code: "AUD", value: 0.081546177 },
+//   BGN: { code: "BGN", value: 0.0896428422 },
+//   BRL: { code: "BRL", value: 0.298400187 },
+//   CAD: { code: "CAD", value: 0.0734387813 },
+//   CHF: { code: "CHF", value: 0.0427258833 },
+//   CLP: { code: "CLP", value: 51.3095376823 },
+//   CNY: { code: "CNY", value: 0.3849278905 },
+//   COP: { code: "COP", value: 214.6994220685 },
+//   CRC: { code: "CRC", value: 27.0865380145 },
+//   CZK: { code: "CZK", value: 1.1311881326 },
+//   EGP: { code: "EGP", value: 2.6585744776 },
+//   EUR: { code: "EUR", value: 0.0458834114 },
+//   GBP: { code: "GBP", value: 0.0397733491 },
+//   HKD: { code: "HKD", value: 0.4211396447 },
+//   HUF: { code: "HUF", value: 18.329005451 },
+//   IDR: { code: "IDR", value: 870.2436418634 },
+//   INR: { code: "INR", value: 4.6064636774 },
+//   JPY: { code: "JPY", value: 7.9089989601 },
+//   KRW: { code: "KRW", value: 73.9111125518 },
+//   MAD: { code: "MAD", value: 0.4821914323 },
+//   MXN: { code: "MXN", value: 1 },
+//   NOK: { code: "NOK", value: 0.5433988175 },
+//   NZD: { code: "NZD", value: 0.0892945706 },
+//   PEN: { code: "PEN", value: 0.1908977999 },
+//   PHP: { code: "PHP", value: 3.0311825328 },
+//   QAR: { code: "QAR", value: 0.1954918767 },
+//   RON: { code: "RON", value: 0.2331332003 },
+//   SAR: { code: "SAR", value: 0.2010465418 },
+//   SEK: { code: "SEK", value: 0.5129681992 },
+//   SGD: { code: "SGD", value: 0.0686423921 },
+//   THB: { code: "THB", value: 1.7381565076 },
+//   TRY: { code: "TRY", value: 2.1555655821 },
+//   TWD: { code: "TWD", value: 1.5699629953 },
+//   UAH: { code: "UAH", value: 2.2530135985 },
+//   UGX: { code: "UGX", value: 192.4228002622 },
+//   USD: { code: "USD", value: 0.0536629157 },
+//   UYU: { code: "UYU", value: 2.1842301707 },
+//   VND: { code: "VND", value: 1401.9529815561 },
+//   ZAR: { code: "ZAR", value: 0.9603420549 }
+// },
+
+// MAD_Rates : {
+//   AED: { code: "AED", value: 0.408648974 },
+//   AUD: { code: "AUD", value: 0.1691157735 },
+//   BGN: { code: "BGN", value: 0.1859071651 },
+//   BRL: { code: "BRL", value: 0.6188417443 },
+//   CAD: { code: "CAD", value: 0.1523021281 },
+//   CHF: { code: "CHF", value: 0.0886077197 },
+//   CLP: { code: "CLP", value: 106.4090613035 },
+//   CNY: { code: "CNY", value: 0.7982885317 },
+//   COP: { code: "COP", value: 445.2576459796 },
+//   CRC: { code: "CRC", value: 56.1738268222 },
+//   CZK: { code: "CZK", value: 2.3459316295 },
+//   EGP: { code: "EGP", value: 5.5135249185 },
+//   EUR: { code: "EUR", value: 0.0951560072 },
+//   GBP: { code: "GBP", value: 0.082484562 },
+//   HKD: { code: "HKD", value: 0.8733868263 },
+//   HUF: { code: "HUF", value: 38.0118853681 },
+//   IDR: { code: "IDR", value: 1804.767948007 },
+//   INR: { code: "INR", value: 9.5531844172 },
+//   JPY: { code: "JPY", value: 16.4021971979 },
+//   KRW: { code: "KRW", value: 153.2816794265 },
+//   MAD: { code: "MAD", value: 1 },
+//   MXN: { code: "MXN", value: 2.0738651352 },
+//   NOK: { code: "NOK", value: 1.1269358621 },
+//   NZD: { code: "NZD", value: 0.1851848968 },
+//   PEN: { code: "PEN", value: 0.3958962917 },
+//   PHP: { code: "PHP", value: 6.2862637733 },
+//   QAR: { code: "QAR", value: 0.4054237874 },
+//   RON: { code: "RON", value: 0.4834868159 },
+//   SAR: { code: "SAR", value: 0.4169434136 },
+//   SEK: { code: "SEK", value: 1.0638268637 },
+//   SGD: { code: "SGD", value: 0.1423550637 },
+//   THB: { code: "THB", value: 3.6047021807 },
+//   TRY: { code: "TRY", value: 4.4703523074 },
+//   TWD: { code: "TWD", value: 3.2558915195 },
+//   UAH: { code: "UAH", value: 4.6724463511 },
+//   UGX: { code: "UGX", value: 399.0589366851 },
+//   USD: { code: "USD", value: 0.1112896499 },
+//   UYU: { code: "UYU", value: 4.5297987983 },
+//   VND: { code: "VND", value: 2907.4614096662 },
+//   ZAR: { code: "ZAR", value: 1.9916199056 }
+// },
+
+// TWD_Rates : {
+//   AED: { code: "AED", value: 0.1255106233 },
+//   AUD: { code: "AUD", value: 0.0519414644 },
+//   BGN: { code: "BGN", value: 0.0570986975 },
+//   BRL: { code: "BRL", value: 0.1900682933 },
+//   CAD: { code: "CAD", value: 0.0467773964 },
+//   CHF: { code: "CHF", value: 0.0272145798 },
+//   CLP: { code: "CLP", value: 32.6820045033 },
+//   CNY: { code: "CNY", value: 0.2451827793 },
+//   COP: { code: "COP", value: 136.7544475328 },
+//   CRC: { code: "CRC", value: 17.2529786344 },
+//   CZK: { code: "CZK", value: 0.7205189778 },
+//   EGP: { code: "EGP", value: 1.6933994531 },
+//   EUR: { code: "EUR", value: 0.0292257917 },
+//   GBP: { code: "GBP", value: 0.0253339405 },
+//   HKD: { code: "HKD", value: 0.2682481345 },
+//   HUF: { code: "HUF", value: 11.6748009386 },
+//   IDR: { code: "IDR", value: 554.3083782685 },
+//   INR: { code: "INR", value: 2.9341224546 },
+//   JPY: { code: "JPY", value: 5.0376976934 },
+//   KRW: { code: "KRW", value: 47.0782513813 },
+//   MAD: { code: "MAD", value: 0.30713554 },
+//   MXN: { code: "MXN", value: 0.6369576882 },
+//   NOK: { code: "NOK", value: 0.3461220546 },
+//   NZD: { code: "NZD", value: 0.0568768633 },
+//   PEN: { code: "PEN", value: 0.1215938213 },
+//   PHP: { code: "PHP", value: 1.9307350185 },
+//   QAR: { code: "QAR", value: 0.1245200539 },
+//   RON: { code: "RON", value: 0.1484959843 },
+//   SAR: { code: "SAR", value: 0.1280581405 },
+//   SEK: { code: "SEK", value: 0.3267390382 },
+//   SGD: { code: "SGD", value: 0.0437222994 },
+//   THB: { code: "THB", value: 1.1071321508 },
+//   TRY: { code: "TRY", value: 1.3730040699 },
+//   TWD: { code: "TWD", value: 1 },
+//   UAH: { code: "UAH", value: 1.4350743331 },
+//   UGX: { code: "UGX", value: 122.5651820068 },
+//   USD: { code: "USD", value: 0.0341810067 },
+//   UYU: { code: "UYU", value: 1.3912622 },
+//   VND: { code: "VND", value: 892.9847300591 },
+//   ZAR: { code: "ZAR", value: 0.6116972552 }
+// },
+
+// NOK_Rates : {
+//   AED: { code: "AED", value: 0.3626195489 },
+//   AUD: { code: "AUD", value: 0.1500669019 },
+//   BGN: { code: "BGN", value: 0.1649669438 },
+//   BRL: { code: "BRL", value: 0.5491366146 },
+//   CAD: { code: "CAD", value: 0.1351471129 },
+//   CHF: { code: "CHF", value: 0.0786271186 },
+//   CLP: { code: "CLP", value: 94.4233517446 },
+//   CNY: { code: "CNY", value: 0.7083708652 },
+//   COP: { code: "COP", value: 395.1046913511 },
+//   CRC: { code: "CRC", value: 49.8465163013 },
+//   CZK: { code: "CZK", value: 2.0816904567 },
+//   EGP: { code: "EGP", value: 4.8924922027 },
+//   EUR: { code: "EUR", value: 0.0844378198 },
+//   GBP: { code: "GBP", value: 0.0731936615 },
+//   HKD: { code: "HKD", value: 0.7750102341 },
+//   HUF: { code: "HUF", value: 33.7303005836 },
+//   IDR: { code: "IDR", value: 1601.4823990026 },
+//   INR: { code: "INR", value: 8.477132318 },
+//   JPY: { code: "JPY", value: 14.5546856295 },
+//   KRW: { code: "KRW", value: 136.0163293914 },
+//   MAD: { code: "MAD", value: 0.8873619463 },
+//   MXN: { code: "MXN", value: 1.8402690028 },
+//   NOK: { code: "NOK", value: 1 },
+//   NZD: { code: "NZD", value: 0.1643260305 },
+//   PEN: { code: "PEN", value: 0.3513033039 },
+//   PHP: { code: "PHP", value: 5.578191257 },
+//   QAR: { code: "QAR", value: 0.3597576411 },
+//   RON: { code: "RON", value: 0.429027802 },
+//   SAR: { code: "SAR", value: 0.369979719 },
+//   SEK: { code: "SEK", value: 0.9439994764 },
+//   SGD: { code: "SGD", value: 0.1263204664 },
+//   THB: { code: "THB", value: 3.198675543 },
+//   TRY: { code: "TRY", value: 3.9668205243 },
+//   TWD: { code: "TWD", value: 2.8891542358 },
+//   UAH: { code: "UAH", value: 4.1461510882 },
+//   UGX: { code: "UGX", value: 354.109714754 },
+//   USD: { code: "USD", value: 0.0987542003 },
+//   UYU: { code: "UYU", value: 4.0195710781 },
+//   VND: { code: "VND", value: 2579.9706153368 },
+//   ZAR: { code: "ZAR", value: 1.7672877157 }
+// },
+
+// PEN_Rates : {
+//   AED: { code: "AED", value: 1.0322121791 },
+//   AUD: { code: "AUD", value: 0.4271719059 },
+//   BGN: { code: "BGN", value: 0.4695855177 },
+//   BRL: { code: "BRL", value: 1.5631410479 },
+//   CAD: { code: "CAD", value: 0.3847020832 },
+//   CHF: { code: "CHF", value: 0.2238154829 },
+//   CLP: { code: "CLP", value: 268.7801415131 },
+//   CNY: { code: "CNY", value: 2.0164082071 },
+//   COP: { code: "COP", value: 1124.6825376536 },
+//   CRC: { code: "CRC", value: 141.8902576307 },
+//   CZK: { code: "CZK", value: 5.9256216307 },
+//   EGP: { code: "EGP", value: 13.9266899798 },
+//   EUR: { code: "EUR", value: 0.2403558943 },
+//   GBP: { code: "GBP", value: 0.2083489129 },
+//   HKD: { code: "HKD", value: 2.2061000435 },
+//   HUF: { code: "HUF", value: 96.0147547893 },
+//   IDR: { code: "IDR", value: 4558.6886917459 },
+//   INR: { code: "INR", value: 24.1305226087 },
+//   JPY: { code: "JPY", value: 41.4305401249 },
+//   KRW: { code: "KRW", value: 387.1763455381 },
+//   MAD: { code: "MAD", value: 2.5259140361 },
+//   MXN: { code: "MXN", value: 5.238405054 },
+//   NOK: { code: "NOK", value: 2.8465431119 },
+//   NZD: { code: "NZD", value: 0.4677611301 },
+//   PEN: { code: "PEN", value: 1 },
+//   PHP: { code: "PHP", value: 15.8785618995 },
+//   QAR: { code: "QAR", value: 1.0240656351 },
+//   RON: { code: "RON", value: 1.2212461345 },
+//   SAR: { code: "SAR", value: 1.0531632206 },
+//   SEK: { code: "SEK", value: 2.6871352071 },
+//   SGD: { code: "SGD", value: 0.3595766534 },
+//   THB: { code: "THB", value: 9.1051678343 },
+//   TRY: { code: "TRY", value: 11.2917256396 },
+//   TWD: { code: "TWD", value: 8.2241020891 },
+//   UAH: { code: "UAH", value: 11.8021978212 },
+//   UGX: { code: "UGX", value: 1007.9885693977 },
+//   USD: { code: "USD", value: 0.2811080886 },
+//   UYU: { code: "UYU", value: 11.4418823653 },
+//   VND: { code: "VND", value: 7343.9975840493 },
+//   ZAR: { code: "ZAR", value: 5.0306606741 },
+// },    
+
+// PHP_Rates : {
+//   AED: { code: "AED", value: 0.065006654 },
+//   AUD: { code: "AUD", value: 0.0269024304 },
+//   BGN: { code: "BGN", value: 0.0295735546 },
+//   BRL: { code: "BRL", value: 0.0984434899 },
+//   CAD: { code: "CAD", value: 0.0242277661 },
+//   CHF: { code: "CHF", value: 0.0140954505 },
+//   CLP: { code: "CLP", value: 16.9272345452 },
+//   CNY: { code: "CNY", value: 0.126989347 },
+//   COP: { code: "COP", value: 70.8302518058 },
+//   CRC: { code: "CRC", value: 8.9359640079 },
+//   CZK: { code: "CZK", value: 0.3731837725 },
+//   EGP: { code: "EGP", value: 0.877075019 },
+//   EUR: { code: "EUR", value: 0.0151371324 },
+//   GBP: { code: "GBP", value: 0.0131213969 },
+//   HKD: { code: "HKD", value: 0.1389357586 },
+//   HUF: { code: "HUF", value: 6.046816796 },
+//   IDR: { code: "IDR", value: 287.0970759575 },
+//   INR: { code: "INR", value: 1.5196919445 },
+//   JPY: { code: "JPY", value: 2.6092123699 },
+//   KRW: { code: "KRW", value: 24.3835901506 },
+//   MAD: { code: "MAD", value: 0.1590770028 },
+//   MXN: { code: "MXN", value: 0.32990425 },
+//   NOK: { code: "NOK", value: 0.1792695793 },
+//   NZD: { code: "NZD", value: 0.0294586584 },
+//   PEN: { code: "PEN", value: 0.0629779955 },
+//   PHP: { code: "PHP", value: 1 },
+//   QAR: { code: "QAR", value: 0.064493601 },
+//   RON: { code: "RON", value: 0.0769116336 },
+//   SAR: { code: "SAR", value: 0.0663261086 },
+//   SEK: { code: "SEK", value: 0.169230389 },
+//   SGD: { code: "SGD", value: 0.0226454169 },
+//   THB: { code: "THB", value: 0.573425219 },
+//   TRY: { code: "TRY", value: 0.7111302466 },
+//   TWD: { code: "TWD", value: 0.5179374644 },
+//   UAH: { code: "UAH", value: 0.7432787614 },
+//   UGX: { code: "UGX", value: 63.4810995971 },
+//   USD: { code: "USD", value: 0.0177036239 },
+//   UYU: { code: "UYU", value: 0.7205868162 },
+//   VND: { code: "VND", value: 462.5102468693 },
+//   ZAR: { code: "ZAR", value: 0.3168209253 },
+// },
+
+// GBP_Rates : {
+//   AED: { code: "AED", value: 4.9542479717 },
+//   AUD: { code: "AUD", value: 2.0502718252 },
+//   BGN: { code: "BGN", value: 2.2538419384 },
+//   BRL: { code: "BRL", value: 7.5025159775 },
+//   CAD: { code: "CAD", value: 1.8464319197 },
+//   CHF: { code: "CHF", value: 1.0742339845 },
+//   CLP: { code: "CLP", value: 1290.0482069959 },
+//   CNY: { code: "CNY", value: 9.678035652 },
+//   COP: { code: "COP", value: 5398.0725025729 },
+//   CRC: { code: "CRC", value: 681.0223084792 },
+//   CZK: { code: "CZK", value: 28.4408569659 },
+//   EGP: { code: "EGP", value: 66.8431132476 },
+//   EUR: { code: "EUR", value: 1.1536220225 },
+//   GBP: { code: "GBP", value: 1 },
+//   HKD: { code: "HKD", value: 10.5884883813 },
+//   HUF: { code: "HUF", value: 460.836360766 },
+//   IDR: { code: "IDR", value: 21880.0694870237 },
+//   INR: { code: "INR", value: 115.817847442 },
+//   JPY: { code: "JPY", value: 198.851722088 },
+//   KRW: { code: "KRW", value: 1858.3074908018 },
+//   MAD: { code: "MAD", value: 12.1234807562 },
+//   MXN: { code: "MXN", value: 25.1424640577 },
+//   NOK: { code: "NOK", value: 13.662385238 },
+//   NZD: { code: "NZD", value: 2.2450855329 },
+//   PEN: { code: "PEN", value: 4.7996410737 },
+//   PHP: { code: "PHP", value: 76.2113978836 },
+//   QAR: { code: "QAR", value: 4.9151474845 },
+//   RON: { code: "RON", value: 5.8615431082 },
+//   SAR: { code: "SAR", value: 5.0548054508 },
+//   SEK: { code: "SEK", value: 12.8972845104 },
+//   SGD: { code: "SGD", value: 1.725838875 },
+//   THB: { code: "THB", value: 43.7015375201 },
+//   TRY: { code: "TRY", value: 54.1962301727 },
+//   TWD: { code: "TWD", value: 39.4727381812 },
+//   UAH: { code: "UAH", value: 56.6463134224 },
+//   UGX: { code: "UGX", value: 4837.9833394813 },
+//   USD: { code: "USD", value: 1.3492179284 },
+//   UYU: { code: "UYU", value: 54.9169285605 },
+//   VND: { code: "VND", value: 35248.5524494094 },
+//   ZAR: { code: "ZAR", value: 24.1453655989 },
+// },
+
+// RON_Rates : {
+//   AED: { code: "AED", value: 0.8452122385 },
+//   AUD: { code: "AUD", value: 0.3497836299 },
+//   BGN: { code: "BGN", value: 0.3845134117 },
+//   BRL: { code: "BRL", value: 1.2799557794 },
+//   CAD: { code: "CAD", value: 0.3150078206 },
+//   CHF: { code: "CHF", value: 0.1832681198 },
+//   CLP: { code: "CLP", value: 220.0867899779 },
+//   CNY: { code: "CNY", value: 1.6511071357 },
+//   COP: { code: "COP", value: 920.9302743233 },
+//   CRC: { code: "CRC", value: 116.1848161671 },
+//   CZK: { code: "CZK", value: 4.852110859 },
+//   EGP: { code: "EGP", value: 11.4036716977 },
+//   EUR: { code: "EUR", value: 0.1968120001 },
+//   GBP: { code: "GBP", value: 0.1706035393 },
+//   HKD: { code: "HKD", value: 1.8064335937 },
+//   HUF: { code: "HUF", value: 78.6203141837 },
+//   IDR: { code: "IDR", value: 3732.817294561 },
+//   INR: { code: "INR", value: 19.7589346874 },
+//   JPY: { code: "JPY", value: 33.9248075836 },
+//   KRW: { code: "KRW", value: 317.0338350338 },
+//   MAD: { code: "MAD", value: 2.0683087256 },
+//   MXN: { code: "MXN", value: 4.2893933549 },
+//   NOK: { code: "NOK", value: 2.3308512768 },
+//   NZD: { code: "NZD", value: 0.3830195379 },
+//   PEN: { code: "PEN", value: 0.8188357545 },
+//   PHP: { code: "PHP", value: 13.0019342138 },
+//   QAR: { code: "QAR", value: 0.838541557 },
+//   RON: { code: "RON", value: 1 },
+//   SAR: { code: "SAR", value: 0.8623677004 },
+//   SEK: { code: "SEK", value: 2.2003223848 },
+//   SGD: { code: "SGD", value: 0.2944342203 },
+//   THB: { code: "THB", value: 7.4556369737 },
+//   TRY: { code: "TRY", value: 9.246068684 },
+//   TWD: { code: "TWD", value: 6.7341888395 },
+//   UAH: { code: "UAH", value: 9.664061558 },
+//   UGX: { code: "UGX", value: 825.3770807777 },
+//   USD: { code: "USD", value: 0.2301813539 },
+//   UYU: { code: "UYU", value: 9.3690223798 },
+//   VND: { code: "VND", value: 6013.527802982 },
+//   ZAR: { code: "ZAR", value: 4.1192848288 }
+// },
+
+// SGD_Rates : {
+//   AED: { code: "AED", value: 2.870631809 },
+//   AUD: { code: "AUD", value: 1.1879856543 },
+//   BGN: { code: "BGN", value: 1.3059399525 },
+//   BRL: { code: "BRL", value: 4.3471705767 },
+//   CAD: { code: "CAD", value: 1.0698750309 },
+//   CHF: { code: "CHF", value: 0.6224416427 },
+//   CLP: { code: "CLP", value: 747.4905251536 },
+//   CNY: { code: "CNY", value: 5.6077283878 },
+//   COP: { code: "COP", value: 3127.7963318608 },
+//   CRC: { code: "CRC", value: 394.6036436823 },
+//   CZK: { code: "CZK", value: 16.4794392907 },
+//   EGP: { code: "EGP", value: 38.730795914 },
+//   EUR: { code: "EUR", value: 0.668441324 },
+//   GBP: { code: "GBP", value: 0.5794283664 },
+//   HKD: { code: "HKD", value: 6.1352705254 },
+//   HUF: { code: "HUF", value: 267.0216596952 },
+//   IDR: { code: "IDR", value: 12677.9329195289 },
+//   INR: { code: "INR", value: 67.108146143 },
+//   JPY: { code: "JPY", value: 115.2203284848 },
+//   KRW: { code: "KRW", value: 1076.7560736594 },
+//   MAD: { code: "MAD", value: 7.0246886496 },
+//   MXN: { code: "MXN", value: 14.5682568762 },
+//   NOK: { code: "NOK", value: 7.9163735595 },
+//   NZD: { code: "NZD", value: 1.3008662427 },
+//   PEN: { code: "PEN", value: 2.7810481866 },
+//   PHP: { code: "PHP", value: 44.1590457766 },
+//   QAR: { code: "QAR", value: 2.8479758776 },
+//   RON: { code: "RON", value: 3.3963443477 },
+//   SAR: { code: "SAR", value: 2.9288976648 },
+//   SEK: { code: "SEK", value: 7.4730524948 },
+//   SGD: { code: "SGD", value: 1 },
+//   THB: { code: "THB", value: 25.3219104943 },
+//   TRY: { code: "TRY", value: 31.4028331138 },
+//   TWD: { code: "TWD", value: 22.8716242016 },
+//   UAH: { code: "UAH", value: 32.8224808488 },
+//   UGX: { code: "UGX", value: 2803.2647830537 },
+//   USD: { code: "USD", value: 0.7817751402 },
+//   UYU: { code: "UYU", value: 31.8204262034 },
+//   VND: { code: "VND", value: 20424.0111636363 },
+//   ZAR: { code: "ZAR", value: 13.9905097451 }
+// },
+
+// ZAR_Rates : {
+//   AED: { code: "AED", value: 0.2051842185 },
+//   AUD: { code: "AUD", value: 0.0849136791 },
+//   BGN: { code: "BGN", value: 0.0933447012 },
+//   BRL: { code: "BRL", value: 0.3107228154 },
+//   CAD: { code: "CAD", value: 0.0764714832 },
+//   CHF: { code: "CHF", value: 0.0444902762 },
+//   CLP: { code: "CLP", value: 53.4283981624 },
+//   CNY: { code: "CNY", value: 0.4008237362 },
+//   COP: { code: "COP", value: 223.5655732963 },
+//   CRC: { code: "CRC", value: 28.2050940869 },
+//   CZK: { code: "CZK", value: 1.1779012767 },
+//   EGP: { code: "EGP", value: 2.7683620268 },
+//   EUR: { code: "EUR", value: 0.0477781965 },
+//   GBP: { code: "GBP", value: 0.0414158152 },
+//   HKD: { code: "HKD", value: 0.4385308782 },
+//   HUF: { code: "HUF", value: 19.0859135629 },
+//   IDR: { code: "IDR", value: 906.1809148171 },
+//   INR: { code: "INR", value: 4.7966905685 },
+//   JPY: { code: "JPY", value: 8.2356061776 },
+//   KRW: { code: "KRW", value: 76.963319656 },
+//   MAD: { code: "MAD", value: 0.5021038388 },
+//   MXN: { code: "MXN", value: 1.0412956455 },
+//   NOK: { code: "NOK", value: 0.5658388224 },
+//   NZD: { code: "NZD", value: 0.0929820476 },
+//   PEN: { code: "PEN", value: 0.1987810478 },
+//   PHP: { code: "PHP", value: 3.1563571722 },
+//   QAR: { code: "QAR", value: 0.20356484 },
+//   RON: { code: "RON", value: 0.2427605863 },
+//   SAR: { code: "SAR", value: 0.2093488885 },
+//   SEK: { code: "SEK", value: 0.5341515521 },
+//   SGD: { code: "SGD", value: 0.0714770239 },
+//   THB: { code: "THB", value: 1.8099348026 },
+//   TRY: { code: "TRY", value: 2.2445810543 },
+//   TWD: { code: "TWD", value: 1.6347956306 },
+//   UAH: { code: "UAH", value: 2.3460532494 },
+//   UGX: { code: "UGX", value: 200.3690240125 },
+//   USD: { code: "USD", value: 0.0558789604 },
+//   UYU: { code: "UYU", value: 2.2744293656 },
+//   VND: { code: "VND", value: 1459.8475349233 },
+//   ZAR: { code: "ZAR", value: 1 }
+// },
+
+// KRW_Rates : {
+//   AED: { code: "AED", value: 0.0026660001 },
+//   AUD: { code: "AUD", value: 0.0011033006 },
+//   BGN: { code: "BGN", value: 0.0012128466 },
+//   BRL: { code: "BRL", value: 0.0040372845 },
+//   CAD: { code: "CAD", value: 0.0009936095 },
+//   CHF: { code: "CHF", value: 0.0005780712 },
+//   CLP: { code: "CLP", value: 0.6942059984 },
+//   CNY: { code: "CNY", value: 0.005207984 },
+//   COP: { code: "COP", value: 2.9048327735 },
+//   CRC: { code: "CRC", value: 0.3664745 },
+//   CZK: { code: "CZK", value: 0.0153047099 },
+//   EGP: { code: "EGP", value: 0.0359698885 },
+//   EUR: { code: "EUR", value: 0.0006207918 },
+//   GBP: { code: "GBP", value: 0.0005381241 },
+//   HKD: { code: "HKD", value: 0.0056979205 },
+//   HUF: { code: "HUF", value: 0.2479871405 },
+//   IDR: { code: "IDR", value: 11.7741921589 },
+//   INR: { code: "INR", value: 0.0623243721 },
+//   JPY: { code: "JPY", value: 0.1070068991 },
+//   KRW: { code: "KRW", value: 1 },
+//   MAD: { code: "MAD", value: 0.0065239369 },
+//   MXN: { code: "MXN", value: 0.0135297652 },
+//   NOK: { code: "NOK", value: 0.0073520584 },
+//   NZD: { code: "NZD", value: 0.0012081346 },
+//   PEN: { code: "PEN", value: 0.0025828024 },
+//   PHP: { code: "PHP", value: 0.041011188 },
+//   QAR: { code: "QAR", value: 0.0026449592 },
+//   RON: { code: "RON", value: 0.0031542375 },
+//   SAR: { code: "SAR", value: 0.0027201125 },
+//   SEK: { code: "SEK", value: 0.0069403393 },
+//   SGD: { code: "SGD", value: 0.0009287154 },
+//   THB: { code: "THB", value: 0.0235168495 },
+//   TRY: { code: "TRY", value: 0.0291642962 },
+//   TWD: { code: "TWD", value: 0.0212412307 },
+//   UAH: { code: "UAH", value: 0.030482745 },
+//   UGX: { code: "UGX", value: 2.6034353106 },
+//   USD: { code: "USD", value: 0.0007260467 },
+//   UYU: { code: "UYU", value: 0.0295521214 },
+//   VND: { code: "VND", value: 18.9680946904 },
+//   ZAR: { code: "ZAR", value: 0.0129932025 }
+// },
+
+// SEK_Rates : {
+//   AED: { code: "AED", value: 0.3841310911 },
+//   AUD: { code: "AUD", value: 0.1589692639 },
+//   BGN: { code: "BGN", value: 0.1747532154 },
+//   BRL: { code: "BRL", value: 0.5817128382 },
+//   CAD: { code: "CAD", value: 0.1431643939 },
+//   CHF: { code: "CHF", value: 0.0832914854 },
+//   CLP: { code: "CLP", value: 100.0247925024 },
+//   CNY: { code: "CNY", value: 0.750393282 },
+//   COP: { code: "COP", value: 418.5433374152 },
+//   CRC: { code: "CRC", value: 52.8035423217 },
+//   CZK: { code: "CZK", value: 2.2051817918 },
+//   EGP: { code: "EGP", value: 5.1827276659 },
+//   EUR: { code: "EUR", value: 0.0894468926 },
+//   GBP: { code: "GBP", value: 0.0775357013 },
+//   HKD: { code: "HKD", value: 0.8209858729 },
+//   HUF: { code: "HUF", value: 35.7312704387 },
+//   IDR: { code: "IDR", value: 1696.4865332227 },
+//   INR: { code: "INR", value: 8.98001803 },
+//   JPY: { code: "JPY", value: 15.4181077364 },
+//   KRW: { code: "KRW", value: 144.0851746198 },
+//   MAD: { code: "MAD", value: 0.9400025832 },
+//   MXN: { code: "MXN", value: 1.9494385843 },
+//   NOK: { code: "NOK", value: 1.0593226215 },
+//   NZD: { code: "NZD", value: 0.1740742814 },
+//   PEN: { code: "PEN", value: 0.3721435369 },
+//   PHP: { code: "PHP", value: 5.9091041856 },
+//   QAR: { code: "QAR", value: 0.3810994074 },
+//   RON: { code: "RON", value: 0.4544788559 },
+//   SAR: { code: "SAR", value: 0.3919278858 },
+//   SEK: { code: "SEK", value: 1 },
+//   SGD: { code: "SGD", value: 0.1338141276 },
+//   THB: { code: "THB", value: 3.3884293616 },
+//   TRY: { code: "TRY", value: 4.2021427169 },
+//   TWD: { code: "TWD", value: 3.060546439 },
+//   UAH: { code: "UAH", value: 4.39211164 },
+//   UGX: { code: "UGX", value: 375.1164313374 },
+//   USD: { code: "USD", value: 0.1046125583 },
+//   UYU: { code: "UYU", value: 4.2580225718 },
+//   VND: { code: "VND", value: 2733.0212356722 },
+//   ZAR: { code: "ZAR", value: 1.872127856 }
+// },
+
+// CHF_Rates : {
+//   AED: { code: "AED", value: 4.6118890702 },
+//   AUD: { code: "AUD", value: 1.9085896135 },
+//   BGN: { code: "BGN", value: 2.098092195 },
+//   BRL: { code: "BRL", value: 6.984061281 },
+//   CAD: { code: "CAD", value: 1.7188358835 },
+//   CHF: { code: "CHF", value: 1 },
+//   CLP: { code: "CLP", value: 1200.9005725634 },
+//   CNY: { code: "CNY", value: 9.0092436025 },
+//   COP: { code: "COP", value: 5025.0435014165 },
+//   CRC: { code: "CRC", value: 633.9608673118 },
+//   CZK: { code: "CZK", value: 26.4754768305 },
+//   EGP: { code: "EGP", value: 62.2239793332 },
+//   EUR: { code: "EUR", value: 1.0739019983 },
+//   GBP: { code: "GBP", value: 0.930895889 },
+//   HKD: { code: "HKD", value: 9.8567803053 },
+//   HUF: { code: "HUF", value: 428.9906737599 },
+//   IDR: { code: "IDR", value: 20368.0667375076 },
+//   INR: { code: "INR", value: 107.8143580619 },
+//   JPY: { code: "JPY", value: 185.1102506214 },
+//   KRW: { code: "KRW", value: 1729.8908037705 },
+//   MAD: { code: "MAD", value: 11.2856983968 },
+//   MXN: { code: "MXN", value: 23.4050164318 },
+//   NOK: { code: "NOK", value: 12.7182582526 },
+//   NZD: { code: "NZD", value: 2.0899408931 },
+//   PEN: { code: "PEN", value: 4.4679661444 },
+//   PHP: { code: "PHP", value: 70.9448769883 },
+//   QAR: { code: "QAR", value: 4.5754905874 },
+//   RON: { code: "RON", value: 5.4564863829 },
+//   SAR: { code: "SAR", value: 4.7054976141 },
+//   SEK: { code: "SEK", value: 12.0060291306 },
+//   SGD: { code: "SGD", value: 1.6065763139 },
+//   THB: { code: "THB", value: 40.6815816224 },
+//   TRY: { code: "TRY", value: 50.4510478695 },
+//   TWD: { code: "TWD", value: 36.7450097022 },
+//   UAH: { code: "UAH", value: 52.7318202945 },
+//   UGX: { code: "UGX", value: 4503.6588019954 },
+//   USD: { code: "USD", value: 1.255981423 },
+//   UYU: { code: "UYU", value: 51.121943036 },
+//   VND: { code: "VND", value: 32812.7325699718 },
+//   ZAR: { code: "ZAR", value: 22.4768215755 }
+// },
+    
+// THB_Rates : {
+//   AED: { code: "AED", value: 0.1133655302 },
+//   AUD: { code: "AUD", value: 0.0469153248 },
+//   BGN: { code: "BGN", value: 0.0515735159 },
+//   BRL: { code: "BRL", value: 0.1716762476 },
+//   CAD: { code: "CAD", value: 0.0422509601 },
+//   CHF: { code: "CHF", value: 0.0245811485 },
+//   CLP: { code: "CLP", value: 29.5195153352 },
+//   CNY: { code: "CNY", value: 0.2214575551 },
+//   COP: { code: "COP", value: 123.5213406415 },
+//   CRC: { code: "CRC", value: 15.583486237 },
+//   CZK: { code: "CZK", value: 0.6507976282 },
+//   EGP: { code: "EGP", value: 1.5295368777 },
+//   EUR: { code: "EUR", value: 0.0263977445 },
+//   GBP: { code: "GBP", value: 0.0228824901 },
+//   HKD: { code: "HKD", value: 0.2422909806 },
+//   HUF: { code: "HUF", value: 10.5450834666 },
+//   IDR: { code: "IDR", value: 500.6704735956 },
+//   INR: { code: "INR", value: 2.6502007484 },
+//   JPY: { code: "JPY", value: 4.5502225636 },
+//   KRW: { code: "KRW", value: 42.5227027756 },
+//   MAD: { code: "MAD", value: 0.2774154285 },
+//   MXN: { code: "MXN", value: 0.5753221851 },
+//   NOK: { code: "NOK", value: 0.3126293951 },
+//   NZD: { code: "NZD", value: 0.0513731475 },
+//   PEN: { code: "PEN", value: 0.1098277394 },
+//   PHP: { code: "PHP", value: 1.7439065582 },
+//   QAR: { code: "QAR", value: 0.1124708137 },
+//   RON: { code: "RON", value: 0.1341267022 },
+//   SAR: { code: "SAR", value: 0.1156665357 },
+//   SEK: { code: "SEK", value: 0.2951219852 },
+//   SGD: { code: "SGD", value: 0.039491491 },
+//   THB: { code: "THB", value: 1 },
+//   TRY: { code: "TRY", value: 1.2401447008 },
+//   TWD: { code: "TWD", value: 0.903234541 },
+//   UAH: { code: "UAH", value: 1.2962087065 },
+//   UGX: { code: "UGX", value: 110.7051059076 },
+//   USD: { code: "USD", value: 0.0308734659 },
+//   UYU: { code: "UYU", value: 1.2566360745 },
+//   VND: { code: "VND", value: 806.5746527392 },
+//   ZAR: { code: "ZAR", value: 0.5525060895 }
+// },
+
+// TRY_Rates : {
+//   AED: { code: "AED", value: 0.0914131473 },
+//   AUD: { code: "AUD", value: 0.0378305247 },
+//   BGN: { code: "BGN", value: 0.0415866921 },
+//   BRL: { code: "BRL", value: 0.1384324325 },
+//   CAD: { code: "CAD", value: 0.0340693793 },
+//   CHF: { code: "CHF", value: 0.0198211939 },
+//   CLP: { code: "CLP", value: 23.8032830491 },
+//   CNY: { code: "CNY", value: 0.1785739639 },
+//   COP: { code: "COP", value: 99.6023613704 },
+//   CRC: { code: "CRC", value: 12.5658612474 },
+//   CZK: { code: "CZK", value: 0.5247755587 },
+//   EGP: { code: "EGP", value: 1.2333535568 },
+//   EUR: { code: "EUR", value: 0.0212860197 },
+//   GBP: { code: "GBP", value: 0.0184514679 },
+//   HKD: { code: "HKD", value: 0.1953731532 },
+//   HUF: { code: "HUF", value: 8.5031073065 },
+//   IDR: { code: "IDR", value: 403.7193992519 },
+//   INR: { code: "INR", value: 2.1370092915 },
+//   JPY: { code: "JPY", value: 3.6691061621 },
+//   KRW: { code: "KRW", value: 34.2885009692 },
+//   MAD: { code: "MAD", value: 0.2236960157 },
+//   MXN: { code: "MXN", value: 0.4639153679 },
+//   NOK: { code: "NOK", value: 0.2520910623 },
+//   NZD: { code: "NZD", value: 0.0414251236 },
+//   PEN: { code: "PEN", value: 0.0885604231 },
+//   PHP: { code: "PHP", value: 1.4062121598 },
+//   QAR: { code: "QAR", value: 0.0906916859 },
+//   RON: { code: "RON", value: 0.1081540744 },
+//   SAR: { code: "SAR", value: 0.0932685804 },
+//   SEK: { code: "SEK", value: 0.2379738308 },
+//   SGD: { code: "SGD", value: 0.0318442606 },
+//   THB: { code: "THB", value: 0.8063575157 },
+//   TRY: { code: "TRY", value: 1 },
+//   TWD: { code: "TWD", value: 0.7283299605 },
+//   UAH: { code: "UAH", value: 1.0452076324 },
+//   UGX: { code: "UGX", value: 89.2678941703 },
+//   USD: { code: "USD", value: 0.0248950513 },
+//   UYU: { code: "UYU", value: 1.0132979432 },
+//   VND: { code: "VND", value: 650.3875331755 },
+//   ZAR: { code: "ZAR", value: 0.4455174377 }
+// },
+
+// UGX_Rates : {
+//   AED: { code: "AED", value: 0.0010240316 },
+//   AUD: { code: "AUD", value: 0.0004237865 },
+//   BGN: { code: "BGN", value: 0.0004658639 },
+//   BRL: { code: "BRL", value: 0.0015507528 },
+//   CAD: { code: "CAD", value: 0.0003816532 },
+//   CHF: { code: "CHF", value: 0.0002220417 },
+//   CLP: { code: "CLP", value: 0.2666499896 },
+//   CNY: { code: "CNY", value: 0.0020004277 },
+//   COP: { code: "COP", value: 1.1157691385 },
+//   CRC: { code: "CRC", value: 0.1407657407 },
+//   CZK: { code: "CZK", value: 0.0058786596 },
+//   EGP: { code: "EGP", value: 0.0138163174 },
+//   EUR: { code: "EUR", value: 0.000238451 },
+//   GBP: { code: "GBP", value: 0.0002066977 },
+//   HKD: { code: "HKD", value: 0.0021886161 },
+//   HUF: { code: "HUF", value: 0.0952538131 },
+//   IDR: { code: "IDR", value: 4.5225599081 },
+//   INR: { code: "INR", value: 0.023939282 },
+//   JPY: { code: "JPY", value: 0.0411021924 },
+//   KRW: { code: "KRW", value: 0.3841078731 },
+//   MAD: { code: "MAD", value: 0.0025058955 },
+//   MXN: { code: "MXN", value: 0.0051968893 },
+//   NOK: { code: "NOK", value: 0.0028239835 },
+//   NZD: { code: "NZD", value: 0.000464054 },
+//   PEN: { code: "PEN", value: 0.0009920747 },
+//   PHP: { code: "PHP", value: 0.0157527202 },
+//   QAR: { code: "QAR", value: 0.0010159497 },
+//   RON: { code: "RON", value: 0.0012115674 },
+//   SAR: { code: "SAR", value: 0.0010448166 },
+//   SEK: { code: "SEK", value: 0.002665839 },
+//   SGD: { code: "SGD", value: 0.0003567269 },
+//   THB: { code: "THB", value: 0.009033007 },
+//   TRY: { code: "TRY", value: 0.0112022358 },
+//   TWD: { code: "TWD", value: 0.008158924 },
+//   UAH: { code: "UAH", value: 0.0117086624 },
+//   UGX: { code: "UGX", value: 1 },
+//   USD: { code: "USD", value: 0.0002788802 },
+//   UYU: { code: "UYU", value: 0.0113512025 },
+//   VND: { code: "VND", value: 7.285794509 },
+//   ZAR: { code: "ZAR", value: 0.0049907914 }
+// },
+
+// UAH_Rates : {
+//   AED: { code: "AED", value: 0.0874593186 },
+//   AUD: { code: "AUD", value: 0.0361942676 },
+//   BGN: { code: "BGN", value: 0.0397879721 },
+//   BRL: { code: "BRL", value: 0.1324449117 },
+//   CAD: { code: "CAD", value: 0.0325958003 },
+//   CHF: { code: "CHF", value: 0.0189638817 },
+//   CLP: { code: "CLP", value: 22.7737363485 },
+//   CNY: { code: "CNY", value: 0.1708502296 },
+//   COP: { code: "COP", value: 95.294330318 },
+//   CRC: { code: "CRC", value: 12.0223588674 },
+//   CZK: { code: "CZK", value: 0.5020778096 },
+//   EGP: { code: "EGP", value: 1.1800081807 },
+//   EUR: { code: "EUR", value: 0.0203653504 },
+//   GBP: { code: "GBP", value: 0.0176533995 },
+//   HKD: { code: "HKD", value: 0.1869228153 },
+//   HUF: { code: "HUF", value: 8.1353283722 },
+//   IDR: { code: "IDR", value: 386.2576073373 },
+//   INR: { code: "INR", value: 2.044578728 },
+//   JPY: { code: "JPY", value: 3.5104088876 },
+//   KRW: { code: "KRW", value: 32.8054444946 },
+//   MAD: { code: "MAD", value: 0.2140206489 },
+//   MXN: { code: "MXN", value: 0.443849962 },
+//   NOK: { code: "NOK", value: 0.2411875445 },
+//   NZD: { code: "NZD", value: 0.0396333918 },
+//   PEN: { code: "PEN", value: 0.0847299812 },
+//   PHP: { code: "PHP", value: 1.3453902519 },
+//   QAR: { code: "QAR", value: 0.0867690621 },
+//   RON: { code: "RON", value: 0.1034761621 },
+//   SAR: { code: "SAR", value: 0.0892344999 },
+//   SEK: { code: "SEK", value: 0.2276809157 },
+//   SGD: { code: "SGD", value: 0.0304669231 },
+//   THB: { code: "THB", value: 0.7714806998 },
+//   TRY: { code: "TRY", value: 0.9567477016 },
+//   TWD: { code: "TWD", value: 0.6968280157 },
+//   UAH: { code: "UAH", value: 1 },
+//   UGX: { code: "UGX", value: 85.4068525767 },
+//   USD: { code: "USD", value: 0.0238182831 },
+//   UYU: { code: "UYU", value: 0.9694704782 },
+//   VND: { code: "VND", value: 622.2567775338 },
+//   ZAR: { code: "ZAR", value: 0.4262477845 }
+// },
+
+// UYU_Rates : {
+//   AED: { code: "AED", value: 0.0902134934 },
+//   AUD: { code: "AUD", value: 0.0373340585 },
+//   BGN: { code: "BGN", value: 0.0410409321 },
+//   BRL: { code: "BRL", value: 0.1366157244 },
+//   CAD: { code: "CAD", value: 0.0336222722 },
+//   CHF: { code: "CHF", value: 0.0195610718 },
+//   CLP: { code: "CLP", value: 23.4909023649 },
+//   CNY: { code: "CNY", value: 0.1762304613 },
+//   COP: { code: "COP", value: 98.2952368981 },
+//   CRC: { code: "CRC", value: 12.4009540652 },
+//   CZK: { code: "CZK", value: 0.5178887041 },
+//   EGP: { code: "EGP", value: 1.2171677295 },
+//   EUR: { code: "EUR", value: 0.0210066741 },
+//   GBP: { code: "GBP", value: 0.0182093214 },
+//   HKD: { code: "HKD", value: 0.1928091876 },
+//   HUF: { code: "HUF", value: 8.3915173854 },
+//   IDR: { code: "IDR", value: 398.4212165636 },
+//   INR: { code: "INR", value: 2.1089644027 },
+//   JPY: { code: "JPY", value: 3.6209549095 },
+//   KRW: { code: "KRW", value: 33.8385182768 },
+//   MAD: { code: "MAD", value: 0.220760357 },
+//   MXN: { code: "MXN", value: 0.4578272077 },
+//   NOK: { code: "NOK", value: 0.2487827633 },
+//   NZD: { code: "NZD", value: 0.0408814839 },
+//   PEN: { code: "PEN", value: 0.0873982067 },
+//   PHP: { code: "PHP", value: 1.387757835 },
+//   QAR: { code: "QAR", value: 0.0895015001 },
+//   RON: { code: "RON", value: 0.1067347221 },
+//   SAR: { code: "SAR", value: 0.0920445768 },
+//   SEK: { code: "SEK", value: 0.2348507983 },
+//   SGD: { code: "SGD", value: 0.0314263547 },
+//   THB: { code: "THB", value: 0.7957753404 },
+//   TRY: { code: "TRY", value: 0.9868765715 },
+//   TWD: { code: "TWD", value: 0.7187717743 },
+//   UAH: { code: "UAH", value: 1.0314909247 },
+//   UGX: { code: "UGX", value: 88.0963933398 },
+//   USD: { code: "USD", value: 0.0245683428 },
+//   UYU: { code: "UYU", value: 1 },
+//   VND: { code: "VND", value: 641.8522188573 },
+//   ZAR: { code: "ZAR", value: 0.4396707214 }
+// }
+// };
+
+// console.log(allCurrencyRates);
+
+
+</script>
+</body>

@@ -1,0 +1,520 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+<link rel="stylesheet" href="/css/newlisting.css">
+
+<body>
+   
+    <div class="listing-form-page">
+    <!-- <div class="row"> -->
+    <!-- <div class="col-8 offset-2"> -->
+    
+    <h2 class="create">Create new listing</h2>
+
+    <form action="/listings" method="post" novalidate class="needs-validation" enctype="multipart/form-data">       
+        
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" name="listing[title]" placeholder="title" class="form-control title req" minlength="10" maxlength="36" required>
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Title should be valid</div>
+            <span class="span-title">0/36</span>
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea name="listing[description]" placeholder="description" class="form-control description req" minlength="50" maxlength="200"  required></textarea>
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Please enter a short description</div>
+            <span class="span-description">0/200</span>
+        </div>
+
+        <div class="mb-3">
+            <label for="image" class="form-label">Upload Image (Cover image)</label>
+            <input type="file" name="listing[images]" class="form-control req" required accept="image/*">
+            <div class="invalid-feedback">Please select listing image</div>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Upload Image (Bedroom image)</label>
+            <input type="file" name="listing[images]" class="form-control req" required accept="image/*">
+            <div class="invalid-feedback">Please select listing image</div>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Upload Image (Graden image)</label>
+            <input type="file" name="listing[images]" class="form-control req" required accept="image/*">
+            <div class="invalid-feedback">Please select listing image</div>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Upload Image (Balcony image)</label>
+            <input type="file" name="listing[images]" class="form-control req" required accept="image/*">
+            <div class="invalid-feedback">Please select listing image</div>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Upload Image (Kitchen image)</label>
+            <input type="file" name="listing[images]" class="form-control req" required accept="image/*">
+            <div class="invalid-feedback">Please select listing image</div>
+        </div>
+
+        <div class="row">
+            <div class="mb-3 col-md-6">
+                <label for="price" class="form-label">Price</label>
+                <% let v = 0; %>
+                <input type="number" name="listing[price]" class="form-control req" id="price"
+                min="<%= v = Number(currencyConverter(1000, "INR", currUser ? currUser.countryInfo.currency : "INR").replace(/[^\d.]/g, "")) %>" 
+                max="<%= Number(currencyConverter(25000, "INR", currUser ? currUser.countryInfo.currency : "INR").replace(/[^\d.]/g, "")) %>"
+                placeholder="<%= currUser.countryInfo.currency %> <%= v %>" step="any" required>
+                <div class="invalid-feedback">Price should be valid (between <%= Number(currencyConverter(1000, "INR", currUser ? currUser.countryInfo.currency : "INR").replace(/[^\d.]/g, "")) %> to
+                    <%= Number(currencyConverter(25000, "INR", currUser ? currUser.countryInfo.currency : "INR").replace(/[^\d.]/g, "")) %>)
+                </div>
+            </div>
+            <div class="mb-3 col-md-6">
+                <label for="currency" class="form-label">Currency</label>
+                <select name="listing[currency]" id="currency" class="form-select req" required>
+                    <option disabled selected value="">Select currency type (<%= currUser.countryInfo.currency %>)</option>
+                </select>
+                <!-- <input type="text" name="listing[currency]" placeholder="<%= currUser.countryInfo.currency %>" class="form-control" id="currency" required> -->
+                <div class="invalid-feedback">Currency should be valid</div>
+            </div>   
+        </div>
+
+        <div class="row">
+            <div class="mb-3  col-md-6">
+                <label for="country" class="form-label">Country</label>
+                <input type="text" name="listing[country]" placeholder="<%= currUser.countryInfo.country %>" class="form-control req" id="country" required>
+                <div class="invalid-feedback">Country should be valid</div>
+            </div>
+            <div class="mb-3  col-md-6">
+                <label for="location" class="form-label">Location</label>
+                <input type="text" name="listing[location]" placeholder="<%= currUser.countryInfo.city %>, (<%= currUser.countryInfo.region %>)" class="req form-control" id="location" required>
+                <div class="invalid-feedback">Location should be valid</div>
+            </div>
+        </div>
+
+        <h2 class="about-place">About your place</h2>
+
+        <div class="house-type-options-div">
+
+            <h4>Which of these best describes your place?</h4>
+
+            <div class="listing-labels">
+            <label for="house">House <i class="fa-solid fa-house"></i></label>            
+            <input type="radio" class="req" name="listing[houseType]" value="house" id="house" required>
+            <label for="flat">Flat <i class="fa-solid fa-building"></i></label>            
+            <input type="radio" class="req" name="listing[houseType]" value="flat" id="flat" required>
+            <label for="farm">Farm <i class="fa-solid fa-tractor"></i></label>            
+            <input type="radio" class="req" name="listing[houseType]" value="farm" id="farm" required>
+            <label for="cabin">Cabin <i class="fa-solid fa-house-laptop"></i></label>            
+            <input type="radio" class="req" name="listing[houseType]" value="cabin" id="cabin" required>
+            <label for="hotel">Hotel <i class="fa-solid fa-hotel"></i></label>            
+            <input type="radio" class="req" name="listing[houseType]" value="hotel" id="hotel" required>
+            <label for="building">Building <i class="fa-solid fa-building"></i></label>            
+            <input type="radio" class="req" name="listing[houseType]" value="building" id="building" required>
+            <label for="pool">Pool <i class="fa-solid fa-person-swimming"></i></label>            
+            <input type="radio" class="req" name="listing[houseType]" value="pool" id="pool" required>
+            <label for="room">Room <i class="fa-solid fa-bed"></i></label>            
+            <input type="radio" class="req" name="listing[houseType]" value="room" id="room" required>
+            <label for="dome">Dome <i class="fa-solid fa-landmark-dome"></i></label>            
+            <input type="radio" class="req" name="listing[houseType]" value="dome" id="dome" required>
+            <label for="ship">Ship<i class="fa-solid fa-ship"></i></label>            
+            <input type="radio" class="req" name="listing[houseType]" value="ship" id="ship" required>
+            <label for="tower">Tower<i class="fa-solid fa-tower-observation"></i></label>            
+            <input type="radio" class="req" name="listing[houseType]" value="tower house" id="tower" required>
+            <label for="nature">Nature <i class="fa-solid fa-tree"></i></label>            
+            <input type="radio" class="req" name="listing[houseType]" value="nature house" id="nature" required>
+            <label for="mountain">Mountain <i class="fa-solid fa-mountain-sun"></i></label>            
+            <input type="radio" class="req" name="listing[houseType]" value="mountain house" id="mountain" required>
+            <label for="beach">Beach <i class="fa-solid fa-umbrella-beach"></i></label>            
+            <input type="radio" class="req" name="listing[houseType]" value="beach house" id="beach" required>
+            <label for="igloo">Igloo <i class="fa-solid fa-igloo"></i></label>            
+            <input type="radio" class="req" name="listing[houseType]" value="igloo" id="igloo" required>
+            <label for="sunnyTown">Sunny Town <i class="fa-solid fa-cloud-sun"></i></label>            
+            <input type="radio" class="req" name="listing[houseType]" value="sunnyTown house" id="sunnyTown" required>
+            <label for="city">City <i class="fa-solid fa-city"></i></label>            
+            <input type="radio" class="req" name="listing[houseType]" value="city house" id="city" required>
+            <label for="tiny-home">Tiny Home <i class="fa-solid fa-house-chimney-window"></i></label>            
+            <input type="radio" class="req" name="listing[houseType]" value="tiny home" id="tiny-home" required>
+            <label for="tent">Tent <i class="fa-solid fa-tent"></i></label>            
+            <input type="radio" class="req" name="listing[houseType]" value="tent" id="tent" required>
+            <label for="boat">Boat <i class="fa-solid fa-sailboat"></i></label>            
+            <input type="radio" class="req" name="listing[houseType]" value="boat" id="boat" required>
+            </div>
+            <div class="invalid-feedback">Please enter your house type</div>
+        </div>
+
+        <div class="privacy-type-options-div">
+
+            <h4>What type of place will guests have?</h4>
+            
+            <label for="entirePlace">  
+                <span>An entire place</span>
+                <p>Guest have the whole place to themselves.</p>
+                <input type="radio" class="req" name="listing[privacyType]" value="Entire" id="entirePlace" required>
+            </label>            
+            
+            <label for="a-room"> 
+                <span>A room</span>
+                <p>Guest have their own room in a home, plus access to shared spaces.</p>
+                <input type="radio" class="req" name="listing[privacyType]" value="A room" id="a-room" required>
+                <div class="invalid-feedback" style="margin-top: 3.15rem; margin-left: -1.15rem;">Please enter your privacy type</div>   
+            </label>    
+        </div>
+
+        <div class="amenities-options-div">
+
+            <h4>Tell guests what your place has to offer</h4>     
+
+            <div class="amenities-sec-1">
+                <h5>What about these guest favourites?</h5>
+            <div class="listing-labels">
+                <label for="washing-machine">Washing machine <i class="fa-solid fa-shirt"></i></label>            
+                <input type="checkbox" name="listing[amenities][bathroom]" value="Washing machine <i class='fa-solid fa-shirt'></i>" id="washing-machine">
+                <label for="cleaning-products">Cleaning products <i class='fa-solid fa-soap'></i></label>            
+                <input type="checkbox" name="listing[amenities][bathroom]" value="Cleaning products <i class='fa-solid fa-soap'></i>" id="cleaning-products">
+
+                <label for="ac">Air conditioning <i class='fa-solid fa-snowflake'></i></label>            
+                <input type="checkbox" name="listing[amenities][bedroom]" value="Air conditioning <i class='fa-solid fa-snowflake'></i>" id="ac">
+                <label for="pillows">Extra Pillows and Blankets <i class="fa-solid fa-mattress-pillow"></i></label>            
+                <input type="checkbox" name="listing[amenities][bedroom]" value="Extra pillows and blankets <i class='fa-solid fa-mattress-pillow'></i>" id="pillows">
+
+                <label for="sound-system">Sound system <i class='fa-solid fa-compact-disc'></i></label>            
+                <input type="checkbox" name="listing[amenities][entertainment]" value="Sound system <i class='fa-solid fa-compact-disc'></i>" id="sound-system">
+                <label for="tv">Tv <i class='fa-solid fa-tv'></i></label>            
+                <input type="checkbox" name="listing[amenities][entertainment]" value="Tv <i class='fa-solid fa-tv'></i>" id="tv">   
+
+                <label for="parking">Free parking <i class='fa-solid fa-car-side'></i></label>            
+                <input type="checkbox" name="listing[amenities][outdoor]" value="Parking <i class='fa-solid fa-car-side'></i>" id="parking">
+
+                <label for="burner">Burner <i class='fa-solid fa-fire-burner'></i></label>            
+                <input type="checkbox" name="listing[amenities][kitchen]" value="Burner <i class='fa-solid fa-fire-burner'></i>" id="burner">
+                <label for="wine-glass">Wine glass <i class='fa-solid fa-wine-glass'></i></label>            
+                <input type="checkbox" name="listing[amenities][kitchen]" value="Wine glass <i class='fa-solid fa-wine-glass'></i>" id="wine-glass">
+                <label for="kitchen-set">Kitchen set <i class='fa-solid fa-kitchen-set'></i></label>            
+                <input type="checkbox" name="listing[amenities][kitchen]" value="Kitchen set <i class='fa-solid fa-kitchen-set'></i>" id="kitchen-set">
+
+                <label for="wifi">Wifi <i class='fa-solid fa-wifi'></i></label>            
+                <input type="checkbox" name="listing[amenities][internet]" value="Wifi <i class='fa-solid fa-wifi'></i>" id="wifi"> 
+                <label for="dedicated-workspace">Dedicated workspace <i class='fa-solid fa-computer'></i></label>            
+                <input type="checkbox" name="listing[amenities][internet]" value="Dedicated workspace <i class='fa-solid fa-computer'></i>" id="dedicated-workspace"> 
+            </div>              
+            </div>            
+            <div class="amenities-sec-2">
+                <h5>Do you have any standout amenities?</h5>
+                <div class="listing-labels">
+                <label for="swimming-pool">Pool <i class='fa-solid fa-person-swimming'></i></label>            
+                <input type="checkbox" name="listing[amenities][outdoor]" value="Pool <i class='fa-solid fa-person-swimming'></i>" id="swimming-pool">
+                <label for="exercise-eqquipment">Exercise eqquipment <i class='fa-solid fa-dumbbell'></i></label>            
+                <input type="checkbox" name="listing[amenities][outdoor]" value="Exercise eqquipment <i class='fa-solid fa-dumbbell'></i>" id="exercise-eqquipment">
+                <label for="hot-tub">Hot tub <i class='fa-solid fa-hot-tub-person'></i></label>            
+                <input type="checkbox" name="listing[amenities][bathroom]" value="Hot tub <i class='fa-solid fa-hot-tub-person'></i>" id="hot-tub">
+                <label for="outdoor-shower">Outdoor shower <i class='fa-solid fa-shower'></i></label>            
+                <input type="checkbox" name="listing[amenities][outdoor]" value="Outdoor shower <i class='fa-solid fa-shower'></i>" id="outdoor-shower">
+                <label for="lake-access">Lake access <i class='fa-solid fa-water'></i></label>            
+                <input type="checkbox" name="listing[amenities][outdoor]" value="Lake access <i class='fa-solid fa-water'></i>" id="lake-access">
+                <label for="beach-access">Beach access <i class='fa-solid fa-umbrella-beach'></i></label>            
+                <input type="checkbox" name="listing[amenities][outdoor]" value="Beach access <i class='fa-solid fa-umbrella-beach'></i>" id="beach-access">
+            </div>
+            </div>
+            <div class="amenities-sec-3">
+                <h5>Do you have any of these safety items?</h5>
+                <div class="listing-labels">
+                <label for="smoke-alarm">Smoke alarm <i class='fa-solid fa-circle-radiation'></i></label>            
+                <input type="checkbox" name="listing[amenities][homesafty]" value="Smoke alarm <i class='fa-solid fa-circle-radiation'></i>" id="smoke-alarm">
+                <label for="first-aid-kit">First aid kit <i class='fa-solid fa-briefcase-medical'></i></label>            
+                <input type="checkbox" name="listing[amenities][homesafty]" value="First aid kit <i class='fa-solid fa-briefcase-medical'></i>" id="first-aid-kit">
+                <label for="fire-extinguisher">Fire extinguisher <i class='fa-solid fa-fire-extinguisher'></i></label>            
+                <input type="checkbox" name="listing[amenities][homesafty]" value="Fire extinguisher <i class='fa-solid fa-fire-extinguisher'></i>" id="fire-extinguisher">
+            </div>         
+            </div>         
+           
+        </div>
+
+        <div class="guests-div">
+
+            <h4>Share some basics about your place</h4>
+
+            <p>You'll add more details later, such as bed types.</p>
+
+            <div class="guests-options">
+                <div class="add-guest" id="guests">
+                    <div class="add-guest-left">
+                    <h6>Guests</h6>
+                    </div>
+                    <div class="add-guest-right">
+                        <div class="minus-guest"><i class="fa-solid fa-minus"></i></div>
+                        <input class="total-guest" name="listing[aboutPlace][guests][adults]" value="1" min="1" max="25" required>
+                        <div class="plus-guest"><i class="fa-solid fa-plus"></i></div>
+                    </div>
+                </div>
+                <div class="add-guest" id="infants">
+                    <div class="add-guest-left">
+                    <h6>Infants</h6>
+                    </div>
+                    <div class="add-guest-right">
+                        <div class="minus-guest"><i class="fa-solid fa-minus"></i></div>
+                        <input class="total-guest" name="listing[aboutPlace][guests][infants]" value="0" min="0" max="5" required>
+                        <div class="plus-guest"><i class="fa-solid fa-plus"></i></div>
+                    </div>
+                </div>
+                <div class="add-guest" id="bedrooms">
+                    <div class="add-guest-left">
+                    <h6>Bedrooms</h6>
+                    </div>
+                    <div class="add-guest-right">
+                        <div class="minus-guest"><i class="fa-solid fa-minus"></i></div>
+                        <input class="total-guest" name="listing[aboutPlace][bedrooms]" value="0" min="0" max="50" required>
+                        <div class="plus-guest"><i class="fa-solid fa-plus"></i></div>
+                    </div>
+                </div>
+                <div class="add-guest" id="beds">
+                    <div class="add-guest-left">
+                    <h6>Beds</h6>
+                    </div>
+                    <div class="add-guest-right">
+                        <div class="minus-guest"><i class="fa-solid fa-minus"></i></div>
+                        <input class="total-guest" name="listing[aboutPlace][beds]" value="1" min="1" max="50" required>
+                        <div class="plus-guest"><i class="fa-solid fa-plus"></i></div>
+                    </div>
+                </div>
+                <div class="add-guest" id="bathrooms">
+                    <div class="add-guest-left">
+                    <h6>Bathrooms</h6>                        
+                    </div>
+                    <div class="add-guest-right">
+                        <div class="minus-guest"><i class="fa-solid fa-minus"></i></div>
+                        <input class="total-guest" name="listing[aboutPlace][bathrooms]" value="1" min="1" max="50" required>
+                        <div class="plus-guest"><i class="fa-solid fa-plus"></i></div>
+                    </div>
+                </div>              
+           </div> 
+        </div>
+
+        <div class="check-in-check-out-div row">
+            <h4>Share check in and check out and house rules about your place</h4>
+
+            <p>You can edit these details later.</p>
+            <br>
+            <div class="check-in-div col-md-6 mb-3">
+            <label for="check-in" class="form-label">Check in time</label>
+            <select name="listing[houseRules][checkIn]" id="check-in" class="form-select req" required>
+                <option disabled selected value="">Select Check in time</option>
+                <option value="after 11:00 am">after 11:00 am</option>
+                <option value="after 11:30 am">after 11:30 am</option>
+                <option value="after 12:00 pm">after 12:00 pm</option>
+                <option value="after 12:30 pm">after 12:30 pm</option>
+                <option value="after 1:00 pm">after 1:00 pm</option>
+                <option value="after 1:30 pm">after 1:30 pm</option>
+                <option value="after 2:00 pm">after 2:00 pm</option>
+                <option value="after 2:30 pm">after 2:30 pm</option>
+                <option value="after 3:00 pm">after 3:00 pm</option>
+            </select>
+            <div class="invalid-feedback">Please select your check in time</div> 
+            </div>
+
+            <div class="check-out-div col-md-6 mb-3">
+                <label for="check-out" class="form-label">Check out time</label>
+                <select name="listing[houseRules][checkOut]" id="check-out" class="form-select req" required>
+                    <option disabled selected value="">Select Check out time</option>
+                    <option value="before 10:00 am">before 10:00 am</option>
+                    <option value="before 10:30 am">before 10:30 am</option>
+                    <option value="before 11:00 am">before 11:00 am</option>
+                    <option value="before 11:30 am">before 11:30 am</option>
+                    <option value="before 12:00 pm">before 12:00 pm</option>
+                    <option value="before 12:30 pm">before 12:30 pm</option>
+                    <option value="before 2:00 pm">before 2:00 pm</option>
+                    <option value="before 2:30 pm">before 2:30 pm</option>
+                    <option value="before 3:00 pm">before 3:00 pm</option>
+                </select>
+                <div class="invalid-feedback">Please select your check out time</div> 
+            </div>
+
+            <div class="house-rules-div row mt-3">
+                <h5>house rules about your place</h5>     
+                
+                <div class="mb-3 col-md-6">
+                <div class="form-check">
+                        <label class="form-check-label" for="selfCheckInStaff">Self check-in with building staff</label>
+                        <input class="form-check-input req" type="radio" name="listing[houseRules][selfCheckIn]" value="Self check-in with building staff" id="selfCheckInStaff" required>                                  
+               <br>
+               </div>
+               <div class="form-check">
+                        <label class="form-check-label" for="selfCheckIn">Self check-in with lockbox </label>
+                        <input class="form-check-input req" type="radio" name="listing[houseRules][selfCheckIn]" value="Self check-in with lockbox" id="selfCheckIn" required>                         
+                        <div class="invalid-feedback">Please choose check in option</div>
+                    </div>
+                </div>
+        
+                <div class="col-md-6">
+
+                <div class="add-guest" id="add-pets">  
+                    <div class="form-check">
+                        <input type="hidden" name="listing[houseRules][pets]" value="">
+                        <input class="form-check-input" type="checkbox" name="listing[houseRules][pets]" value="Pets allowed" id="pets">                        
+                        <label class="form-check-label" for="pets" id="petLabel">Pets</label>
+                    </div>   
+                    <div class="add-guest-right" id="totalPetsBox"> 
+                        <div class="minus-guest"><i class="fa-solid fa-minus"></i></div>
+                        <input class="total-guest" id="noOfPets" name="listing[aboutPlace][guests][pets]" value="0" min="1" max="5">
+                        <div class="plus-guest" id="petPlusBtn"><i class="fa-solid fa-plus"></i></div>
+                    </div>
+                </div>
+                <div class="form-check">
+                    <input type="hidden" name="listing[houseRules][party]" value="">
+                    <input class="form-check-input" type="checkbox" name="listing[houseRules][party]" value="Parties or events allowed" id="party">                        
+                    <label class="form-check-label" for="party">Party</label>
+                </div>     
+                <div class="form-check">
+                    <input type="hidden" name="listing[houseRules][smoking]" value="">
+                    <input class="form-check-input" type="checkbox" name="listing[houseRules][smoking]" value="Smoking is allowed" id="smoking">                        
+                    <label class="form-check-label" for="smoking">Smoking</label>
+                </div>            
+                <div class="form-check">
+                    <input type="hidden" name="listing[houseRules][photography]" value="">
+                    <input class="form-check-input" type="checkbox" name="listing[houseRules][photography]" value="Commercial photography allowed" id="photography">                        
+                    <label class="form-check-label" for="photography">Commercial Photography</label>
+                </div>      
+
+            </div>  
+                
+            </div>              
+        </div>
+
+        <div class="cancellation-div row">
+            <h4>Cancellation policy of your property</h4>
+
+            <p>You can update this later</p>
+
+            <div class="mb-3 col-md-6">
+                <label for="cancellation-policy" class="form-label">Cancellation policy</label>
+                <select name="listing[housePolicy][cancellationPolicy]" id="cancellation-policy" class="form-select req" required>
+                    <option value="" selected disabled>Select cancellation policy</option>
+                    <option value="Flexible">Flexible</option>
+                    <option value="Modrate">Modrate</option>
+                    <option value="Strict">Strict</option>
+                </select>
+                <div class="invalid-feedback">Please select your cancellation policy</div> 
+            </div>
+            <div class="col-md-6">
+                <label for="cancellation-time" class="form-label">Cancellation time</label>
+                <select name="listing[housePolicy][cancellationTime]" id="cancellation-time" class="form-select req" required>
+                    <option value="" selected disabled>Select cancellation time</option>                    
+                    <option value="12:00 am">12:00 am</option>
+                    <option value="12:30 pm">12:30 pm </option>
+                    <option value="1:00 pm">1:00 pm</option>
+                    <option value="2:00 pm">2:00 pm</option>
+                    <option value="3:00 pm">3:00 pm </option>                    
+                    <option value="4:00 pm">4:00 pm</option>
+                    <option value="5:00 pm">5:00 pm </option>
+                </select>
+                <div class="invalid-feedback">Please select your cancellation time</div> 
+            </div>
+        </div>
+
+        <!-- <div class="max-min-days row">
+            <h4>Maximum and minimum stay of your property</h4>
+
+            <p>You can update this later</p>
+
+            <div class="mb-3 col-md-6">
+                <label for="minimum-days" class="form-label">Minimum days</label>
+                <select name="listing[housePolicy][minimumDays]" id="minimum-days" class="form-select req" required>
+                    <option value="" selected disabled>Select Minimum days</option>     
+                    <option value="1">1 Night</option>
+                    <option value="2">2 Night</option>
+                    <option value="3">3 Night</option>
+                    <option value="4">4 Night</option>
+                    <option value="5">5 Night</option>
+                    <option value="6">6 Night</option>
+                    <option value="7">1 Week</option>
+                </select>
+                <div class="invalid-feedback">Please select your Minimum days</div> 
+            </div>
+            <div class="col-md-6">
+                <label for="maximum-days" class="form-label">Maximum days</label>
+                <select name="listing[housePolicy][maximumDays]" id="maximum-days" class="form-select req" required>
+                    <option value="" selected disabled>Select Maximum days</option>
+                    <option value="1">1 Night</option>
+                    <option value="2">2 Night</option>
+                    <option value="3">3 Night</option>
+                    <option value="4">4 Night</option>
+                    <option value="5">5 Night</option>
+                    <option value="6">6 Night</option>
+                    <option value="7">1 Week</option>
+                    <option value="14">2 Week</option>
+                    <option value="21">3 Week</option>
+                    <option value="30">1 Month</option>                
+                    <option value="60">2 Month</option>                
+                    <option value="90">3 Month</option>                
+                    <option value="120">4 Month</option>                
+                    <option value="150">5 Month</option>                
+                    <option value="180">6 Month</option>                
+                </select>
+                <div class="invalid-feedback">Please select your Maximum days</div> 
+            </div>
+        </div> -->
+
+        <button class="btn btn-dark add-btn submitBtn">
+            <span class="submitBtn-text">Add</span>
+            <div class="spinner" style="display: none;">
+                <span class="dot dot-1"></span>
+                <span class="dot dot-2"></span>
+                <span class="dot dot-3"></span>
+            </div>
+        </button>
+       
+        <!-- mhuje ek kam krna h ki agr koi field miss ho rhi h to sidha uss fild p chla jay user -->
+    </form>
+    <!-- </div> -->
+    </div>
+    <script>
+        let addBtn = document.querySelector(".add-btn");
+        let inputPrice = document.querySelector("#price");
+        let inputs = document.querySelectorAll(".req");
+        let v = '<%- Number(currencyConverter(1000, "INR", currUser ? currUser.countryInfo.currency || "INR" : "INR").replace(/[^\d.]/g, "")) %>';
+       
+        // function chackPriceValue() {
+        //     console.log(Number(inputPrice.value) , Number(v), Number(inputPrice.value) >= Number(v));
+            
+        //     for (const input of inputs) {
+        //         if (input.classList.contains("req")) {
+        //             input.style.backgroundColor='red';
+        //             console.log(input.value);
+        //             if (input.value) {
+        //                 addBtn.disabled = false;
+        //                 addBtn.innerHTML = "Add";
+        //             } else {
+        //                 addBtn.disabled = true;
+        //                 if(inputPrice.value  !== "") addBtn.innerHTML = "Info should be valid";
+        //             }
+        //         }
+        //     }
+        // }
+
+        // addBtn.addEventListener("click",()=>{
+        //     for (const input of inputs){
+        //         if (!input.value) {
+        //             console.log("err");                    
+        //         }
+        //     }
+        // })
+
+        // document.addEventListener("DOMContentLoaded",()=>{chackPriceValue()});
+
+        // inputPrice.addEventListener("input", ()=>{
+        //     chackPriceValue();
+        // });
+
+
+        let guests = 1;
+        let guestsLimit =  25;
+        let infants = 0;
+        let infantsLimit = 5;
+        let bedrooms = 0;
+        let bedroomsLimit = 50;
+        let bathrooms = 1;
+        let bathroomsLimit = 50;
+        let beds = 1;
+        let bedsLimit = 50;
+        let pets = 1;
+        let petsLimit = 5;
+
+    </script>
+    <script src="/js/newlisting.js"></script>
+</body>

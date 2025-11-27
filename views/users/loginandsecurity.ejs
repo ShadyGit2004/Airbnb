@@ -1,0 +1,283 @@
+<%- layout("/layouts/boilerplate.ejs")  %>
+
+<link rel="stylesheet" href="/css/editprofile.css">
+<body>
+    <div class="personal-info-pannel">
+        <h6><a href="/account">Account</a>  &nbsp; &nbsp; <i class="fa-solid fa-angle-right"></i>  &nbsp;&nbsp; <b>Login and security</b></h6>
+        <h2>Login & security</h2>
+        <div class="info-detail-pannel">
+            <div class="details-and-form">
+                <h5>Login</h5>
+                <div class="info">
+                    <div>
+                    <h6 class="h6-lable">Password</h6>
+                    <h6 class="h6-data" id="updated-at"></h6>
+                    </div>
+                    <div class="edit-btns">
+                        <span class="edit update">Update</span>
+                        <span class="cancel hide">Cancel</span>
+                    </div>
+                                
+                </div>
+                <div class="edit-form hide">
+                    <form action="/account/change-password" method="post" class="needs-validation reset" novalidate>                      
+                        <div class="input-box mb-3">
+                            <label for="current-password" class="form-label mb-3">Current password</label>
+                            <input class="form-control" placeholder="current password" type="password" id="current-password" name="oldPassword" required>   
+                            <div class="invalid-feedback">Please enter currenct password</div>                                   
+                        </div>
+                        <div class="input-box mb-3">
+                            <label for="new-password" class="form-label mb-3">New password</label>
+                            <input class="form-control" placeholder="new password" type="password" id="new-password" name="newPassword" required>  
+                            <div class="invalid-feedback">Please enter new password</div> 
+                        </div>
+                        <div class="input-box mb-2">
+                            <label for="confirm-password" class="form-label mb-3">Confirm password</label>
+                            <input class="form-control" placeholder="confirm password" type="password" id="confirm-password" name="confirmPassword" required>   
+                            <div class="invalid-feedback">Please confirm password</div>              
+                        </div>
+                        <div id="strengthMessage"></div>
+                        <!-- <div id="strengthBarWrapper">
+                            <div id="strengthBar"></div>
+                        </div>
+                        <div id="strengthLabel"></div> -->
+                        <button class="btn btn-dark mt-3 submitBtn">
+                            <span class="submitBtn-text">Save</span>
+                            <div class="spinner" style="display: none;">
+                                <span class="dot dot-1"></span>
+                                <span class="dot dot-2"></span>
+                                <span class="dot dot-3"></span>
+                            </div>
+                        </button>
+                    </form>
+                </div> 
+            </div>
+            
+           <!-- <div class="details-and-form">
+            <h5>Social accounts</h5>
+            <div class="info">
+                <div>
+                <h6 class="h6-lable">Google</h6>
+                <h6 class="h6-data">Connected</h6>
+                </div>
+                <div class="edit-btns">
+                    <span class="edit">Edit</span>
+                    <span class="cancel hide">Cancel</span>
+                </div>
+                
+            </div>
+            <div class="edit-form hide">
+                <form action="/account/personal-info/<%= currUser._id %>?_method=patch" method="post" class="needs-validation animation-submit" novalidate>                        
+                    <div class="input-box">
+                        <label for="email" class="form-label mb-3">Use an address you’ll always have access to.</label>
+                        <input class="form-control" type="email" id="email" placeholder="Email address" name="email" required>  
+                        <div class="invalid-feedback">Please enter a valid email</div>                      
+                    </div>
+                    <button class="btn btn-dark mt-3">Save</button>
+                </form>
+            </div> 
+           </div> -->
+           
+           
+           <div class="details-and-form">
+            <h5>Reset</h5>
+            <div class="info">
+                <div>
+                <h6 class="h6-lable">Reset your password</h6>
+                <h6 class="h6-data">Password reseted at</h6>
+                </div>
+                <div class="edit-btns">
+                    <span class="edit">Edit</span>
+                    <span class="cancel hide">Cancel</span>
+                </div>
+                
+            </div>
+            <div class="edit-form hide">
+                <form action="/account/verifyEmail" method="post" class="needs-validation animation-submit" novalidate>                        
+                    <div class="input-box">
+                        <label for="email" class="form-label mb-3">OTP is send to your email</label>
+                        <input class="form-control" type="email" id="email" placeholder="Email address" name="email" required>  
+                        <div class="invalid-feedback">Please enter a valid email</div>                      
+                    </div>
+                    <button class="btn btn-dark mt-3 submitBtn">
+                        <span class="submitBtn-text">Save</span>
+                        <div class="spinner" style="display: none;">
+                            <span class="dot dot-1"></span>
+                            <span class="dot dot-2"></span>
+                            <span class="dot dot-3"></span>
+                        </div>
+                    </button>
+                </form>
+            </div> 
+           </div>
+
+          <div class="details-and-form">
+            <h5>Account</h5>
+            <div class="info">
+                <div>
+                 <h6 class="h6-lable">Deactivate your account</h6>
+                 <div class="h6-data mb-3">This action cannot be undone</div>   
+                 
+                </div>
+                 <form action="/account/delete/<%= currUser._id %>?_method=delete" method="post" novalidate class="needs-validation">      
+                    <!-- <button class="btn btn-dark mt-3 edit">Delete account</button> -->
+                    <button class="edit">Delete account</button>
+                </form>                       
+             </div>              
+          </div>        
+        </div>       
+    </div>
+
+    <script>
+
+        const form = document.querySelector('.reset');
+        form.addEventListener('submit', function (e) {
+            const newPass = document.getElementById('new-password').value;
+            const confirmPass = document.getElementById('confirm-password').value;
+            if (newPass !== confirmPass) {
+            e.preventDefault();
+            alert('New password and confirm password do not match.');
+            }
+        });
+
+        const passwordInput = document.getElementById('new-password');
+        const strengthMessage = document.getElementById('strengthMessage');
+
+        document.querySelector('.update').addEventListener("click", ()=>{
+            strengthMessage.textContent = "";
+        });
+
+        // const strengthBar = document.getElementById('strengthBar');
+        // const strengthLabel = document.getElementById('strengthLabel');
+
+        passwordInput.addEventListener('input', () => {
+            const password = passwordInput.value;
+            const strength = checkPasswordStrength(password);   
+            
+            //  // Update bar width and color
+            // strengthBar.style.width = strength.percent;
+            // strengthBar.style.backgroundColor = strength.color;
+
+            // // Update label
+            // strengthLabel.textContent = `Strength: ${strength.label}`;
+            // strengthLabel.style.color = strength.color;
+
+            if (!password.length>0) {
+                strengthMessage.style.display= "none";
+            }else strengthMessage.style.display= "block";
+            strengthMessage.textContent = `Password strength: ${strength.label}`;
+            strengthMessage.style.color = strength.color;
+        });
+
+        function checkPasswordStrength(password) {
+            let score = 0;
+
+            if (password.length >= 8) score++;
+            if (/[A-Z]/.test(password)) score++;         // uppercase
+            if (/[a-z]/.test(password)) score++;         // lowercase
+            if (/[0-9]/.test(password)) score++;         // digit
+            if (/[^A-Za-z0-9]/.test(password)) score++;  // special character
+
+            if (score <= 2) return { label: 'Weak', color: '#FC6D35' };
+            if (score === 3 || score === 4) return { label: 'Fair', color: '#FFB401' };
+            return { label: 'Strong', color: '#018489' };
+
+            // if (score <= 2) return { label: 'Weak', color: '#FC6D35', percent: '30%' };
+            // if (score === 3 || score === 4) return { label: 'Fair', color: '#FFB401', percent: '65%' };
+            // return { label: 'Strong', color: '#018489', percent: '100%' };
+        }
+
+
+
+        let showUpdatedAt = document.querySelector("#updated-at");
+
+        const now = new Date();
+        const updatedAt = Number('<%= currUser?.updatedAt %>') || now; // fallback to now if missing
+ 
+        alert(updatedAt)
+
+        const diffMs = now - updatedAt; // diff in milliseconds
+        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24)); // convert ms to days
+
+        let message;
+        if (diffDays === 0) {
+        message = "Updated now";
+        } else if (diffDays === 1) {
+        message = "Updated 1 day ago";
+        } else {
+        message = `Updated ${diffDays} days ago`;
+        }
+        showUpdatedAt.innerHTML = `${message} (${'<%= currUser?.updatedAt %>'.split(" ").slice(4, 5).join("")})`;
+
+        
+
+
+        // let editBtns = document.querySelectorAll(".edit-btns");     
+
+        // for (let editBtn of editBtns) {
+        //     editBtn.addEventListener("click", (e)=>{                        
+        //     if (e.target.innerText === "Edit" || e.target.innerText === "Update") {                           
+        //         let edit = editBtn.querySelector(".edit");  
+        //         let cancel = editBtn.querySelector(".cancel"); 
+        //         // console.dir(e.target.parentElement.previousElementSibling.children[1].innerText); 
+        //         // console.dir(e.target.parentElement.parentElement.nextElementSibling);                
+        //         let editForm = e.target.parentElement.parentElement.nextElementSibling;
+        //         let h6Data = e.target.parentElement.previousElementSibling.children[1];
+        //         let h6Lable = e.target.parentElement.previousElementSibling.children[0];
+        //         edit.classList.add("hide");                
+        //         cancel.classList.remove("hide");
+        //         editForm.classList.remove("hide");
+        //         h6Data.classList.add("hide");    
+        //         let disabledEdits = document.querySelectorAll(".edit");
+        //         for (let disabledEdit of disabledEdits) {
+        //             disabledEdit.classList.add("pointer-none");
+        //         }       
+        //         let labels= document.querySelectorAll(".info .h6-lable");
+        //         for (let label of labels) {
+        //             label.classList.add("pointer-none");
+        //         }            
+        //         h6Lable.classList.remove("pointer-none");
+        //     }            
+        //     });           
+        // }
+       
+        // for (let editBtn of editBtns) { 
+        //     editBtn.addEventListener("click", (e)=>{            
+        //     if (e.target.innerText === "Cancel"){                
+        //         let edit = editBtn.querySelector(".edit"); 
+        //         let cancel = editBtn.querySelector(".cancel");
+        //         let editForm = e.target.parentElement.parentElement.nextElementSibling;
+        //         let h6Data = e.target.parentElement.previousElementSibling.children[1];               
+        //         cancel.classList.add("hide");
+        //         edit.classList.remove("hide");
+        //         let inputs = editForm.querySelectorAll("input");
+        //         let select = editForm.querySelector("select");
+        //         for (let input of inputs) {                                  
+        //             input.value = "";                 
+        //         }                
+        //         if(select){                    
+        //             select.value = "";           
+        //             select.addEventListener("change",()=>{
+        //                 if (!select.value) {                  
+        //                     select.value = select[0].innerText;
+        //                     select[0].selected = true;
+        //                 }
+        //             })
+        //         }
+        //         editForm.classList.add("hide");
+        //         h6Data.classList.remove("hide");              
+        //         let disabledEdits = document.querySelectorAll(".edit");
+        //         for (let disabledEdit of disabledEdits) {
+        //             disabledEdit.classList.remove("pointer-none");
+        //         }               
+        //         let labels= document.querySelectorAll(".info .h6-lable");
+        //         for (let label of labels) {
+        //             label.classList.remove("pointer-none");
+        //         }    
+        //     }         
+        // });
+        // }
+
+    </script>
+   <script src="/js/editprofile.js"></script>
+</body>

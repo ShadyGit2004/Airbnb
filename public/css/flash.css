@@ -1,0 +1,22 @@
+.successMsg, .errorMsg{
+    width: 65%;
+    z-index: 5 !important;
+    position: fixed !important;
+    top: 4rem !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+}
+
+
+
+@media screen and (max-width : 950px) {  
+    .successMsg, .errorMsg{
+        width: 82%;
+    }
+}
+
+@media screen and (max-width : 570px) {  
+    .successMsg, .errorMsg{
+        width: 90%;
+    }
+}
