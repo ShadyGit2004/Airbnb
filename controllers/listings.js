@@ -69,8 +69,7 @@ module.exports.indexPage = async (req, res) => {
         if (!allListings.length > 0) {  
             errMsg = price && propertyType ? `Listing not found for property type ${propertyType} and in price range of ${p}` : propertyType ? `Listing not found for property type ${propertyType}` : `Listing not found in price range of ${p}`; 
             // errMsg = "Listing not found"; 
-            res.render("./listings/index.ejs", {errMsg, filtered, currencyConverter});
-            return;
+            return res.render("./listings/index.ejs", {errMsg, filtered, currencyConverter});
         } 
 
     } else{        

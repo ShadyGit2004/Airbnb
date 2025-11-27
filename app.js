@@ -48,6 +48,7 @@ app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "/public")));
 
 const MONGO_URL = process.env.MONGO_URL;
+const DB_NAME = process.env.DB_NAME;
 
 main()
 .then(()=>{
@@ -55,24 +56,29 @@ main()
 }).catch(err => console.log(`Database Error - ${err}`));
 
 async function main() {
-  await mongoose.connect(`${MONGO_URL}Airbnb`);
+  await mongoose.connect(`${MONGO_URL}/${DB_NAME}`);
 };
 
 const store = MongoStore.create({
     mongoUrl : MONGO_URL,
-    crypto : {
-        secret : process.env.SESSION_SECRET,
-    },
+    dbName : DB_NAME,
+    // crypto : {
+    //     secret : process.env.SESSION_SECRET,
+    // },
     touchAfter : 24 * 60 * 60,
-})
+});
+
 
 const sessionOption = {
-    store,
+    name: "sessionID",   
+    store, 
     secret : process.env.SESSION_SECRET,
     resave : false,
-    saveUninitialized : true,
+    saveUninitialized : true,    
     cookie : {
         expires : Date.now() + 7 * 24 * 60 * 60 * 1000,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
         maxAge : 7 * 24 * 60 * 60 * 1000,
         httpOnly : true,
     },
@@ -95,6 +101,10 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use("/listings", listingRouter);
+app.use("/listings/:id/reviews", reviewRouter);
+app.use("/listings/:id/book", bookingRouter);
+app.use("/", userRouter);
 
 app.get("/debug/session", (req, res) => {
     res.send({
@@ -103,22 +113,16 @@ app.get("/debug/session", (req, res) => {
     });
   });
 
-app.use("/listings", listingRouter);
-app.use("/listings/:id/reviews", reviewRouter);
-app.use("/listings/:id/book", bookingRouter);
-app.use("/", userRouter);
-
-
 // middleware
 app.use("*", (req, res, next) => {          
     // next(new ExpressError(404, "Page not found"));
-    res.render("lostPage")
+    return res.render("lostPage")
 });
 
 // error handler
 app.use((err, req, res, next)=> {
     let {statusCode = 500, message = "Something went wrong"} = err;
-    res.status(statusCode).render("error.ejs", {err});  
+    return res.status(statusCode).render("error.ejs", {err});  
 });
 
 app.listen(port, () => {
