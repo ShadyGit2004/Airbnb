@@ -11,6 +11,7 @@ const ejsMate = require('ejs-mate');
 const methodOverride = require("method-override");
 const ExpressError = require("./utils/expressError.js");
 const session = require("express-session");
+const MongoStore = require('connect-mongo');
 const cookieParser = require("cookie-parser");
 const falsh = require("connect-flash");
 const passport = require("passport");
@@ -57,7 +58,16 @@ async function main() {
   await mongoose.connect(`${MONGO_URL}Airbnb`);
 };
 
+const store = MongoStore.create({
+    mongoUrl : MONGO_URL,
+    crypto : {
+        secret : process.env.SESSION_SECRET,
+    },
+    touchAfter : 24 * 60 * 60,
+})
+
 const sessionOption = {
+    store,
     secret : process.env.SESSION_SECRET,
     resave : false,
     saveUninitialized : true,
