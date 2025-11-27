@@ -70,7 +70,6 @@ const store = MongoStore.create({
 
 
 const sessionOption = {
-    name: "sessionID",   
     store, 
     secret : process.env.SESSION_SECRET,
     resave : false,
