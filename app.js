@@ -56,7 +56,7 @@ main()
 }).catch(err => console.log(`Database Error - ${err}`));
 
 async function main() {
-  await mongoose.connect(`${MONGO_URL}/${DB_NAME}`);
+  await mongoose.connect(`${MONGO_URL}${DB_NAME}`);
 };
 
 const store = MongoStore.create({
