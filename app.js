@@ -70,14 +70,15 @@ const store = MongoStore.create({
 
 
 const sessionOption = {
+    // name: "sessionID",   
     store, 
     secret : process.env.SESSION_SECRET,
     resave : false,
-    saveUninitialized : true,    
+    saveUninitialized : false,    
     cookie : {
         expires : Date.now() + 7 * 24 * 60 * 60 * 1000,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        // sameSite: "lax",
         maxAge : 7 * 24 * 60 * 60 * 1000,
         httpOnly : true,
     },
