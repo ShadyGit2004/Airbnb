@@ -1,7 +1,7 @@
 
 # Node modules
 node_modules/
-init/
+init
 
 # Logs
 logs
