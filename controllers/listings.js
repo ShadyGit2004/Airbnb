@@ -289,9 +289,10 @@ module.exports.destroyListing = async (req, res) => {
     let {id} = req.params;  
     let listing = await Listing.findById(id); 
     let user = await User.findById(listing.owner);
+    let booking = await Booking.findOne({listingId : id})
 
-    if(!listing.isAvailable){        
-        req.flash("error", "Listing is booked by guest, please cancel booking first to delete");
+    if(booking){        
+        req.flash("error", "Listing is booked by guest, please cancel first to delete the listing!");
         res.redirect(`/my-listings`);
         return;
     }    

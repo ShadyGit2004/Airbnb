@@ -340,9 +340,14 @@
         }
         .popup-div{
             width: 95%;
-        }
+        }        
     }
 
+    @media screen and (max-width : 400px) {
+        .booking-card{
+            padding: .85rem;
+        }
+    }
     
 </style>
 
@@ -357,7 +362,7 @@
             <a href="/listings/<%= id %>"><i class="fa-solid fa-chevron-left"></i></a> 
             <h2>Request to book</h2>            
         </div>   
-    <form action="/listings/<%= id %>/book" method="post" id="booking-form">  
+    <form action="/listings/<%= id %>/book" method="post" id="booking-form" class="animation-submit">  
         <div class="request request-sec1">
                 <h4>Your trip</h4>
                 <div class="dates">
@@ -521,6 +526,7 @@
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>  
+    document.title="Confirm and pay | Airbnb";
     let keyId = '<%= process.env.RZR_KEY_ID %>';  
     let id = '<%= id %>';  
     let bookListing = <%- JSON.stringify(bookedListing) %>;    
@@ -794,7 +800,7 @@
        
         msgHost.innerHTML = `Before you can continue, let ${bookListing.owner.username} know a little about your trip and why their place is a good fit.`;
         
-        listingReviewAndRating.innerHTML = bookListing.reviews.length-1 > 0 ?
+        listingReviewAndRating.innerHTML = bookListing.reviews.length > 0 ?
         `<i class="fa-solid fa-star"></i> <span class="avg-rating">${'<%= avgRating %>'}</span> &nbsp; (${Number(bookListing.reviews.length).toLocaleString(navigator.language || "en-IN")} ${bookListing.reviews.length > 1 ? "reviews" : "review"})` : "<small>No reviews</small>"; 
 
         priceCurrency.forEach((priceCurr)=>{
@@ -861,23 +867,23 @@
 
 
     // ---------------------
-    let curr_name = "INR";
-    let data_obj = {};
+    // let curr_name = "INR";
+    // let data_obj = {};
 
-    async function get40CurrencyRates(curr_name) {
-        // let currencyUrl = `https://api.currencyapi.com/v3/latest?apikey=cur_live_9XDyyncygC1ipCU0uSJ4tEGSUrbJ9TPHxgOpG9i3&currencies=INR%2CAUD%2CBRL%2CBGN%2CCAD%2CCLP%2CCNY%2CCOP%2CCRC%2CCZK%2CAED%2CEUR%2CEGP%2CHKD%2CHUF%2CIDR%2CJPY%2CMXN%2CMAD%2CTWD%2CNZD%2CNOK%2CPEN%2CPHP%2CGBP%2CQAR%2CRON%2CSAR%2CSGD%2CZAR%2CKRW%2CSEK%2CCHF%2CTHB%2CTRY%2CUGX%2CUAH%2CUSD%2CUYU%2CVND&base_currency=${curr_name}`;
+    // async function get40CurrencyRates(curr_name) {
+    //     // let currencyUrl = `https://api.currencyapi.com/v3/latest?apikey=cur_live_9XDyyncygC1ipCU0uSJ4tEGSUrbJ9TPHxgOpG9i3&currencies=INR%2CAUD%2CBRL%2CBGN%2CCAD%2CCLP%2CCNY%2CCOP%2CCRC%2CCZK%2CAED%2CEUR%2CEGP%2CHKD%2CHUF%2CIDR%2CJPY%2CMXN%2CMAD%2CTWD%2CNZD%2CNOK%2CPEN%2CPHP%2CGBP%2CQAR%2CRON%2CSAR%2CSGD%2CZAR%2CKRW%2CSEK%2CCHF%2CTHB%2CTRY%2CUGX%2CUAH%2CUSD%2CUYU%2CVND&base_currency=${curr_name}`;
 
 
-        if (!curr_name) {
-            alert("base currency is requierd")
-            return;
-        }
+    //     if (!curr_name) {
+    //         alert("base currency is requierd")
+    //         return;
+    //     }
 
-        let response = await fetch(currencyUrl);
-        let data = await response.json();
-        data_obj = {...data};
-        console.log(data);  
-    }
+    //     let response = await fetch(currencyUrl);
+    //     let data = await response.json();
+    //     data_obj = {...data};
+    //     console.log(data);  
+    // }
 
     // get40CurrencyRates(curr_name);
 

@@ -152,7 +152,7 @@ body{
     justify-content: center;
     position: absolute; 
     top: 10px; 
-    right: 10px; 
+    right: 4px; 
     z-index: 2;   
     /* background-color: red; */
 }
@@ -177,7 +177,7 @@ body{
     border-radius: 20px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 5px;
     cursor: pointer;
 }
 
@@ -280,7 +280,7 @@ body{
 }    
 .detail-div .cross:hover{
     background-color: rgb(245, 253, 255);
-}
+} 
 
 @media screen and (max-width: 970px) {
   .detail-div{

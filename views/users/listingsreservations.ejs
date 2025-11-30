@@ -1,7 +1,13 @@
 <%- layout("/layouts/boilerplate.ejs")  %>
 
 <style>
+   #nav-div{
+  height: auto;
+}
 
+#nav-search-box{
+    display: none;
+  }
    .reservations-page{
         width: 100%;    
         padding-inline: 15vw;
@@ -262,7 +268,7 @@
     width: 48%;
   }
   .reservations-page{
-        padding-inline: 8vw;
+        padding-inline: 4vw;
     }
 }
 
@@ -271,8 +277,9 @@
   .shimmer-card {
     width: 100%;
   }
-  .reservations-page{  
-        padding-inline: 4vw;
+  
+  .reservations-page{
+        padding-inline: 2vh;
     }
 
 }
@@ -363,6 +370,7 @@
    
       
       <script>
+      document.title="Your reservations | Airbnb";
 
         let btns = document.querySelectorAll(".reservations-category h5");
         let reservationsDetails = document.querySelectorAll(".reservations-details");

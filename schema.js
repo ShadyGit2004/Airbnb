@@ -28,8 +28,8 @@ function generateListingSchema(currency = "INR") {
   const minConverted = Number(currencyConverter(minPriceINR, "INR", currency).replace(/[^\d.]/g, ''))
   const maxConverted = Number(currencyConverter(maxPriceINR, "INR", currency).replace(/[^\d.]/g, ''));
 
-  console.log("schema min -> ",minConverted);
-  console.log("schema max -> ",maxConverted);
+  // console.log("schema min -> ",minConverted);
+  // console.log("schema max -> ",maxConverted);
   
   
   return Joi.object({

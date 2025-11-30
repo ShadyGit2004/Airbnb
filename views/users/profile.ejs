@@ -10,6 +10,10 @@
 
 <style>
 
+#nav-div{
+  height: auto;
+}
+
 #nav-search-box{
     display: none;
   }
@@ -246,6 +250,7 @@
     </div>
   
     <script>
+        document.title="Create profile | Airbnb";
         // aboutObj = JSON.parse(aboutObj);
       
         function setProfile(){       
@@ -258,26 +263,16 @@
         let yearData = document.querySelector(".my-profile .profile-about .year-of-hosting-data");
         let yearMonthPara = document.querySelector(".my-profile .profile-about .hosting-year");
 
-        let currentDate = new Date;
-        let monthOfHosting = currentDate.getMonth()+1 - parseInt(currentUser.joinAt.toString().trim().slice(5,7));
-        let yearOfHosting = currentDate.getFullYear() - parseInt(currentUser.joinAt.toString().trim().slice(0,4));
+        let currentDate = new Date();        
+        let monthOfHosting = currentDate.getMonth()+1 - (new Date(currentUser.joinAt).getMonth()+1);
+        let yearOfHosting = currentDate.getFullYear() - new Date(currentUser.joinAt).getFullYear(); 
         
         if (yearOfHosting == 0) {
-            if (monthOfHosting > 1) {
-                yearData.innerHTML = monthOfHosting;
-                yearMonthPara.innerHTML = `Months on Airbnb`        
-            } else {
-                yearData.innerHTML = 1;
-                yearMonthPara.innerHTML = "Month on Airbnb";
-            }
+            yearData.innerHTML = monthOfHosting > 1 ? monthOfHosting : 1;
+            yearMonthPara.innerHTML = `${monthOfHosting > 1 ? "Months" : "Month" } on Airbnb`;  
         } else {
-            if (yearOfHosting == 1) {
-               yearData.innerHTML = yearOfHosting;
-               yearMonthPara.innerHTML = `Year on Airbnb`;   
-            } else {                 
-              yearData.innerHTML = yearOfHosting;
-              yearMonthPara.innerHTML = `Years on Airbnb`;   
-            }
+            yearData.innerHTML = yearOfHosting;
+            yearMonthPara.innerHTML = `${yearOfHosting > 1 ? "Years" : "Year" } on Airbnb`;               
         }    
 
     </script>

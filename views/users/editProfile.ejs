@@ -2,15 +2,20 @@
 
 
 <script>
+    document.title="Edit profile | Airbnb";
     let name = '<%= currUser.username %>';
     let url = '<%= currUser.profileImg %>';
     let aboutObj = '<%- JSON.stringify(currUser.about)%>';
 </script>
 
 <style>
-     #nav-search-box{
-        display: none;
-    }
+     #nav-div{
+  height: auto;
+}
+
+#nav-search-box{
+    display: none;
+  }
     .edit-profile-page{
         width: 100%;
         padding: 2rem 15vw;

@@ -47,6 +47,15 @@
 
 
 <style>
+
+#nav-div{
+  height: auto;
+}
+
+#nav-search-box{
+    display: none;
+  }
+
     .form-box {
       /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; */
       padding: 40px;
@@ -68,6 +77,7 @@
       font-size: 28px;
       font-weight: 700;
       color: #333;
+      margin-bottom: 1rem;
     }
 
     label {
@@ -105,6 +115,13 @@
     button:hover {
       background: #e03052;
     }
+
+    @media screen and (max-width: 500px) {
+      .form-box,.message-box {        
+        padding: 1.25rem 1rem;
+      }
+    }
+
   </style>
   <body>
    <div class="form-box">
@@ -123,6 +140,10 @@
         <button type="submit">Send Message</button>
       </form>
    </div>
+   <script>        
+    document.title = `Contact Host | Airbnb`;
+</script>   
   </body>
+  
 
  

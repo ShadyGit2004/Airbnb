@@ -488,21 +488,13 @@
                         <div class="host-review-detail">                        
                             <span> <%= review.author.username %></span> 
                             <!-- <p><%= review.author.joinAt.toLocaleString() %></p>                       -->
-                                <%let currentDate = new Date%>
-                                <%let monthOfHosting = currentDate.getMonth()+1 - parseInt(review.author.joinAt.toLocaleString().trim().slice(0,1))%>
-                                <%let yearOfHosting = currentDate.getFullYear() - parseInt(review.author.joinAt.toString().trim().slice(11,15))%>  
+                                <%let currentDate = new Date()%>
+                                <%let yearOfHosting = currentDate.getFullYear() - review.author.joinAt.getFullYear()%> 
                                 <%if (yearOfHosting == 0) {%>
-                                    <% if (monthOfHosting > 1) { %>                                    
-                                    <p> <%= monthOfHosting %> months on Airbnb</p>                                        
-                                    <% } else {%>
-                                    <p>1 month on Airbnb</p>                                  
-                                    <% } %>
-                                <% } else {%>
-                                    <% if(yearOfHosting == 1){%> 
-                                        <p><%= yearOfHosting %> year on Airbnb </p>
-                                    <% } else {%> 
-                                        <p><%= yearOfHosting %> years on Airbnb </p>
-                                    <% }%>                                                                    
+                                    <%let monthOfHosting = currentDate.getMonth() - review.author.joinAt.getMonth()%>
+                                    <p> <%= monthOfHosting > 1 ? monthOfHosting+" months" : "1 month" %> on Airbnb</p>   
+                                <% } else { %>
+                                    <p><%= yearOfHosting > 1 ? yearOfHosting+" years" : yearOfHosting+" year" %> on Airbnb </p>                                                                    
                                 <% } %>                           
                         </div>
                         </h6>  
@@ -816,20 +808,20 @@
 
    <script>
     
-    let allListingsImages = document.querySelectorAll("img");    
-    for (const img of allListingsImages) {
-        img.style.filter = 'blur(3px)';
+    // let allListingsImages = document.querySelectorAll("img");    
+    // for (const img of allListingsImages) {
+    //     img.style.filter = 'blur(3px)';
 
-        // If image is already loaded
-        if (img.complete) {
-            img.style.filter = 'blur(0px)';
-        } else {
-            img.addEventListener("load", () => {
-                console.log("img loaded");
-                img.style.filter = 'blur(0px)';
-            });
-        }
-    }
+    //     // If image is already loaded
+    //     if (img.complete) {
+    //         img.style.filter = 'blur(0px)';
+    //     } else {
+    //         img.addEventListener("load", () => {
+    //             // console.log("img loaded");
+    //             img.style.filter = 'blur(0px)';
+    //         });
+    //     }
+    // }
 
     document.addEventListener("DOMContentLoaded", function (event) {
        let scrollpos = localStorage.getItem("scrollpos");
@@ -853,7 +845,7 @@
        navStarSpan.innerHTML = `<i class="fa-solid fa-star"></i>&nbsp; ${avgStars}&nbsp; ∙&nbsp;`;
        listingAvgstar.innerHTML = `<i class="fa-solid fa-star"></i> ${avgStars}&nbsp; ∙&nbsp;`;
     }   
-    // ho ske to host data ki date year y sab or ache se likh lena code iska trike s   
+       
     function hostData() {
     let yearData = document.querySelector(".host-pannel .year-of-hosting-data");
     let yearMonthPara = document.querySelector(".host-pannel .hosting-year");
@@ -862,28 +854,17 @@
     let showLisitngDetailHost = document.querySelector(".show-listing-details #show-listing-host");
 
     let currentDate = new Date();
-    let monthOfHosting = currentDate.getMonth()+1 - parseInt(listing.owner.joinAt.toString().trim().slice(5,7));
-    let yearOfHosting = currentDate.getFullYear() - parseInt(listing.owner.joinAt.toString().trim().slice(0,4));
+    let monthOfHosting = currentDate.getMonth() - new Date(listing.owner.joinAt).getMonth();
+    let yearOfHosting = currentDate.getFullYear() - new Date(listing.owner.joinAt).getFullYear(); 
+    
     if (yearOfHosting == 0) {
-        if (monthOfHosting > 1) {
-            yearData.innerHTML = monthOfHosting;
-            yearMonthPara.innerHTML = `Months hosting`; 
-            showLisitngDetailHost.innerHTML = `${monthOfHosting} months hosting`;                 
-        } else {
-            yearData.innerHTML = 1;
-            yearMonthPara.innerHTML = "Month hosting";   
-            showLisitngDetailHost.innerHTML = `${1} month hosting`;         
-        }
+        yearData.innerHTML = monthOfHosting > 1 ? monthOfHosting : 1;
+        yearMonthPara.innerHTML = `${monthOfHosting > 1 ? "Months" : "Month" } hosting`;   
+        showLisitngDetailHost.innerHTML = `${monthOfHosting > 1 ? monthOfHosting+" months" : "1 month" } hosting`;  
     } else {
-        if (yearOfHosting == 1) {
-            yearData.innerHTML = yearOfHosting;
-            yearMonthPara.innerHTML = `Year hosting`;   
-            showLisitngDetailHost.innerHTML = `${yearOfHosting} year hosting`; 
-       } else {                 
-           yearData.innerHTML = yearOfHosting;
-           yearMonthPara.innerHTML = `Years hosting`;   
-           showLisitngDetailHost.innerHTML = `${yearOfHosting} years hosting`; 
-       }
+        yearData.innerHTML = yearOfHosting;
+        yearMonthPara.innerHTML = `${yearOfHosting > 1 ? "Years" : "Year" } hosting`;   
+        showLisitngDetailHost.innerHTML = `${yearOfHosting > 1 ? yearOfHosting+" years" : yearOfHosting+" year" } hosting`; 
     }    
       
     let allReviews = 0;

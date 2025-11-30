@@ -1,6 +1,10 @@
 <%- layout("/layouts/boilerplate.ejs")  %>
 
 <style>
+ #nav-div{
+  height: auto;
+}
+
   #nav-search-box{
     display: none;
   }
@@ -252,7 +256,9 @@
         <% } %>    
     </div>
     <script>
-        console.log(<%- JSON.stringify(wishlists) %>);
+      
+    document.title = `Your Whislists | Airbnb`;
+        // console.log(<%- JSON.stringify(wishlists) %>);
         
     </script>
 </body>

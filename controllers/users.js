@@ -272,14 +272,14 @@ module.exports.updateUsername = async (req, res, next) => {
     await user.save();
 //  host: "smtp.sendgrid.net",
     // Send email       
-    const mailOptions = {
-      from: '"AirbnbByRajat" <airbnbbyrajat@gmail.com>',  // SendGrid verified email
-      to: user.email,
-      replyTo: "airbnbbyrajat@gmail.com",  
-      subject: `New message from AirbnbByRajat`,
-      text: "Username updated successfully",
-    };
-    await transporter.sendMail(mailOptions);
+    // const mailOptions = {
+    //   from: '"AirbnbByRajat" <airbnbbyrajat@gmail.com>',  // SendGrid verified email
+    //   to: user.email,
+    //   replyTo: "airbnbbyrajat@gmail.com",  
+    //   subject: `New message from AirbnbByRajat`,
+    //   text: "Username updated successfully",
+    // };
+    // await transporter.sendMail(mailOptions);
 
     // Re-login to update session with new username
     req.login(user, (err) => {
@@ -321,14 +321,14 @@ module.exports.updateEmail = async (req, res) => {
     user.email = email.trim();
     await user.save();
 
-    const mailOptions = {
-      from: '"AirbnbByRajat" <airbnbbyrajat@gmail.com>',  // SendGrid verified email
-      to: user.email,
-      replyTo: "airbnbbyrajat@gmail.com",  
-      subject: `New message from AirbnbByRajat`,
-      text: "Email updated successfully",
-    };
-    await transporter.sendMail(mailOptions);
+    // const mailOptions = {
+    //   from: '"AirbnbByRajat" <airbnbbyrajat@gmail.com>',  // SendGrid verified email
+    //   to: user.email,
+    //   replyTo: "airbnbbyrajat@gmail.com",  
+    //   subject: `New message from AirbnbByRajat`,
+    //   text: "Email updated successfully",
+    // };
+    // await transporter.sendMail(mailOptions);
 
     req.flash("success", "Email updated successfully");
     return res.redirect("/account/personal-info");
@@ -408,14 +408,14 @@ module.exports.updatePersonalInfo = async (req, res) => {
   
     await user.save();
 
-    const mailOptions = {
-      from: '"AirbnbByRajat" <airbnbbyrajat@gmail.com>',  // SendGrid verified email
-      to: user.email,
-      replyTo: "airbnbbyrajat@gmail.com",  
-      subject: `New message from AirbnbByRajat`,
-      text: `${updatedField} updated successfully`,
-    };
-    await transporter.sendMail(mailOptions);
+    // const mailOptions = {
+    //   from: '"AirbnbByRajat" <airbnbbyrajat@gmail.com>',  // SendGrid verified email
+    //   to: user.email,
+    //   replyTo: "airbnbbyrajat@gmail.com",  
+    //   subject: `New message from AirbnbByRajat`,
+    //   text: `${updatedField} updated successfully`,
+    // };
+    // await transporter.sendMail(mailOptions);
 
     req.flash("success", `${updatedField} updated successfully`);
     return res.redirect(redirectTo);
@@ -549,29 +549,30 @@ module.exports.messageHost = async (req, res) => {
     return res.redirect('/listings');
   }
 
-  console.log(req.body);
+  // console.log(req.body);
   
-  const mailOptions = {
-    from: '"AirbnbByRajat" <airbnbbyrajat@gmail.com>',  // SendGrid verified email
-    to: host.email,
-    replyTo: email,  
-    subject: `New message from ${name}`,
-    text: message,
-  };
+  // const mailOptions = {
+  //   from: '"AirbnbByRajat" <airbnbbyrajat@gmail.com>',  // SendGrid verified email
+  //   to: host.email,
+  //   replyTo: email,  
+  //   subject: `New message from ${name}`,
+  //   text: message,
+  // };
 
-  console.log(mailOptions);  
+  // console.log(mailOptions);  
 
   try {
-    await transporter.sendMail(mailOptions);  // ✅ should now work
+    // await transporter.sendMail(mailOptions);  // ✅ should now work
 
     // Save message
-    const m = await Message.create({
-      guestName: name,
-      guestEmail: email,
-      content: message,
-      userId: user._id,
-      hostId: host._id,
-    });
+    // const m = await Message.create({
+    //   guestName: name,
+    //   guestEmail: email,
+    //   content: message,
+    //   userId: user._id,
+    //   hostId: host._id,
+    // });
+    // Sendgrid limit exceed so i commented this
 
     host.receivedMessages.push(m);
     user.sentMessages.push(m);
@@ -626,18 +627,18 @@ module.exports.changePassword = async (req, res) => {
       await user.save();
 
       // Send email      
-      const mailOptions = {
-        from: '"AirbnbByRajat" <airbnbbyrajat@gmail.com>',  // SendGrid verified email
-        to: user.email,
-        replyTo: "airbnbbyrajat@gmail.com",  
-        subject: `New message from AirbnbByRajat`,
-        text: "Password successfully changed",
-      };
-      let { error } = await transporter.sendMail(mailOptions);
+      // const mailOptions = {
+      //   from: '"AirbnbByRajat" <airbnbbyrajat@gmail.com>',  // SendGrid verified email
+      //   to: user.email,
+      //   replyTo: "airbnbbyrajat@gmail.com",  
+      //   subject: `New message from AirbnbByRajat`,
+      //   text: "Password successfully changed",
+      // };
+      // let { error } = await transporter.sendMail(mailOptions);
 
-      if(error){
-        console.error(error);        
-      }
+      // if(error){
+      //   console.error(error);        
+      // }
   
       // const now = new Date();
       // const updatedAt = user.updatedAt || now;
@@ -687,14 +688,14 @@ module.exports.destroyUser = async (req, res)=>{
 
     await User.findByIdAndDelete(id); 
 
-    const mailOptions = {
-      from: '"AirbnbByRajat" <airbnbbyrajat@gmail.com>',  // SendGrid verified email
-      to: user.email,
-      replyTo: "airbnbbyrajat@gmail.com",  
-      subject: `New message from AirbnbByRajat`,
-      text: "Account successfully deleted",
-    };
-    await transporter.sendMail(mailOptions);
+    // const mailOptions = {
+    //   from: '"AirbnbByRajat" <airbnbbyrajat@gmail.com>',  // SendGrid verified email
+    //   to: user.email,
+    //   replyTo: "airbnbbyrajat@gmail.com",  
+    //   subject: `New message from AirbnbByRajat`,
+    //   text: "Account successfully deleted",
+    // };
+    // await transporter.sendMail(mailOptions);
     
     req.flash("success", "Account deleted");    
     res.redirect(`/listings`);

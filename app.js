@@ -62,23 +62,23 @@ async function main() {
 const store = MongoStore.create({
     mongoUrl : MONGO_URL,
     dbName : DB_NAME,
-    // crypto : {
-    //     secret : process.env.SESSION_SECRET,
-    // },
+    crypto : {
+        secret : process.env.SESSION_SECRET,
+    },
     touchAfter : 24 * 60 * 60,
 });
 
 
 const sessionOption = {
-    // name: "sessionID",   
+    name: "sessionID",   
     store, 
     secret : process.env.SESSION_SECRET,
     resave : false,
     saveUninitialized : true,    
     cookie : {
-        expires : Date.now() + 7 * 24 * 60 * 60 * 1000,
-        // secure: process.env.NODE_ENV === "production",
-        // sameSite: "lax",
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
         maxAge : 7 * 24 * 60 * 60 * 1000,
         httpOnly : true,
     },

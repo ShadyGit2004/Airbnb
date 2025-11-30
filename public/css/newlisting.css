@@ -3,6 +3,13 @@
     border: 2px solid rgb(17, 17, 17) !important;
 }
 
+#nav-div{
+    height: auto;
+  }
+  
+  #nav-search-box{
+      display: none;
+    }
 
 /* NEW FORM STYLING */
 

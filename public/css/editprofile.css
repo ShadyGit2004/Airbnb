@@ -1,9 +1,12 @@
 
 
-#nav-search-box{
-    display: none;
+#nav-div{
+    height: auto;
   }
   
+  #nav-search-box{
+      display: none;
+    }
 
 
 

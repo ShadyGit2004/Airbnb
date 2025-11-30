@@ -1,6 +1,9 @@
 <%- layout("/layouts/boilerplate.ejs")  %>
 
 <style>
+#nav-div{
+  height: auto;
+}
 
 #nav-search-box{
     display: none;
@@ -207,6 +210,8 @@
         <% } %>
     </div>
     <script>
+      
+    document.title = `Your Trips | Airbnb`;
         // console.log(<%- JSON.stringify(trips) %>);
         
     </script>

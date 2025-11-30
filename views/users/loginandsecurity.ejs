@@ -84,7 +84,7 @@
             <div class="info">
                 <div>
                 <h6 class="h6-lable">Reset your password</h6>
-                <h6 class="h6-data">Password reseted at</h6>
+                <h6 class="h6-data">Password reseted at (need to build not working yet)</h6>
                 </div>
                 <div class="edit-btns">
                     <span class="edit">Edit</span>
@@ -129,6 +129,7 @@
     </div>
 
     <script>
+        document.title="Login & Security | Airbnb";
 
         const form = document.querySelector('.reset');
         form.addEventListener('submit', function (e) {
@@ -192,22 +193,34 @@
         let showUpdatedAt = document.querySelector("#updated-at");
 
         const now = new Date();
-        const updatedAt = Number('<%= currUser?.updatedAt %>') || now; // fallback to now if missing
+        const updatedAt = new Date('<%= currUser?.updatedAt %>') || now; // fallback to now if missing
  
-        alert(updatedAt)
-
         const diffMs = now - updatedAt; // diff in milliseconds
         const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24)); // convert ms to days
 
         let message;
         if (diffDays === 0) {
-        message = "Updated now";
+            let diffMins = Math.floor(diffMs/ (1000 * 60));
+            let diffHrs =  Math.floor(diffMs/ (1000 * 60 * 60))
+
+            if (diffMins <= 59) {                
+                message = `Updated ${diffMins} ${diffMins > 1 ? "mins" : "min"} ago`;
+            }else{         
+                message = `Updated ${diffHrs} ${diffHrs > 1 ? "hours" : "hour"} ${diffMins - Math.floor((diffHrs * 60))} mins ago`;
+            }
+        // message = "Updated now";
         } else if (diffDays === 1) {
         message = "Updated 1 day ago";
         } else {
         message = `Updated ${diffDays} days ago`;
         }
-        showUpdatedAt.innerHTML = `${message} (${'<%= currUser?.updatedAt %>'.split(" ").slice(4, 5).join("")})`;
+        
+        // alert(now + "------------" + updatedAt)
+        // alert(diffDays)
+        // alert(Math.floor(diffMs/ (1000 * 60)))
+        // alert(new Date('<%= currUser?.updatedAt %>'))
+        // showUpdatedAt.innerHTML = `${message} (${'<%= currUser?.updatedAt %>'.split(" ").slice(4, 5).join("")})`;
+        showUpdatedAt.innerHTML = `${message} - <small>${updatedAt.toLocaleString()}</small>`;
 
         
 

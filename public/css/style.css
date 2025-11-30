@@ -1291,15 +1291,15 @@
 
 .show-reviews{
     display: flex;
-    gap: 15px;
+    gap: 18px;
     justify-content: space-between;
     flex-wrap: wrap;
 }
 .review-card{
     /* padding: 0 15px; */
-    width: 46%;
-    min-width: 350px;
-    max-width: 47%;
+    width: 40%;
+    /* min-width: 320px; */
+    /* max-width: 40%; */
     /* flex-grow: 1; */
     /* border-radius: 12px; 
     border: 1px solid black; */
@@ -1453,7 +1453,6 @@
     }
     .review-card{        
         width: 50%;
-        /* background-color: red; */
     }
 
     
@@ -1476,7 +1475,8 @@
         /* top: 91%; */
         top: initial;
         bottom: 0%;
-        z-index: 5;
+        left: 0;
+        z-index: 4;
     }
     .listing-nav-links-left{
         display: none;
@@ -1592,10 +1592,10 @@
     .reserveListingDiv{
         padding: 1rem 0;
         gap: 0;
-        flex-direction: column;
+        flex-direction: column;        
     }
     .reserve-left{
-        width: 100%;
+        width: 100%;    
     }
     .guest-calender{
         display: none;
@@ -1616,9 +1616,9 @@
     }
 
     .calender{
-        width: 90%;
+        width: 98%;
         margin: 0 auto; 
-        /* background-color: green; */
+        /* background-color: red; */
     }
     .calender .left-calender{        
         /* width: inherit; */
@@ -1626,10 +1626,9 @@
         /* background-color: yellow; */
     }
     .calender .days, .calender .dates{        
-        gap: 10px;
-        /* background-color: green; */
-    }
-    
+        gap: 0px;
+        /* background-color: pink; */
+    }    
     .calender .dates span, .calender .days span{ 
         /* background-color: rgb(128, 0, 122); */
     }
@@ -1681,7 +1680,7 @@
     }
 
     .review-card{        
-        min-width: 100%;
+        min-width: 70%;
     }
 
     #map {
@@ -1712,4 +1711,5 @@
     .host-about-rules .rules p{
         font-size: .9rem;
     }
+   
 }
