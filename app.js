@@ -40,7 +40,6 @@ const userRouter = require("./routes/user.js");
 const bookingRouter = require("./routes/booking.js");
 
 app.engine('ejs', ejsMate);
-app.set("trust proxy", 1);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.json());
@@ -69,6 +68,9 @@ const store = MongoStore.create({
     touchAfter : 24 * 60 * 60,
 });
 
+if (process.env.NODE_ENV === "production") {
+    app.set("trust proxy", 1); // trust first proxy in production
+}
 
 const sessionOption = {
     name: "sessionID",   
