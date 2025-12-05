@@ -1,11 +1,11 @@
 <%- layout("/layouts/boilerplate.ejs")  %>
 
 <script>
-    let name = '<%= currUser.username %>';
-    let url = '<%= currUser.profileImg %>';
-    let currentUser = '<%- JSON.stringify(currUser)%>';
-    currentUser = JSON.parse(currentUser);
-    let aboutObj = currentUser.about;
+    let currentUser = <%- JSON.stringify(currUser || null)%>;
+    let aboutObj = currentUser?.about;    
+    let name = currentUser?.username;
+    let url = currentUser?.profileImg;
+    
 </script>
 
 <style>
@@ -41,7 +41,7 @@
         align-items: center;
         justify-content: space-between;
         /* justify-content: center; */
-        /* gap: 50px; */
+        gap: 10px;
         border-radius: 22px;
         box-shadow: 0 3px 15px #b9b9b9f1;   
     }
@@ -207,7 +207,7 @@
     @media (max-width: 450px) {        
         
         .my-profile, .create-profile{
-            width: 88%;
+            width: 96%;
         }
     }
 </style>
@@ -251,7 +251,6 @@
   
     <script>
         document.title="Create profile | Airbnb";
-        // aboutObj = JSON.parse(aboutObj);
       
         function setProfile(){       
             let profilePic = document.querySelector(".my-profile .profile-pic")             

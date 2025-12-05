@@ -891,7 +891,7 @@
     }
     .popup-reviews-header{
         width: 100%;      
-        background-color: #fff;       
+        background-color: #fff;    
     }
     .popup-reviews-header .sort-reviews-div{
         width: 100%;        
@@ -1461,7 +1461,7 @@
 @media screen and (max-width : 750px){
     
     .show-listing-page, .listing-nav{
-        padding: 0 3vw;
+        padding: 0 1rem;
         font-size: 1rem;
     }
     footer{
@@ -1677,6 +1677,10 @@
     .img-div-show .cover-img-4,
     .img-div-show .cover-img-5{
         display: none;
+    }
+
+    .popup-reviews{   
+        height: 65vh;  
     }
 
     .review-card{        

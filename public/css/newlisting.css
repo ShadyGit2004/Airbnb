@@ -293,7 +293,7 @@
 
 @media (max-width: 440px) {
     .listing-form-page{
-        padding: 1.5vh 3vw;
+        padding: 1.5vh 1rem;
     }
     .house-type-options-div label, .amenities-options-div label{ 
         width: 100%;    

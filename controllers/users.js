@@ -428,15 +428,13 @@ module.exports.showUser = async (req, res)=>{
 
     if(!user){
         req.flash("error", "Account you requested for doesn't exists");    
-        res.redirect(`/listings`);
-        return;
+        return res.redirect(`/listings`);
     }
     
     let allListings = await Listing.find({owner : id}).populate({path : "reviews", populate : {path : "author"}});
 
-    if(req.user._id.toString() == allListings[0].owner._id.toString()){
-      res.redirect(`/listings`);
-      return;
+    if(req?.user?._id.toString() == allListings[0].owner._id.toString()){
+      return res.redirect(`/listings`);
     }
 
     res.render("users/usershow.ejs", {user, allListings, calculateAvgRating});

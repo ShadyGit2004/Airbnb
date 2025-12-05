@@ -529,9 +529,9 @@
     document.title="Confirm and pay | Airbnb";
     let keyId = '<%= process.env.RZR_KEY_ID %>';  
     let id = '<%= id %>';  
-    let bookListing = <%- JSON.stringify(bookedListing) %>;    
+    let bookListing = <%- JSON.stringify(bookedListing || null) %>;    
     // let bookListing = JSON.parse('<%- JSON.stringify(bookedListing) %>'); 
-    let currGuest = JSON.parse('<%- JSON.stringify(currUser) %>');    
+    let currGuest = <%- JSON.stringify(currUser || null) %>;    
     let days = JSON.parse('<%- JSON.stringify(stayDays) %>');   
     let isSuccess = "";
     let defaultImg = "https://images.unsplash.com/photo-1749253851355-3529792f0d34?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDQ2fHRvd0paRnNrcEdnfHxlbnwwfHx8fHw%3D";

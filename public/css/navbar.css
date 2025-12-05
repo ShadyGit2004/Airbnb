@@ -8,7 +8,7 @@ nav{
 }
 #nav-div{
     height: 5rem;
-    padding: 25px 5rem;   
+    padding: 25px 5rem; 
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -205,7 +205,7 @@ nav #login-opt-div{
 
 @media screen and (max-width : 980px) {
     #nav-div{
-        padding: 25px 1.5rem;  
+        padding: 16px 1.5rem;  
     }
     #nav-logo span{  
         font-weight: 700;

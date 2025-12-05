@@ -225,6 +225,7 @@
     #listingOptions{
         padding: 8px 1.5rem; 
         z-index: 3; 
+        /* top: 4.8rem;  */
     }
 }
 

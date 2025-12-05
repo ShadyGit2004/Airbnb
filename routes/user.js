@@ -47,7 +47,7 @@ router.route("/account/profile/:id/edit")
 .get( isLoggedIn, checkPasswordTimestamp, userController.renderEditProfilePage)
 .post( isLoggedIn, checkPasswordTimestamp, upload.single("profileImg"), wrapAsync(userController.updateProfile));
 
-router.get("/users/show/:id", isLoggedIn, checkPasswordTimestamp, travellingStatus, wrapAsync(userController.showUser));
+router.get("/users/show/:id", travellingStatus, wrapAsync(userController.showUser));
 
 router.get("/message-host/:id", isLoggedIn, checkPasswordTimestamp, travellingStatus, wrapAsync(userController.messageHostPage));
 router.post("/message-host/:userId/:hostId", isLoggedIn, checkPasswordTimestamp, wrapAsync(userController.messageHost));

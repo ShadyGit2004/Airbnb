@@ -2,6 +2,9 @@
 #nav-search-box{
     display: none;
   }
+  #nav-div{
+    height: fit-content;
+  }
 
 
 /* SIGNUP PAGE STYLING */
@@ -59,9 +62,6 @@
     background: linear-gradient(to right, #fd3c5f,  rgb(207, 29, 98));
 }
 
-#nav-div{
-    height: fit-content;
-}
 
 @media screen and (max-width: 700px){
     #signup-wrap{

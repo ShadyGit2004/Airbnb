@@ -167,7 +167,7 @@
 
       @media screen and (max-width : 600px) {
         .personal-info-pannel{
-            padding-inline: 6vw;
+            padding-inline: 1rem;
             padding-block: 4vh;
         }
       }

@@ -2,10 +2,11 @@
 
 
 <script>
-    document.title="Edit profile | Airbnb";
-    let name = '<%= currUser.username %>';
-    let url = '<%= currUser.profileImg %>';
-    let aboutObj = '<%- JSON.stringify(currUser.about)%>';
+    document.title="Edit profile | Airbnb";    
+    let currentUser = <%- JSON.stringify(currUser || null)%>;
+    let aboutObj = currentUser?.about;    
+    let name = currentUser?.username;
+    let url = currentUser?.profileImg;
 </script>
 
 <style>
@@ -707,7 +708,7 @@
     @media (max-width: 900px) {
         .edit-profile-page{
             flex-wrap: wrap;
-            padding: 2rem 4vw;    
+            padding: 2rem 1rem;    
         }
         .profile-box{    
             position: static;
@@ -1139,10 +1140,6 @@
         });
     }
     submitBtnAnimation();
-
-
-
-        aboutObj = JSON.parse(aboutObj);
 
         function setProfile(){
             let addImg = document.querySelector("#add-img")

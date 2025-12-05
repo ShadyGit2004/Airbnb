@@ -30,12 +30,12 @@
     //     }
     // }
 
-    let currGuest = '<%- JSON.stringify(currUser) %>' ? JSON.parse('<%- JSON.stringify(currUser) %>') : {};
+    let currGuest = <%- JSON.stringify(currUser || null) %>;
     // let listing = JSON.parse('<%- JSON.stringify(listing) %>'); // koi koi listing m y dikt kr ra h
     
-    let listing = <%- JSON.stringify(listing) %>;       
-    let allListings = <%- JSON.stringify(allListings) %>; 
-    let allBookings = <%- JSON.stringify(allBookings) %>; 
+    let listing = <%- JSON.stringify(listing || null) %>;       
+    let allListings = <%- JSON.stringify(allListings || null) %>; 
+    let allBookings = <%- JSON.stringify(allBookings || null) %>; 
     
 
     // alert(listing.isAvailable) 
@@ -43,7 +43,7 @@
     let avgStars = '<%= avgRating %>';  
     
     let ownerCurrency = listing.owner.countryInfo ? listing.owner.countryInfo.currency || "INR" : "INR";
-    let guestCurrency = currGuest.countryInfo ? currGuest.countryInfo.currency || "INR" : "INR";    
+    let guestCurrency = currGuest?.countryInfo ? currGuest.countryInfo?.currency || "INR" : "INR";    
     
 </script>
 
@@ -627,7 +627,7 @@
    <div class="host-profile-pannel">
     <h4>Meet your host</h4>
     <div class="host-info">  
-    <div>
+    <div>       
         <a class="user-card-link" href="/users/show/<%= listing.owner._id %>">
         <div class="host-profile">       
             <div class="host-profile-img">

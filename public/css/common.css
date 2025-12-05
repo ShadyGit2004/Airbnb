@@ -291,5 +291,6 @@ body{
 @media screen and (max-width: 650px) {
   .detail-div{
     width: 95%;
+    padding: 16px;
   }
 }

@@ -495,7 +495,7 @@
   //   document.getElementById("shimmer-container")?.classList.add("loaded");
   // });
 
-    currUser = currUser ? JSON.parse('<%- JSON.stringify(currUser) %>') : currUser; 
+    currUser = <%- JSON.stringify(currUser || null) %>;     
     
     function getPrice(price) {
       return Number(price).toLocaleString(navigator.language || "en-IN", {style : "currency", currency : currUser ? currUser.countryInfo.currency : "INR"});
