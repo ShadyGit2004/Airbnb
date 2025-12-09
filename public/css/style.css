@@ -146,7 +146,7 @@
     align-items: center;
 }
 .show-listing-details .sec-1 h5 i{
-    font-size: .45rem;
+    font-size: .6rem;
 }
 .show-listing-details .sec-1 h5 a{
     color: black;
@@ -1081,7 +1081,7 @@
     gap: 70px;
     justify-content: start;
 }
-.host-info .host-profile{
+.host-info .host-profile{ 
     padding: 25px;
     border-radius: 25px;
     display: flex;
@@ -1146,7 +1146,7 @@
     font-size: .65rem;
     font-weight: 600;
     margin: 0;
-    margin-top: -.35rem
+    margin-top: -.35rem;   
 }
 .host-profile .host-reviews-rating-info .host-reviews{
   
@@ -1161,8 +1161,7 @@
   
 }
 
-.host-info .host-details{
-  
+.host-info .host-details h6{
 }
 .host-info .host-details h5{
     font-size: 1.15rem;
@@ -1228,7 +1227,7 @@
 .host-info a{
     color: black;
     text-decoration: none;
-    width: fit-content;
+    width: fit-content; 
 }
 
 .host-info-about a, .host-about .rules-btn, #add-dates-btn{
@@ -1297,7 +1296,7 @@
 }
 .review-card{
     /* padding: 0 15px; */
-    width: 40%;
+    width: 45%;
     /* min-width: 320px; */
     /* max-width: 40%; */
     /* flex-grow: 1; */

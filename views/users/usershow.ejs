@@ -839,26 +839,16 @@
         let reviewsData = document.querySelector(".user-profile .reviews-data");  
 
         let currentDate = new Date;
-        let monthOfHosting = currentDate.getMonth()+1 - parseInt(user.joinAt.toString().trim().slice(5,7));
-        let yearOfHosting = currentDate.getFullYear() - parseInt(user.joinAt.toString().trim().slice(0,4));
+        let monthOfHosting = currentDate.getMonth() - new Date(user.joinAt).getMonth();
+        let yearOfHosting = currentDate.getFullYear() - new Date(user.joinAt).getFullYear();     
 
         if (yearOfHosting == 0) {
-            if (monthOfHosting > 1) {
-                yearData.innerHTML = monthOfHosting;
-                yearMonthPara.innerHTML = `Months hosting`;  
-            } else {
-                yearData.innerHTML = 1;
-                yearMonthPara.innerHTML = "Month hosting";
-            }
+            yearData.innerHTML = monthOfHosting > 1 ? monthOfHosting : 1;
+            yearMonthPara.innerHTML = `${monthOfHosting > 1 ? "Months" : "Month" } hosting`;    
         } else {
-            if (yearOfHosting == 1) {
-                yearData.innerHTML = yearOfHosting;
-                yearMonthPara.innerHTML = `Year hosting`;   
-            } else {                 
-                yearData.innerHTML = yearOfHosting;
-                yearMonthPara.innerHTML = `Years hosting`;   
-            }        
-        }    
+            yearData.innerHTML = yearOfHosting;
+            yearMonthPara.innerHTML = `${yearOfHosting > 1 ? "Years" : "Year" } hosting`;   
+        }           
 
         let allReviews = 0;
         let allAvgStars = 0;

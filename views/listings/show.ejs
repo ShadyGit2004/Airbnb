@@ -149,7 +149,7 @@
                      </div>
                      <div class="show-listing-host-info">
                          <h6>Hosted by <%= listing.owner.username %></h6>
-                         <span id="show-listing-host">1 month hosting</span>
+                         <span id="show-listing-host"></span>
                      </div>
                 </div>
                 <div class="sec-3 border-bottom"></div>
@@ -585,22 +585,14 @@
                         &nbsp;&nbsp;
                         <div class="host-review-detail">                       
                             <span> <%= review.author.username %> (<%= review.author.statusType %>)</span>                       
-                                <%let currentDate = new Date%>
-                                <%let monthOfHosting = currentDate.getMonth()+1 - parseInt(review.author.joinAt.toLocaleString().trim().slice(0,1))%>
-                                <%let yearOfHosting = currentDate.getFullYear() - parseInt(review.author.joinAt.toString().trim().slice(11,15))%>  
-                                <%if (yearOfHosting == 0) {%>
-                                    <% if (monthOfHosting > 1) { %>                                    
-                                       <p> <%= monthOfHosting %> months on Airbnb</p>                                        
-                                    <% } else {%>
-                                       <p>1 month on Airbnb</p>                                  
-                                    <% } %>
-                                <% } else {%>
-                                    <% if(yearOfHosting == 1){%> 
-                                        <p><%= yearOfHosting %> year on Airbnb </p>
-                                    <% } else {%> 
-                                        <p><%= yearOfHosting %> years on Airbnb </p>
-                                    <% }%>                                                                    
-                                <% } %>                           
+                            <%let currentDate = new Date()%>
+                            <%let yearOfHosting = currentDate.getFullYear() - review.author.joinAt.getFullYear()%> 
+                            <%if (yearOfHosting == 0) {%>
+                                <%let monthOfHosting = currentDate.getMonth() - review.author.joinAt.getMonth()%>
+                                <p> <%= monthOfHosting > 1 ? monthOfHosting+" months" : "1 month" %> on Airbnb</p>   
+                            <% } else { %>
+                                <p><%= yearOfHosting > 1 ? yearOfHosting+" years" : yearOfHosting+" year" %> on Airbnb </p>                                                                    
+                            <% } %>                         
                         </div>
                         </h6>                        
                     </div>      
@@ -627,8 +619,8 @@
    <div class="host-profile-pannel">
     <h4>Meet your host</h4>
     <div class="host-info">  
-    <div>       
-        <a class="user-card-link" href="/users/show/<%= listing.owner._id %>">
+    <div style="width: min-content;">       
+        <a href="/users/show/<%= listing.owner._id %>">
         <div class="host-profile">       
             <div class="host-profile-img">
                 <div class="profile">
@@ -654,7 +646,7 @@
                 </div>
                 <div class="host-years-hosting">
                     <h5><b class="year-of-hosting-data">0</b></h5>
-                    <p class="hosting-year">Years hosting</p>
+                    <p class="hosting-year"></p>
                 </div>
             </div>
         </div>    
@@ -681,8 +673,8 @@
 
      <div class="host-details">
          <h5>Host details</h5>
-         <p>Response rate: 100% (fake data)</p>
-         <p>Responds within an hour (fake data)</p>
+         <p>Response rate: 100% (N/A)</p>
+         <p>Responds within an hour (N/A)</p>
          <a href="/message-host/<%= listing._id %>" class="btn btn-dark mt-3" style="color: white;">Message Host</a>       
      </div>
     </div>
